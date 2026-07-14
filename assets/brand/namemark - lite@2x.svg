@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 756 189" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-792,-4)">
+        <g id="namemark---lite" serif:id="namemark - lite" transform="matrix(1,0,0,1,556.409449,4)">
+            <rect x="235.591" y="0" width="755.906" height="188.976" style="fill:none;"/>
+            <clipPath id="_clip1">
+                <rect x="235.591" y="0" width="755.906" height="188.976"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <g id="Background" transform="matrix(20.997375,0,0,9.946125,46.614173,-9.946125)">
+                    <rect x="9" y="1" width="36" height="19" style="fill:rgb(250,248,246);"/>
+                </g>
+                <g id="Objects" transform="matrix(1.232734,0,0,1.232734,-237.848729,-24.934021)">
+                    <g transform="matrix(1.05903,0,0,1.05903,853.351271,80.750831)">
+                        <path d="M30.309,29.399C30.736,29.152 31.264,29.152 31.691,29.399C32.858,30.073 35.204,31.427 36.371,32.101C36.799,32.348 37.062,32.804 37.062,33.298L37.062,38.702C37.062,39.196 36.799,39.652 36.371,39.899C35.204,40.573 32.858,41.927 31.691,42.601C31.264,42.848 30.736,42.848 30.309,42.601C29.142,41.927 26.796,40.573 25.629,39.899C25.201,39.652 24.938,39.196 24.938,38.702L24.938,33.298C24.938,32.804 25.201,32.348 25.629,32.101C26.796,31.427 29.142,30.073 30.309,29.399Z" style="fill:rgb(255,89,94);"/>
+                    </g>
+                    <g transform="matrix(4.765944,0,0,4.765944,269.472674,-68.53099)">
+                        <g transform="matrix(16,0,0,16,128.032,40.626012)">
+                        </g>
+                        <text x="46px" y="40.626px" style="font-family:'Poppins-SemiBold', 'Poppins';font-weight:600;font-size:16px;fill:rgb(45,55,72);">N<tspan x="56.992px 60.672px 76.672px 86.752px 90.432px 99.536px 109.056px 118.16px " y="40.626px 40.626px 40.626px 40.626px 40.626px 40.626px 40.626px 40.626px ">imbleBee</tspan></text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
