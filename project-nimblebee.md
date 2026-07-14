@@ -7,11 +7,12 @@ metadata:
 
 # NimbleBee Marketing Website
 
-**URL:** nimblebee.co.za (not yet live)  
-**Codebase:** `/Users/sethferguson/Library/Mobile Documents/com~apple~CloudDocs/MiOS/AI OS/APPS/nimblebee.co.za/`  
+**URL:** nimblebee.co.za — LIVE  
+**Codebase:** `/Users/seth/Library/Mobile Documents/com~apple~CloudDocs/MiOS/projects/nimblebee_website/`  
+**GitHub:** `https://github.com/sethnimble/nimblebee_website` — pushed, `main` tracking `origin/main`  
 **Stack:** Plain HTML / CSS / JS — no frameworks, no build step  
 **Dev server:** `node serve.js` on port 3456, managed via Preview MCP using `.claude/launch.json`  
-**Last updated:** 2026-06-29
+**Last updated:** 2026-07-14
 
 ---
 
@@ -42,6 +43,8 @@ nimblebee.co.za/
   js/
     main.js
   assets/
+    favicon/
+      favicon-16.png, favicon-32.png, favicon-48.png, apple-touch-icon.png  ← generated from transparent Hexmark
     brand/
       logomark - trans@2x.svg    ← dark logomark (used in nav)
       logomark - lite@2x.svg     ← light logomark (used in footer)
@@ -140,48 +143,27 @@ nimblebee.co.za/
 
 ---
 
-## Known Issues / To Do Before Launch
+## Known Issues / Post-Launch To Do
 
-- [ ] Footer copyright year says 2025 — change to 2026
+- [x] Footer copyright year — updated to 2026
+- [x] Favicon — added, using transparent Hexmark (`assets/brand/Hexmark - trans@2x.png`), generated 16/32/48px PNGs + 180px apple-touch-icon in `assets/favicon/`, linked in `index.html` `<head>`. Note: "nb" lettering is legible at 32px+ but illegible at 16px (degrades to a plain coral hex blob) — accepted tradeoff, most browsers render the sharper asset on retina displays.
 - [ ] Section 02 placeholder (tool ecosystem graphic) — still a dashed box
 - [ ] Sections 06, 07 need visual styling pass
 - [ ] Section 06 scroll-triggered stepper — planned but not built
 - [ ] Mobile/responsive layout — not started
-- [ ] No favicon set
 
 ---
 
-## What's Needed to Go Live (Next Session)
+## Go-Live Steps — ALL DONE
 
-The site is ready to share for early feedback despite the unfinished sections. To deploy:
+- Step 1 — Git initialised, initial commit (`fdcf518 Initial build`)
+- Step 2 — Pushed to GitHub (`sethnimble/nimblebee_website`, `main` tracking `origin/main`)
+- Step 3 — Deployed on Vercel
+- Step 4 — `nimblebee.co.za` connected and live
 
-### Step 1 — Initialise Git
-```bash
-cd "/Users/sethferguson/Library/Mobile Documents/com~apple~CloudDocs/MiOS/AI OS/APPS/nimblebee.co.za"
-git init
-git add .
-git commit -m "Initial build"
-```
+**Site is live at nimblebee.co.za.** Remaining work is now polish, not launch-blocking — see "Known Issues / To Do" above.
 
-### Step 2 — Push to GitHub
-Create a new repo on GitHub (name: `nimblebee`), then:
-```bash
-git remote add origin https://github.com/YOUR_USERNAME/nimblebee.git
-git push -u origin main
-```
-
-### Step 3 — Deploy on Vercel
-- vercel.com → Add New → Project → import the GitHub repo
-- No framework config needed (static HTML auto-detected)
-- Deploy → get a `*.vercel.app` preview URL immediately
-
-### Step 4 — Connect nimblebee.co.za
-- Vercel: Project → Settings → Domains → add `nimblebee.co.za` and `www.nimblebee.co.za`
-- Vercel provides DNS records (A record + CNAME)
-- Add those records at Seth's domain registrar
-- SSL auto-provisioned once DNS propagates (15 min – 1 hour)
-
-**Domain registrar:** domains.co.za — this is where the DNS records need to be added in Step 4.
+**Domain registrar:** domains.co.za
 
 ---
 
