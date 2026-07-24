@@ -28,6 +28,18 @@
 
   <!-- 01 HERO — dark, transitions to light -->
   <section id="hero" class="section-dark edge-to-light">
+    <div class="hero-video-bg" aria-hidden="true">
+      <video class="hero-video hero-video--intro" autoplay muted playsinline poster="assets/video/hero-poster.jpg">
+        <source src="assets/video/hero-intro.mp4" type="video/mp4">
+      </video>
+      <video class="hero-video hero-video--loop" muted loop playsinline preload="auto">
+        <source src="assets/video/hero-loop.mp4" type="video/mp4">
+      </video>
+      <div class="hero-video-scrim"></div>
+    </div>
+    <!-- Hexagon cluster animation — disabled in hero in favor of background video above.
+         Kept intact for possible reuse elsewhere on the site. -->
+    <!--
     <div class="hero-hexes" id="heroHexes" aria-hidden="true">
       <div class="hero-hex"><img src="assets/Hexagon Background Line Drawings/hex-single-offwhite.svg" alt="" /></div>
       <div class="hero-hex"><img src="assets/Hexagon Background Line Drawings/hex-single-offwhite.svg" alt="" /></div>
@@ -37,6 +49,7 @@
       <div class="hero-hex"><img src="assets/Hexagon Background Line Drawings/hex-single-offwhite.svg" alt="" /></div>
       <div class="hero-hex"><img src="assets/Hexagon Background Line Drawings/hex-single-offwhite.svg" alt="" /></div>
     </div>
+    -->
     <div class="container">
       <div class="hero-content">
         <p class="eyebrow">Digital systems for small businesses</p>
@@ -56,7 +69,7 @@
         <p class="body-lg">It's not the tools. You probably have enough of those. The problem is that nothing fits together — each one solves part of the problem but the gaps between them are filled by you, personally, every single day. The result is a business that works — but only because you're the one holding it all together. That's fine for now. But it's not a system. It's willpower.</p>
       </div>
       <div class="problem-graphic">
-        <div class="problem-placeholder">
+        <div class="problem-placeholder skeleton">
           <p class="placeholder-label">Tool ecosystem graphic — coming soon</p>
         </div>
       </div>
@@ -93,19 +106,19 @@
         <p>If you're running a small business without a dedicated ops or tech person — this is for you. Think of NimbleBee as your outsourced tech function. Not an IT department, not a software vendor — someone who understands your business, builds what you need, and makes sure you can run it yourself.</p>
       </div>
       <!-- Persona picker -->
-      <div class="persona-picker reveal" style="margin-top: 4rem;">
+      <div class="persona-picker" style="margin-top: 4rem;">
         <div class="persona-cards" role="tablist" aria-label="Select your business type">
-          <button class="persona-card" data-persona="solo" role="tab" aria-selected="true" aria-controls="personaPanel">
+          <button class="persona-card reveal" data-persona="solo" role="tab" aria-selected="true" aria-controls="personaPanel">
             <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="persona-icon" aria-hidden="true" />
             <span class="persona-title">Solo Professional</span>
             <span class="persona-sub">Consultants, coaches, freelancers</span>
           </button>
-          <button class="persona-card" data-persona="trades" role="tab" aria-selected="false" aria-controls="personaPanel">
+          <button class="persona-card reveal" data-persona="trades" role="tab" aria-selected="false" aria-controls="personaPanel">
             <img src="assets/icons/hex-icon-isometric-charcoal.svg" alt="" class="persona-icon" aria-hidden="true" />
             <span class="persona-title">Trades & Construction</span>
             <span class="persona-sub">Builders, plumbers, electricians, contractors</span>
           </button>
-          <button class="persona-card" data-persona="ngo" role="tab" aria-selected="false" aria-controls="personaPanel">
+          <button class="persona-card reveal" data-persona="ngo" role="tab" aria-selected="false" aria-controls="personaPanel">
             <img src="assets/icons/hex-icon-topo-charcoal.svg" alt="" class="persona-icon" aria-hidden="true" />
             <span class="persona-title">Small NGO</span>
             <span class="persona-sub">Community orgs, non-profits, charities</span>
@@ -253,20 +266,34 @@
       <h2>Built by someone who's done this for 20 years.</h2>
       <p class="proof-subline">Not in theory — in practice, for real businesses.</p>
       <p>NimbleBee was founded on two decades of experience building systems, tools, and workflows for organisations of every size — including a background in learning design that means knowledge transfer isn't an afterthought, it's built into everything we do. Everything we recommend, we've used ourselves. Here's what that looks like in practice.</p>
+      <div class="proof-stats reveal">
+        <div class="proof-stat">
+          <span class="proof-stat-num" data-count-to="20" data-suffix="+">0</span>
+          <p class="proof-stat-label">Years of experience</p>
+        </div>
+        <div class="proof-stat">
+          <span class="proof-stat-num" data-count-to="3">0</span>
+          <p class="proof-stat-label">Systems we use ourselves</p>
+        </div>
+        <div class="proof-stat">
+          <span class="proof-stat-num" data-count-to="100" data-suffix="%">0</span>
+          <p class="proof-stat-label">Yours to edit forever</p>
+        </div>
+      </div>
       <div class="product-cards">
-        <div class="product-card">
+        <div class="product-card reveal">
           <img src="assets/icons/hex-icon-isometric-emerald.svg" alt="" aria-hidden="true" class="product-icon" />
           <h3>Nimble PM</h3>
           <p class="product-tagline">For small teams who need to stay on top of projects without the complexity of enterprise software.</p>
           <p>A lightweight project management system built in Notion — tasks, timelines, and accountability, all in one place.</p>
         </div>
-        <div class="product-card">
+        <div class="product-card reveal">
           <img src="assets/icons/hex-icon-topo-coral.svg" alt="" aria-hidden="true" class="product-icon" />
           <h3>Nimble Content Planner</h3>
           <p class="product-tagline">For business owners managing their own marketing without a dedicated team.</p>
           <p>A social media and content planning system that keeps your pipeline organised and your publishing consistent.</p>
         </div>
-        <div class="product-card">
+        <div class="product-card reveal">
           <img src="assets/icons/hex-icon-concentric-offwhite.svg" alt="" aria-hidden="true" class="product-icon" />
           <h3>Nimble CRM</h3>
           <p class="product-tagline">For owner-operators who need to track clients and leads without a full sales platform.</p>

@@ -2,26 +2,112 @@
    NimbleBee — main.css
    ================================ */
 
-/* --- Custom Properties --- */
+/* --- Custom Properties (NimbleBee Design System v3.1) --- */
 :root {
+  /* brand */
   --charcoal:  #2D3748;
   --coral:     #FF595E;
   --emerald:   #10B981;
   --offwhite:  #FAF8F6;
 
+  /* neutral ramp */
+  --neutral-50:  #FAF8F6;
+  --neutral-100: #F3EFEA;
+  --neutral-200: #E8E4DF;
+  --neutral-300: #D4CEC7;
+  --neutral-400: #A8A097;
+  --neutral-500: #78716A;
+  --neutral-600: #565049;
+  --neutral-700: #3D3933;
+  --neutral-800: #2D3748;
+  --neutral-900: #1A202C;
+
+  /* semantic text/surface/border */
   --text-dark:        #FAF8F6;
   --text-dark-muted:  rgba(250, 248, 246, 0.60);
   --text-light:       #2D3748;
-  --text-light-muted: #6B7280;
+  --text-light-muted: #78716A;
 
+  --fg-1: var(--neutral-800);
+  --fg-2: var(--neutral-600);
+  --fg-3: var(--neutral-500);
+  --fg-1-on-dark: var(--offwhite);
+  --fg-2-on-dark: var(--neutral-300);
+  --fg-3-on-dark: var(--neutral-400);
+  --bg-1: var(--offwhite);
+  --bg-2: var(--neutral-100);
+  --border-1: var(--neutral-300);
+
+  /* status + accents */
+  --positive-surface: #E7F8F1;
+  --positive-base:    #10B981;
+  --positive-text:    #0B8B62;
+  --emphasis-surface: #FFE9EA;
+  --emphasis-base:    #FF595E;
+  --emphasis-text:    #D8474B;
+  --accent-amber:  #F59E0B;
+  --accent-cyan:   #06B6D4;
+  --accent-pink:   #E11D74;
+  --accent-orange: #EA580C;
+
+  /* type */
   --font-sans:  'Poppins', system-ui, sans-serif;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
 
+  --text-display-lg: 56px;
+  --text-display-md: 40px;
+  --text-h3:      28px;
+  --text-h4:      22px;
+  --text-lede:    18px;
+  --text-body:    16px;
+  --text-small:   14px;
+  --text-meta:    12px;
+  --text-eyebrow: 24px;
+
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  --leading-tight:  1.15;
+  --leading-normal: 1.5;
+  --leading-loose:  1.7;
+  --tracking-eyebrow: 0.2em;
+
+  /* layout */
   --section-pad:   clamp(5rem, 10vw, 9rem);
   --container-max: 1120px;
   --container-pad: clamp(1.5rem, 5vw, 5rem);
 
-  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* spacing + radius scale */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;  --sp-5: 24px;
+  --sp-6: 32px;  --sp-7: 48px;  --sp-8: 64px;  --sp-9: 96px;  --sp-10: 128px;
+  --r-sm: 2px;
+  --r-md: 6px;
+  --r-lg: 12px;
+  --r-xl: 24px;
+
+  /* shadows + accent glows (glow base already tuned to v3.1's 1.1x hover intensity) */
+  --shadow-sm: 0 1px 2px 0 rgba(45, 55, 72, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(45, 55, 72, 0.12), 0 2px 4px -2px rgba(45, 55, 72, 0.10);
+  --shadow-lg: 0 10px 15px -3px rgba(45, 55, 72, 0.14), 0 4px 6px -4px rgba(45, 55, 72, 0.12);
+  --glow-coral:   0 0 22px 0 rgba(255, 89, 94, 0.495);
+  --glow-emerald: 0 0 22px 0 rgba(16, 185, 129, 0.495);
+
+  /* gradients */
+  --gradient-angle: 135deg;
+  --gradient-section-charcoal: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+  --gradient-section-offwhite: linear-gradient(135deg, #FAF8F6 0%, #D4CEC7 100%);
+  --gradient-card:              linear-gradient(135deg, #FAF8F6 0%, #F3EFEA 100%);
+  --gradient-cta-coral:         linear-gradient(135deg, #FF595E 0%, #A81E23 100%);
+  --gradient-cta-emerald:       linear-gradient(135deg, #10B981 0%, #006830 100%);
+
+  /* motion */
+  --ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --stagger-step:     70ms;
+  --reveal-duration: 420ms;
 }
 
 /* --- Reset --- */
@@ -78,14 +164,14 @@ a {
 
 /* --- Sections --- */
 .section-dark {
-  background: var(--charcoal);
+  background: var(--gradient-section-charcoal);
   color: var(--text-dark);
   padding: var(--section-pad) 0;
   position: relative;
 }
 
 .section-light {
-  background: var(--offwhite);
+  background: var(--gradient-section-offwhite);
   color: var(--text-light);
   padding: var(--section-pad) 0;
   position: relative;
@@ -99,36 +185,15 @@ a {
   overflow: visible;
 }
 
-/* Sections with diagonal edge get extra bottom padding so content clears the wedge */
-.edge-to-light,
-.edge-to-dark {
-  padding-bottom: calc(var(--section-pad) + 80px);
+/* Section dividers — plain horizontal line where one section hands off to the next
+   (replaces the old diagonal clip-path wedge, which showed a visible seam against
+   the new gradient section backgrounds) */
+.section-dark.edge-to-light {
+  border-bottom: 1px solid rgba(250, 248, 246, 0.12);
 }
 
-/* Dark section → Light section: offwhite wedge at bottom */
-.section-dark.edge-to-light::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: var(--offwhite);
-  clip-path: polygon(0 100%, 100% 0, 100% 100%);
-  z-index: 2;
-}
-
-/* Light section → Dark section: charcoal wedge at bottom */
-.section-light.edge-to-dark::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: var(--charcoal);
-  clip-path: polygon(0 0, 100% 100%, 0 100%);
-  z-index: 2;
+.section-light.edge-to-dark {
+  border-bottom: 1px solid rgba(45, 55, 72, 0.10);
 }
 
 /* --- Typography --- */
@@ -214,28 +279,148 @@ p:last-child {
   font-weight: 500;
   letter-spacing: 0.02em;
   padding: 0.8125rem 2rem;
-  border-radius: 8px;
+  border-radius: 999px;
   cursor: pointer;
-  transition: transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out);
+  box-shadow: var(--shadow-sm);
+  transition: filter 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out);
   border: none;
   text-decoration: none;
   line-height: 1;
 }
 
 .btn-coral {
-  background: var(--coral);
+  background: var(--gradient-cta-coral);
   color: var(--offwhite);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.btn-coral:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(255, 89, 94, 0.38);
+.btn:hover {
+  filter: brightness(1.06);
+  animation: btn-pop 280ms var(--ease-standard);
+}
+
+@keyframes btn-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* accent glow follows the surface the button sits on, not the button's own fill */
+.section-dark .btn:hover {
+  box-shadow: var(--shadow-sm), var(--glow-emerald);
+}
+
+.section-light .btn:hover,
+#nav .btn:hover,
+.persona-panel-inner .btn:hover {
+  box-shadow: var(--shadow-sm), var(--glow-coral);
 }
 
 .btn-lg {
   font-size: 1.0625rem;
   padding: 1rem 2.75rem;
   margin-top: 1.5rem;
+}
+
+/* --- Forms (dormant — no inputs/selects on the site yet; ready for whenever they're added) --- */
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  color: var(--text-light);
+  background: var(--offwhite);
+  border: 1.5px solid var(--border-1);
+  border-radius: var(--r-md);
+  padding: 0.75rem 1rem;
+  transition: border-color 150ms var(--ease-standard), box-shadow 150ms var(--ease-standard);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+}
+
+/* --- Nav links (dormant — nav currently has only a logo + CTA button; ready for text links) --- */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+  padding-bottom: 4px;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--emerald);
+  transition: width 440ms var(--ease-standard);
+}
+
+.section-dark .nav-link::after {
+  background: var(--coral);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* --- Toggle switches (dormant — none on the site yet) ---
+   Expected markup: <button class="switch" role="switch" aria-checked="false"><span class="switch-thumb"></span></button>
+   Toggle JS should briefly add/remove `.is-toggling` on state change to trigger the pop keyframe. */
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--neutral-300);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.switch[aria-checked="true"] {
+  background: var(--emerald);
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--offwhite);
+  box-shadow: var(--shadow-sm);
+  transition: left 150ms ease;
+}
+
+.switch[aria-checked="true"] .switch-thumb {
+  left: 20px;
+}
+
+.switch.is-toggling .switch-thumb {
+  animation: switch-pop 220ms var(--ease-standard);
+}
+
+@keyframes switch-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
 }
 
 /* --- NAV --- */
@@ -295,6 +480,43 @@ p:last-child {
   line-height: 1.85;
 }
 
+/* Hero background video */
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-video-bg video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-video--intro {
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.hero-video--intro.is-hidden {
+  opacity: 0;
+}
+
+.hero-video--loop {
+  z-index: 1;
+}
+
+.hero-video-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(45, 55, 72, 0.55);
+}
+
 /* Hero hex cluster — animated on load, exits on scroll */
 .hero-hexes {
   position: absolute;
@@ -340,12 +562,56 @@ p:last-child {
 .reveal {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.72s var(--ease-out), transform 0.72s var(--ease-out);
+  transition: opacity var(--reveal-duration) var(--ease-standard), transform var(--reveal-duration) var(--ease-standard);
 }
 
-.reveal.visible {
+.reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* staggered card reveals — ~70ms per sibling */
+.persona-cards .reveal:nth-child(1) { transition-delay: 0ms; }
+.persona-cards .reveal:nth-child(2) { transition-delay: var(--stagger-step); }
+.persona-cards .reveal:nth-child(3) { transition-delay: calc(var(--stagger-step) * 2); }
+
+.product-cards .reveal:nth-child(1) { transition-delay: 0ms; }
+.product-cards .reveal:nth-child(2) { transition-delay: var(--stagger-step); }
+.product-cards .reveal:nth-child(3) { transition-delay: calc(var(--stagger-step) * 2); }
+
+/* --- Skeleton shimmer (loading-placeholder utility) --- */
+.skeleton {
+  background: linear-gradient(90deg, var(--neutral-200) 0%, var(--neutral-100) 50%, var(--neutral-200) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  border-radius: var(--r-md);
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* --- Proof stats (count-up) --- */
+.proof-stats {
+  display: flex;
+  gap: 3rem;
+  margin: 2.5rem 0 3rem;
+}
+
+.proof-stat-num {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 2.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1;
+}
+
+.proof-stat-label {
+  margin-top: 0.4rem;
+  font-size: 0.875rem;
+  color: var(--text-dark-muted);
 }
 
 /* --- Problem section grid --- */
@@ -420,16 +686,17 @@ p:last-child {
 }
 
 .bda-card {
-  background: #ffffff;
-  border: 1px solid rgba(45, 55, 72, 0.10);
-  border-radius: 12px;
+  background: var(--gradient-card);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-lg);
   padding: 1.75rem;
-  transition: transform 0.24s var(--ease-out), box-shadow 0.24s var(--ease-out);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.24s var(--ease-standard), box-shadow 0.24s var(--ease-standard);
 }
 
 .bda-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 14px 36px rgba(45, 55, 72, 0.11);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md), var(--glow-coral);
 }
 
 .bda-label {
@@ -478,17 +745,18 @@ p:last-child {
 }
 
 .product-card {
+  /* dark surface: no v3.1 gradient token for this context, so keep the flat translucent fill */
   background: rgba(250, 248, 246, 0.05);
   border: 1px solid rgba(250, 248, 246, 0.09);
-  border-radius: 12px;
+  border-radius: var(--r-lg);
   padding: 1.75rem;
-  transition: transform 0.24s var(--ease-out), box-shadow 0.24s var(--ease-out), background 0.24s;
+  transition: transform 0.24s var(--ease-standard), box-shadow 0.24s var(--ease-standard), background 0.24s;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   background: rgba(250, 248, 246, 0.08);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), var(--glow-emerald);
 }
 
 .product-icon {
@@ -559,10 +827,10 @@ p:last-child {
 }
 
 .persona-card {
-  background: var(--offwhite);
+  background: var(--gradient-card);
   border: 1.5px solid rgba(45, 55, 72, 0.12);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.10);
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   padding: 2rem 1.75rem;
   display: flex;
   flex-direction: column;
@@ -572,14 +840,14 @@ p:last-child {
   text-align: left;
   font-family: var(--font-sans);
   color: var(--text-light);
-  transition: background 0.22s var(--ease-out), border-color 0.22s var(--ease-out), transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out);
+  transition: background 0.22s var(--ease-standard), border-color 0.22s var(--ease-standard), transform 0.22s var(--ease-standard), box-shadow 0.22s var(--ease-standard);
 }
 
 .persona-card:hover {
   background: #fff;
   border-color: rgba(45, 55, 72, 0.22);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(45, 55, 72, 0.10);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md), var(--glow-coral);
 }
 
 .persona-card[aria-selected="false"] {
@@ -589,7 +857,7 @@ p:last-child {
 .persona-card[aria-selected="true"] {
   background: #fff;
   border: 4px solid var(--emerald);
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(45, 55, 72, 0.10);
   opacity: 1;
 }
@@ -713,12 +981,9 @@ p:last-child {
 }
 
 .persona-panel-cta .btn {
-  background: var(--emerald);
+  background: var(--gradient-cta-emerald);
   color: var(--offwhite);
-}
-
-.persona-panel-cta .btn:hover {
-  box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* --- Placeholders (to be replaced section by section) --- */

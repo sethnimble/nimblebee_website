@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NimbleBee — tool ecosystem graphic concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#2D3748;
+    --charcoal-900:#1A202C;
+    --coral:#FF595E;
+    --emerald:#10B981;
+    --offwhite:#FAF8F6;
+    --neutral-100:#F3EFEA;
+    --neutral-300:#D4CEC7;
+    --neutral-500:#78716A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:#e9e5df;
+    padding:48px 16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+  }
+  .eyebrow{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:300;
+    font-size:24px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:var(--emerald);
+  }
+  .stage{
+    width:520px;
+    max-width:100%;
+    aspect-ratio:1/1;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--offwhite) 0%,var(--neutral-300) 100%);
+    position:relative;
+    overflow:hidden;
+  }
+  svg{width:100%;height:100%;display:block;}
+  .spoke{
+    transform-box:fill-box;
+    transform-origin:50% 50%;
+    opacity:0;
+    transform:translate(var(--ox,0px),var(--oy,0px)) scale(0.25);
+  }
+  .spoke.play{
+    animation:popin 0.55s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes popin{
+    0%{opacity:0; transform:translate(var(--ox,0px),var(--oy,0px)) scale(0.25);}
+    100%{opacity:1; transform:translate(var(--ox,0px),var(--oy,0px)) scale(1);}
+  }
+  .spoke.converge{
+    animation:pullin 0.5s cubic-bezier(.3,.68,.4,1) forwards;
+  }
+  @keyframes pullin{
+    0%{transform:translate(var(--ox,0px),var(--oy,0px)) scale(1);}
+    100%{transform:translate(0,0) scale(1);}
+  }
+  .center-hex{
+    transform-box:fill-box;
+    transform-origin:50% 50%;
+  }
+  #hex-group{
+    transform-box:fill-box;
+    transform-origin:50% 50%;
+  }
+  #hex-group.unify{
+    animation:fuse 0.6s ease-out;
+  }
+  @keyframes fuse{
+    0%{transform:scale(1);}
+    40%{transform:scale(1.06);}
+    100%{transform:scale(1);}
+  }
+  .ring.pulse{
+    animation:ring-out 0.9s ease-out forwards;
+  }
+  @keyframes ring-out{
+    0%{opacity:0.6; r:190;}
+    100%{opacity:0; r:255;}
+  }
+  .cat-label{
+    font-family:'Poppins',sans-serif;
+    font-weight:500;
+    font-size:11px;
+    fill:var(--charcoal);
+  }
+  .center-label{
+    font-family:'Poppins',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    fill:var(--offwhite);
+  }
+  .controls{
+    display:flex;
+    gap:10px;
+  }
+  button{
+    font-family:'Poppins',sans-serif;
+    font-size:13px;
+    font-weight:500;
+    padding:8px 16px;
+    border-radius:6px;
+    border:1px solid var(--charcoal);
+    background:transparent;
+    color:var(--charcoal);
+    cursor:pointer;
+  }
+  button:hover{background:var(--charcoal); color:var(--offwhite);}
+  .note{
+    font-size:12px;
+    color:var(--neutral-500);
+    max-width:520px;
+    text-align:center;
+    line-height:1.5;
+  }
+</style>
+</head>
+<body>
+
+  <div class="eyebrow">the problem — concept</div>
+
+  <div class="stage">
+    <svg viewBox="0 0 700 700" role="img" aria-label="Honeycomb diagram: NimbleBee hexmark at center, surrounded by six category hexagons — web, comms, automate, finance, projects, files">
+      <g id="ring-group"></g>
+      <g id="hex-group"></g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <button id="replay">Replay animation</button>
+  </div>
+
+  <div class="note">
+    Concept mockup only — placeholder icons/labels, approximate rounded-hex corners, and a stand-in center mark. Swap in real Lucide icons and the exact hexmark SVG for production.
+  </div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const hexGroup = document.getElementById('hex-group');
+  const ringGroup = document.getElementById('ring-group');
+  const cx0 = 350, cy0 = 350;
+  const R = 72;
+  const ROUND = 0.18;
+  const D_TOUCH = R * Math.sqrt(3); // flush distance: outer hex edges line up with the center hex
+  const GAP = 30; // how far out each hex starts before being pulled in flush
+
+  function hexPoints(cx, cy, r){
+    const pts = [];
+    for(let k=0;k<6;k++){
+      const a = (-90 + 60*k) * Math.PI/180;
+      pts.push([cx + r*Math.cos(a), cy + r*Math.sin(a)]);
+    }
+    return pts;
+  }
+
+  function roundedHexPath(cx, cy, r, round){
+    const pts = hexPoints(cx, cy, r);
+    const n = pts.length;
+    const corners = pts.map((p,i)=>{
+      const prev = pts[(i-1+n)%n];
+      const next = pts[(i+1)%n];
+      const a = [p[0]+(prev[0]-p[0])*round, p[1]+(prev[1]-p[1])*round];
+      const b = [p[0]+(next[0]-p[0])*round, p[1]+(next[1]-p[1])*round];
+      return {a,b,p};
+    });
+    let d = `M ${corners[0].a[0]} ${corners[0].a[1]} `;
+    for(let i=0;i<n;i++){
+      const c = corners[i];
+      d += `Q ${c.p[0]} ${c.p[1]} ${c.b[0]} ${c.b[1]} `;
+      const nc = corners[(i+1)%n];
+      d += `L ${nc.a[0]} ${nc.a[1]} `;
+    }
+    d += 'Z';
+    return d;
+  }
+
+  function spokeAngle(k){
+    // offset 30deg from the hex's own vertex angles so each spoke centers
+    // on an edge of the inner hexagon, not a corner
+    return (-60 + 60*k) * Math.PI/180;
+  }
+
+  function spokePos(k){
+    // final, flush (touching) position -- baked into the actual geometry
+    const a = spokeAngle(k);
+    return [cx0 + D_TOUCH*Math.cos(a), cy0 + D_TOUCH*Math.sin(a)];
+  }
+
+  function spokeOffset(k){
+    // outward vector each hex is pulled in from during entrance
+    const a = spokeAngle(k);
+    return [GAP*Math.cos(a), GAP*Math.sin(a)];
+  }
+
+  const categories = [
+    { label:'Web', icon:'web' },
+    { label:'Comms', icon:'comms' },
+    { label:'Automate', icon:'automate' },
+    { label:'Finance', icon:'finance' },
+    { label:'Projects', icon:'projects' },
+    { label:'Files', icon:'files' }
+  ];
+
+  function icon(type, cx, cy){
+    const s = document.createElementNS(svgNS,'g');
+    s.setAttribute('stroke', '#10B981');
+    s.setAttribute('stroke-width', '2.6');
+    s.setAttribute('fill', 'none');
+    s.setAttribute('stroke-linecap','round');
+    s.setAttribute('stroke-linejoin','round');
+    const box = 34;
+    const x0 = cx - box/2, y0 = cy - box/2 - 6;
+    function el(tag, attrs){
+      const e = document.createElementNS(svgNS, tag);
+      for(const k in attrs) e.setAttribute(k, attrs[k]);
+      s.appendChild(e);
+      return e;
+    }
+    if(type==='web'){
+      el('rect',{x:x0,y:y0,width:box,height:box*0.72,rx:4});
+      el('line',{x1:x0,y1:y0+9,x2:x0+box,y2:y0+9});
+      el('circle',{cx:x0+6,cy:y0+4.5,r:1.3,fill:'#10B981',stroke:'none'});
+    } else if(type==='comms'){
+      el('path',{d:`M ${x0} ${y0} h ${box} v ${box*0.6} h ${-box*0.65} l -7 8 v -8 h ${-box*0.35-0} Z`.replace('-0','')});
+      el('circle',{cx:x0+9,cy:y0+box*0.3,r:1.4,fill:'#10B981',stroke:'none'});
+      el('circle',{cx:x0+17,cy:y0+box*0.3,r:1.4,fill:'#10B981',stroke:'none'});
+      el('circle',{cx:x0+25,cy:y0+box*0.3,r:1.4,fill:'#10B981',stroke:'none'});
+    } else if(type==='automate'){
+      el('path',{d:`M ${cx-11} ${cy-4} a 11 11 0 1 1 2 8`});
+      el('path',{d:`M ${cx+11-2} ${cy+10} l 4 -6 l -8 -2 Z`,fill:'#10B981',stroke:'none'});
+    } else if(type==='finance'){
+      el('line',{x1:x0+3,y1:y0+box,x2:x0+3,y2:y0+box*0.4});
+      el('line',{x1:x0+12,y1:y0+box,x2:x0+12,y2:y0+box*0.15});
+      el('line',{x1:x0+21,y1:y0+box,x2:x0+21,y2:y0+box*0.55});
+      el('line',{x1:x0+30,y1:y0+box,x2:x0+30,y2:y0+box*0.0});
+    } else if(type==='projects'){
+      el('rect',{x:x0,y:y0,width:box,height:box*0.8,rx:3});
+      el('line',{x1:x0+box*0.34,y1:y0,x2:x0+box*0.34,y2:y0+box*0.8});
+      el('line',{x1:x0+box*0.67,y1:y0,x2:x0+box*0.67,y2:y0+box*0.8});
+      el('line',{x1:x0+5,y1:y0+8,x2:x0+box*0.34-4,y2:y0+8});
+      el('line',{x1:x0+box*0.34+4,y1:y0+13,x2:x0+box*0.67-4,y2:y0+13});
+    } else if(type==='files'){
+      el('path',{d:`M ${x0} ${y0+6} h 9 l 3 4 h ${box-12} v ${box*0.6} h ${-box} Z`});
+    }
+    return s;
+  }
+
+  const center = document.createElementNS(svgNS,'g');
+  center.setAttribute('class','center-hex');
+  const ring = document.createElementNS(svgNS,'circle');
+  ring.setAttribute('class','ring');
+  ring.setAttribute('cx', cx0);
+  ring.setAttribute('cy', cy0);
+  ring.setAttribute('r', 190);
+  ring.setAttribute('fill', 'none');
+  ring.setAttribute('stroke', '#FF595E');
+  ring.setAttribute('stroke-width', '2');
+  ring.setAttribute('opacity', '0');
+  ringGroup.appendChild(ring);
+
+  const centerPath = document.createElementNS(svgNS,'path');
+  centerPath.setAttribute('d', roundedHexPath(cx0, cy0, R, ROUND));
+  centerPath.setAttribute('fill', '#FF595E');
+  center.appendChild(centerPath);
+  const centerText = document.createElementNS(svgNS,'text');
+  centerText.setAttribute('class','center-label');
+  centerText.setAttribute('x', cx0);
+  centerText.setAttribute('y', cy0+5);
+  centerText.setAttribute('text-anchor','middle');
+  centerText.textContent = 'nb';
+  center.appendChild(centerText);
+  hexGroup.appendChild(center);
+
+  const spokeEls = [];
+  categories.forEach((cat, k)=>{
+    const [x,y] = spokePos(k);
+    const [ox,oy] = spokeOffset(k);
+    const g = document.createElementNS(svgNS,'g');
+    g.setAttribute('class','spoke');
+    g.style.setProperty('--ox', ox.toFixed(2)+'px');
+    g.style.setProperty('--oy', oy.toFixed(2)+'px');
+    const p = document.createElementNS(svgNS,'path');
+    p.setAttribute('d', roundedHexPath(x, y, R, ROUND));
+    p.setAttribute('fill', '#FAF8F6');
+    p.setAttribute('stroke', '#2D3748');
+    p.setAttribute('stroke-width', '1.6');
+    g.appendChild(p);
+    g.appendChild(icon(cat.icon, x, y));
+    const t = document.createElementNS(svgNS,'text');
+    t.setAttribute('class','cat-label');
+    t.setAttribute('x', x);
+    t.setAttribute('y', y + 28);
+    t.setAttribute('text-anchor','middle');
+    t.textContent = cat.label;
+    g.appendChild(t);
+    hexGroup.appendChild(g);
+    spokeEls.push(g);
+  });
+
+  function play(){
+    // reset
+    hexGroup.classList.remove('unify');
+    ring.classList.remove('pulse');
+    ring.setAttribute('opacity','0');
+    spokeEls.forEach((g,i)=>{
+      g.classList.remove('play','converge');
+      g.style.opacity = '';
+      g.getBoundingClientRect();
+      g.style.animationDelay = (i*110)+'ms';
+      g.classList.add('play');
+    });
+
+    // phase 1: staggered pop-in (already flush-positioned, offset outward via --ox/--oy)
+    const popTotal = (spokeEls.length-1)*110 + 550;
+
+    // phase 2: pulled together -- outward offset animates back to 0, edges go flush
+    setTimeout(()=>{
+      spokeEls.forEach(g=>{
+        g.style.opacity = '1';
+        g.classList.add('converge');
+      });
+    }, popTotal);
+
+    // phase 3: the whole merged cluster pulses as one object, with an emanating ring
+    const convergeTotal = popTotal + 500;
+    setTimeout(()=>{
+      ring.setAttribute('opacity','0.6');
+      ring.classList.add('pulse');
+      hexGroup.classList.add('unify');
+    }, convergeTotal);
+  }
+
+  document.getElementById('replay').addEventListener('click', play);
+  window.addEventListener('load', ()=> setTimeout(play, 200));
+})();
+</script>
+</body>
+</html>

@@ -8,6 +8,17 @@ function updateNav() {
 window.addEventListener('scroll', updateNav, { passive: true });
 updateNav();
 
+// --- Hero video: intro plays once, then crossfades into the loop ---
+const heroIntroVideo = document.querySelector('.hero-video--intro');
+const heroLoopVideo = document.querySelector('.hero-video--loop');
+
+if (heroIntroVideo && heroLoopVideo) {
+  heroIntroVideo.addEventListener('ended', () => {
+    heroLoopVideo.play().catch(() => {});
+    heroIntroVideo.classList.add('is-hidden');
+  });
+}
+
 // --- Hero hex animation ---
 // Load: scatter → settle into honeycomb (staggered CSS transitions)
 // Scroll: honeycomb → converge to centre → brightness pulse → fade out
@@ -288,7 +299,7 @@ const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+        entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
     });
@@ -303,8 +314,33 @@ window.addEventListener('load', () => {
   revealEls.forEach(el => {
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
-      el.classList.add('visible');
+      el.classList.add('is-visible');
       observer.unobserve(el);
     }
   });
 });
+
+// --- Count-up stats ---
+const countEls = document.querySelectorAll('[data-count-to]');
+const countObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseFloat(el.dataset.countTo);
+      const suffix = el.dataset.suffix || '';
+      const duration = 900;
+      const t0 = performance.now();
+      function step(t) {
+        const p = Math.min(1, (t - t0) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      countObserver.unobserve(el);
+    });
+  },
+  { threshold: 0.4 }
+);
+countEls.forEach(el => countObserver.observe(el));
