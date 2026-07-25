@@ -18,10 +18,15 @@
 
   <!-- NAV -->
   <nav id="nav">
-    <div class="container nav-inner">
+    <div class="nav-inner">
     <a href="#" class="nav-logo">
       <img src="assets/brand/logomark - trans@2x.png" alt="NimbleBee" />
     </a>
+    <div class="nav-links">
+      <a href="#what" class="nav-link">What we do</a>
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#proof" class="nav-link">Case studies</a>
+    </div>
     <a href="#contact" class="btn btn-coral nav-cta">Let's Talk</a>
     </div>
   </nav>
@@ -95,6 +100,72 @@
       <h2>We use all the tools we recommend.</h2>
       <p class="body-lg">The systems NimbleBee builds for clients are the same ones we use ourselves. Notion, lean workflows, AI where it actually helps — not because it's trendy, but because it works. You're not a guinea pig. You're getting something that's already proven.</p>
     </div>
+
+    <div class="tools-ticker" aria-hidden="true">
+      <div class="tools-ticker-track">
+        <div class="tools-ticker-group">
+          <span class="tools-ticker-item" data-caption="We used Claude Code to build this website, design workflows, manage our files, and much more">
+            <span class="tools-ticker-label">Claude</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We use Google's AI suite to manage our mail and appointments">
+            <span class="tools-ticker-label">Google Workspace</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We connect Claude to our email inbox to review and respond to emails">
+            <span class="tools-ticker-label">Microsoft 365</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We use Notion to hold all our data, and Notion AI to summarise our meetings">
+            <span class="tools-ticker-label">Notion</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We manage our product catalogue with Airtable's powerful database features">
+            <span class="tools-ticker-label">Airtable</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We've connected Claude to help us manage our WhatsApp">
+            <span class="tools-ticker-label">WhatsApp</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We use AI to do the heavy lifting across our social media channels">
+            <span class="tools-ticker-label">Social Media</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+        </div>
+        <div class="tools-ticker-group">
+          <span class="tools-ticker-item" data-caption="We used Claude Code to build this website, design workflows, manage our files, and much more">
+            <span class="tools-ticker-label">Claude</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We use Google's AI suite to manage our mail and appointments">
+            <span class="tools-ticker-label">Google Workspace</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We connect Claude to our email inbox to review and respond to emails">
+            <span class="tools-ticker-label">Microsoft 365</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We use Notion to hold all our data, and Notion AI to summarise our meetings">
+            <span class="tools-ticker-label">Notion</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We manage our product catalogue with Airtable's powerful database features">
+            <span class="tools-ticker-label">Airtable</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We've connected Claude to help us manage our WhatsApp">
+            <span class="tools-ticker-label">WhatsApp</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+          <span class="tools-ticker-item" data-caption="We use AI to do the heavy lifting across our social media channels">
+            <span class="tools-ticker-label">Social Media</span>
+          </span>
+          <img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" class="tools-ticker-divider" />
+        </div>
+      </div>
+    </div>
+    <div class="tools-ticker-tooltip" id="toolsTickerTooltip" aria-hidden="true"></div>
   </section>
 
   <!-- 05 WHO IT'S FOR — dark, transitions to light -->
@@ -178,11 +249,11 @@
               <!-- Visual 0: Before — scattered tool cards -->
               <div class="how-visual active" id="howVisual0">
                 <div class="how-scatter">
-                  <div class="how-tool-card" style="top:0;left:0;transform:rotate(-8deg)">📧 Email threads</div>
-                  <div class="how-tool-card" style="top:8px;left:160px;transform:rotate(6deg)">📊 Spreadsheet</div>
-                  <div class="how-tool-card" style="top:95px;left:15px;transform:rotate(-4deg)">📱 Phone notes</div>
-                  <div class="how-tool-card" style="top:108px;left:175px;transform:rotate(10deg)">💬 Group chat</div>
-                  <div class="how-tool-card" style="top:196px;left:75px;transform:rotate(-5deg)">📁 Shared drive</div>
+                  <div class="how-tool-card" style="top:0;left:0;transform:rotate(-8deg)"><img src="assets/icons/hex-icon-stripes-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Email threads</div>
+                  <div class="how-tool-card" style="top:8px;left:160px;transform:rotate(6deg)"><img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Spreadsheet</div>
+                  <div class="how-tool-card" style="top:95px;left:15px;transform:rotate(-4deg)"><img src="assets/icons/hex-icon-radial-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Phone notes</div>
+                  <div class="how-tool-card" style="top:108px;left:175px;transform:rotate(10deg)"><img src="assets/icons/hex-icon-topo-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Group chat</div>
+                  <div class="how-tool-card" style="top:196px;left:75px;transform:rotate(-5deg)"><img src="assets/icons/hex-icon-subhex-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Shared drive</div>
                 </div>
               </div>
 
@@ -262,7 +333,7 @@
   <!-- 07 SOCIAL PROOF — dark, no edge (followed by dark contact) -->
   <section id="proof" class="section-dark">
     <div class="container reveal">
-      <p class="eyebrow">Social proof</p>
+      <p class="eyebrow">Case studies</p>
       <h2>Built by someone who's done this for 20 years.</h2>
       <p class="proof-subline">Not in theory — in practice, for real businesses.</p>
       <p>NimbleBee was founded on two decades of experience building systems, tools, and workflows for organisations of every size — including a background in learning design that means knowledge transfer isn't an afterthought, it's built into everything we do. Everything we recommend, we've used ourselves. Here's what that looks like in practice.</p>
@@ -310,7 +381,7 @@
       <p class="eyebrow">Let's talk</p>
       <h2>Not sure yet? That's fine.<br>Let's talk anyway.</h2>
       <p class="body-lg">Most of our best conversations start with "I'm not quite sure what I need." That's exactly what the first call is for. No hard sell, no commitment — just a chat about where you are and whether NimbleBee can help.</p>
-      <a href="mailto:hello@nimblebee.co.za" class="btn btn-coral btn-lg">Let's Talk</a>
+      <a href="mailto:seth@nimblebee.co.za" class="btn btn-coral btn-lg">Let's Talk</a>
     </div>
   </section>
 
@@ -321,6 +392,12 @@
       <p class="footer-copy">© 2026 StudioOne Creative Solutions PTY LTD · nimblebee.co.za</p>
     </div>
   </footer>
+
+  <a href="https://wa.me/27639344839" class="whatsapp-widget" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+    <svg viewBox="0 0 24 24" class="whatsapp-icon" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.001 2.002c-5.523 0-9.999 4.475-9.999 9.999 0 1.762.464 3.416 1.276 4.848l-1.34 4.892 5.006-1.313a9.958 9.958 0 0 0 5.057 1.371h.001c5.523 0 9.998-4.475 9.998-9.999 0-2.669-1.041-5.178-2.929-7.066a9.936 9.936 0 0 0-7.07-2.732zm.001 18.164h-.001a8.156 8.156 0 0 1-4.156-1.139l-.298-.177-3.087.81.824-3.011-.194-.309a8.146 8.146 0 0 1-1.259-4.339c0-4.508 3.669-8.176 8.176-8.176 2.184 0 4.238.851 5.784 2.396a8.128 8.128 0 0 1 2.393 5.785c-.001 4.508-3.669 8.16-8.182 8.16z" />
+    </svg>
+  </a>
 
   <script src="js/main.js"></script>
 </body>

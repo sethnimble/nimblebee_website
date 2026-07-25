@@ -344,3 +344,33 @@ const countObserver = new IntersectionObserver(
   { threshold: 0.4 }
 );
 countEls.forEach(el => countObserver.observe(el));
+
+// --- Tools ticker: hover tooltip (lives outside the ticker's clipped track so it never gets cut off) ---
+const tickerEl = document.querySelector('.tools-ticker');
+const tickerTooltip = document.getElementById('toolsTickerTooltip');
+
+if (tickerEl && tickerTooltip) {
+  tickerEl.addEventListener('mouseover', (e) => {
+    const item = e.target.closest('.tools-ticker-item');
+    if (!item || !item.dataset.caption) return;
+    const label = item.querySelector('.tools-ticker-label');
+    const rect = label.getBoundingClientRect();
+    tickerTooltip.textContent = item.dataset.caption;
+    const margin = 16;
+    const halfWidth = tickerTooltip.offsetWidth / 2;
+    const center = rect.left + rect.width / 2;
+    const clampedCenter = Math.min(
+      Math.max(center, halfWidth + margin),
+      window.innerWidth - halfWidth - margin
+    );
+    tickerTooltip.style.left = `${clampedCenter}px`;
+    tickerTooltip.style.top = `${rect.bottom + 12}px`;
+    tickerTooltip.classList.add('is-visible');
+  });
+
+  tickerEl.addEventListener('mouseout', (e) => {
+    const item = e.target.closest('.tools-ticker-item');
+    if (!item || item.contains(e.relatedTarget)) return;
+    tickerTooltip.classList.remove('is-visible');
+  });
+}
