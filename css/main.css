@@ -657,6 +657,108 @@ textarea:focus {
   justify-content: center;
 }
 
+/* --- Problem section: tool-ecosystem hex animation --- */
+.problem-anim {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+}
+
+.problem-anim svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.problem-anim .spoke,
+.problem-anim .hexmark-group {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.problem-anim .spoke image,
+.problem-anim .hexmark-group image {
+  filter: drop-shadow(0 10px 18px rgba(45, 55, 72, 0.22)) drop-shadow(0 3px 6px rgba(45, 55, 72, 0.14));
+}
+
+/* Ambient tabletop shadow beneath the whole composition. Grows in as the
+   shapes gather (matches the combined stagger + hexmark-reveal duration)
+   and shrinks out with the hexmark's exit fade. Stays constant size through
+   the hold / pop-out / grow phases because the ring's outer reach and the
+   grown hexmark's radius are the same value by design — see problemGrowScale. */
+.problem-shadow {
+  opacity: 0;
+  transform: scale(0.4);
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  filter: blur(8px);
+  transition: opacity 0.5s cubic-bezier(.5, 0, .75, 0), transform 0.5s cubic-bezier(.5, 0, .75, 0);
+}
+
+.problem-shadow.show {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1.7s cubic-bezier(.22, .61, .36, 1), transform 1.7s cubic-bezier(.22, .61, .36, 1);
+}
+
+.problem-anim .spoke {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.problem-anim .spoke.show {
+  animation: problem-pop-in 0.45s cubic-bezier(.34, 1.56, .64, 1) forwards;
+}
+
+.problem-anim .spoke.pop-out {
+  animation: problem-pop-out 0.35s cubic-bezier(.5, 0, .75, 0) forwards;
+}
+
+@keyframes problem-pop-in {
+  0%   { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes problem-pop-out {
+  0%   { opacity: 1; transform: scale(1); }
+  35%  { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+.problem-anim .hexmark-group {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.problem-anim .hexmark-group.show {
+  animation: problem-pop-in 0.35s cubic-bezier(.34, 1.56, .64, 1) forwards;
+}
+
+.problem-anim .hexmark-group.grow {
+  animation: problem-grow-pop 0.55s cubic-bezier(.34, 1.56, .64, 1) forwards;
+}
+
+/* every keyframe sets BOTH opacity and transform explicitly — avoids a bug
+   where stacking two animation-triggering classes at once let the cascade
+   silently drop the held opacity from the previous animation.
+   --grow-scale is computed in JS from the actual spoke geometry, so the
+   hexmark always grows to exactly fill the vacated ring footprint. */
+@keyframes problem-grow-pop {
+  0%   { opacity: 1; transform: scale(1); }
+  60%  { opacity: 1; transform: scale(calc(var(--grow-scale, 2.8) * 1.045)); }
+  100% { opacity: 1; transform: scale(var(--grow-scale, 2.8)); }
+}
+
+.problem-anim .hexmark-group.exit {
+  animation: problem-exit-fade 0.5s cubic-bezier(.5, 0, .75, 0) forwards;
+}
+
+@keyframes problem-exit-fade {
+  0%   { opacity: 1; transform: scale(var(--grow-scale, 2.8)); }
+  100% { opacity: 0; transform: scale(calc(var(--grow-scale, 2.8) * 0.9)); }
+}
+
 .problem-placeholder .placeholder-label {
   color: var(--text-light-muted);
   font-size: 0.8125rem;

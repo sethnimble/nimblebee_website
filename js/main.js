@@ -114,6 +114,229 @@ if (heroHexes && hexEls.length) {
   window.addEventListener('scroll', updateHeroScroll, { passive: true });
 }
 
+// --- Problem section: tool-ecosystem hex animation ---
+// Loops while the graphic is in view, pauses when scrolled away.
+// Sequence: six category badges appear one by one (clockwise), the
+// NimbleBee hexmark appears, a hold, then the six pop out in unison
+// and the hexmark grows to fill the vacated space, holds, fades out,
+// and the whole thing loops.
+const problemAnimEl = document.getElementById('problemAnim');
+const problemHexGroup = document.getElementById('problemHexGroup');
+
+if (problemAnimEl && problemHexGroup) {
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const problemCx = 350, problemCy = 350;
+  const problemR = 108; // 72 * 1.5 — overall diagram scaled up 50%, still clear of the 700x700 viewBox edges
+  const problemDTouch = problemR * Math.sqrt(3); // honeycomb-adjacent (flush) distance
+  const problemSpokeGap = 10.5; // 7 * 1.5, scaled with problemR to keep the same proportional breathing room
+  const problemDSpoke = problemDTouch + problemSpokeGap;
+  const problemGrowScale = (problemDSpoke + problemR) / problemR; // hexmark edge lands exactly on the old outer ring edge
+  const problemDisplayH = 2 * problemR;
+
+  function problemSpokeAngle(k) { return (-60 + 60 * k) * Math.PI / 180; }
+  function problemSpokePos(k) {
+    const a = problemSpokeAngle(k);
+    return [problemCx + problemDSpoke * Math.cos(a), problemCy + problemDSpoke * Math.sin(a)];
+  }
+
+  const problemAssetBase = 'assets/Problem section animation/';
+  const problemCategories = [
+    { file: problemAssetBase + 'Web gp.png',        nativeW: 184, nativeH: 210 },
+    { file: problemAssetBase + 'Comms gp.png',      nativeW: 184, nativeH: 211 },
+    { file: problemAssetBase + 'Automation gp.png', nativeW: 184, nativeH: 210 },
+    { file: problemAssetBase + 'Finance gp.png',    nativeW: 184, nativeH: 211 },
+    { file: problemAssetBase + 'Projects gp.png',   nativeW: 184, nativeH: 210 },
+    { file: problemAssetBase + 'Files gp.png',      nativeW: 184, nativeH: 211 },
+  ];
+  const problemHexmarkFile = problemAssetBase + 'Hexmark - trans@2x.png';
+
+  // Ambient "hovering above a tabletop" shadow: a soft radial-gradient ellipse
+  // painted behind everything. Its resting size is based on the ring's max
+  // radial reach (dSpoke + R), which — by construction of problemGrowScale —
+  // is the SAME value as the grown hexmark's radius. So one static size
+  // covers both the scattered-ring phase and the grown-hexmark phase; the
+  // shadow only needs to animate in (as the shapes gather) and out (as they
+  // do), never resize in between.
+  const problemSvg = problemHexGroup.parentNode;
+  const problemMaxReach = problemDSpoke + problemR;
+  const problemShadowRx = problemMaxReach * 0.62;
+  const problemShadowRy = problemR * 0.111;
+  const problemShadowExtraGap = 47; // ~30px at the graphic's typical rendered size (448px for a 700-unit viewBox)
+  const problemShadowGap = problemR * 0.056 + problemShadowExtraGap;
+  const problemShadowCy = problemCy + problemMaxReach + problemShadowGap + problemShadowRy;
+
+  const problemDefs = document.createElementNS(svgNS, 'defs');
+  const problemShadowGradient = document.createElementNS(svgNS, 'radialGradient');
+  problemShadowGradient.setAttribute('id', 'problemShadowGradient');
+  [
+    ['0%', '#2D3748', '0.3'],
+    ['60%', '#2D3748', '0.14'],
+    ['100%', '#2D3748', '0'],
+  ].forEach(([offset, color, opacity]) => {
+    const stop = document.createElementNS(svgNS, 'stop');
+    stop.setAttribute('offset', offset);
+    stop.setAttribute('stop-color', color);
+    stop.setAttribute('stop-opacity', opacity);
+    problemShadowGradient.appendChild(stop);
+  });
+  problemDefs.appendChild(problemShadowGradient);
+  problemSvg.insertBefore(problemDefs, problemHexGroup);
+
+  const problemShadow = document.createElementNS(svgNS, 'ellipse');
+  problemShadow.setAttribute('id', 'problemShadow');
+  problemShadow.setAttribute('class', 'problem-shadow');
+  problemShadow.setAttribute('cx', problemCx);
+  problemShadow.setAttribute('cy', problemShadowCy);
+  problemShadow.setAttribute('rx', problemShadowRx);
+  problemShadow.setAttribute('ry', problemShadowRy);
+  problemShadow.setAttribute('fill', 'url(#problemShadowGradient)');
+  problemSvg.insertBefore(problemShadow, problemHexGroup);
+
+  const problemSpokeEls = [];
+  problemCategories.forEach((cat, k) => {
+    const [x, y] = problemSpokePos(k);
+    const g = document.createElementNS(svgNS, 'g');
+    g.setAttribute('class', 'spoke');
+    const dispH = problemDisplayH;
+    const dispW = cat.nativeW * (dispH / cat.nativeH);
+    const img = document.createElementNS(svgNS, 'image');
+    img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', cat.file);
+    img.setAttribute('href', cat.file);
+    img.setAttribute('x', x - dispW / 2);
+    img.setAttribute('y', y - dispH / 2);
+    img.setAttribute('width', dispW);
+    img.setAttribute('height', dispH);
+    img.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    g.appendChild(img);
+    problemHexGroup.appendChild(g);
+    problemSpokeEls.push(g);
+  });
+
+  const problemHexmark = document.createElementNS(svgNS, 'g');
+  problemHexmark.setAttribute('class', 'hexmark-group');
+  problemHexmark.style.setProperty('--grow-scale', problemGrowScale.toFixed(4));
+  const problemHexmarkImg = document.createElementNS(svgNS, 'image');
+  problemHexmarkImg.setAttributeNS('http://www.w3.org/1999/xlink', 'href', problemHexmarkFile);
+  problemHexmarkImg.setAttribute('href', problemHexmarkFile);
+  problemHexmarkImg.setAttribute('x', problemCx - problemDisplayH / 2);
+  problemHexmarkImg.setAttribute('y', problemCy - problemDisplayH / 2);
+  problemHexmarkImg.setAttribute('width', problemDisplayH);
+  problemHexmarkImg.setAttribute('height', problemDisplayH);
+  problemHexmarkImg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  problemHexmark.appendChild(problemHexmarkImg);
+  problemHexGroup.appendChild(problemHexmark);
+
+  // timeline (ms) — agreed pacing
+  const PROBLEM_STAGGER_INTERVAL   = 150;
+  const PROBLEM_SPOKE_POP_DURATION = 450;
+  const PROBLEM_PAUSE_AFTER_SPOKES = 200;
+  const PROBLEM_HEXMARK_REVEAL     = 350;
+  const PROBLEM_HOLD_ALL_SEVEN     = 600;
+  const PROBLEM_POP_OUT_DURATION   = 350;
+  const PROBLEM_HEXMARK_GROW       = 550;
+  const PROBLEM_HOLD_FINAL         = 2500;
+  const PROBLEM_EXIT_DURATION      = 500;
+  const PROBLEM_GAP_BEFORE_LOOP    = 400;
+
+  let problemTimers = [];
+  let problemRunning = false;
+  const problemReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function problemClearTimers() {
+    problemTimers.forEach(id => clearTimeout(id));
+    problemTimers = [];
+  }
+
+  function problemReset() {
+    problemSpokeEls.forEach(g => g.classList.remove('show', 'pop-out'));
+    problemHexmark.classList.remove('show', 'grow', 'exit');
+    problemShadow.classList.remove('show');
+  }
+
+  function problemSchedule(fn, delay) {
+    const id = setTimeout(fn, delay);
+    problemTimers.push(id);
+    return id;
+  }
+
+  function problemPlayOnce() {
+    problemReset();
+    let t = 0;
+
+    // shadow grows in step with the gather (spokes staggering in + hexmark reveal)
+    problemSchedule(() => problemShadow.classList.add('show'), 0);
+
+    // phase 1: clockwise stagger-in
+    problemSpokeEls.forEach((g, i) => {
+      problemSchedule(() => g.classList.add('show'), i * PROBLEM_STAGGER_INTERVAL);
+    });
+    t = (problemSpokeEls.length - 1) * PROBLEM_STAGGER_INTERVAL + PROBLEM_SPOKE_POP_DURATION;
+
+    // phase 2: hexmark reveal
+    t += PROBLEM_PAUSE_AFTER_SPOKES;
+    problemSchedule(() => problemHexmark.classList.add('show'), t);
+    t += PROBLEM_HEXMARK_REVEAL;
+
+    // phase 3: hold all seven
+    t += PROBLEM_HOLD_ALL_SEVEN;
+
+    // phase 4: unison pop-out of the six
+    problemSchedule(() => {
+      problemSpokeEls.forEach(g => { g.classList.remove('show'); g.classList.add('pop-out'); });
+    }, t);
+    t += PROBLEM_POP_OUT_DURATION;
+
+    // phase 5: hexmark grows to fill vacated space
+    problemSchedule(() => { problemHexmark.classList.remove('show'); problemHexmark.classList.add('grow'); }, t);
+    t += PROBLEM_HEXMARK_GROW;
+
+    // phase 6: hold final state
+    t += PROBLEM_HOLD_FINAL;
+
+    // phase 7: exit — fade + slight scale down (shadow fades out with it)
+    problemSchedule(() => {
+      problemHexmark.classList.remove('grow');
+      problemHexmark.classList.add('exit');
+      problemShadow.classList.remove('show');
+    }, t);
+    t += PROBLEM_EXIT_DURATION;
+
+    // loop
+    t += PROBLEM_GAP_BEFORE_LOOP;
+    problemSchedule(() => { if (problemRunning) problemPlayOnce(); }, t);
+  }
+
+  function problemStart() {
+    if (problemRunning) return;
+    problemRunning = true;
+    if (problemReduceMotion) {
+      // static fallback: show the resolved end-state only, no animation
+      problemReset();
+      problemSpokeEls.forEach(g => { g.style.opacity = '0'; g.style.transform = 'scale(0)'; });
+      problemHexmark.style.opacity = '1';
+      problemHexmark.style.transform = `scale(${problemGrowScale})`;
+      problemShadow.style.opacity = '1';
+      problemShadow.style.transform = 'scale(1)';
+      return;
+    }
+    problemPlayOnce();
+  }
+
+  function problemStop() {
+    if (!problemRunning) return;
+    problemRunning = false;
+    problemClearTimers();
+  }
+
+  const problemObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) problemStart();
+      else problemStop();
+    });
+  }, { threshold: 0.3 });
+  problemObserver.observe(problemAnimEl);
+}
+
 // --- What We Do hex — scroll-driven rotation ---
 // Rotates 360° across the full time the section occupies the viewport.
 // progress = 0 when section top hits viewport bottom, 1 when section bottom hits viewport top.
