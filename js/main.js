@@ -1,5 +1,10 @@
 // NimbleBee — main.js
 
+// --- Icons (lucide, loaded via CDN in index.html) ---
+if (window.lucide) {
+  lucide.createIcons();
+}
+
 // --- Nav: transparent → solid on scroll ---
 const nav = document.getElementById('nav');
 function updateNav() {
@@ -472,15 +477,37 @@ if (personaCards.length && personaPanel) {
   selectPersona('solo', true);
 }
 
-// --- How It Works — scroll-driven stage stepper ---
-const howSection = document.getElementById('how');
-const howStageEls = document.querySelectorAll('.how-stage');
-const howVisualEls = document.querySelectorAll('.how-visual');
-const howRailFill = document.getElementById('howRailFill');
-const howHint = document.getElementById('howHint');
-const howProcessSteps = document.querySelectorAll('.how-process-step');
+// --- Persona cards (mobile): dots track swipe position, not selection ---
+// Native scroll-snap handles the swipe itself — no custom drag JS needed —
+// this just keeps the dot row in sync with whichever card is in view.
+const personaCardsEl = document.querySelector('.persona-cards');
+const personaDots = document.querySelectorAll('.persona-dot');
 
-if (howSection && howRailFill) {
+if (personaCardsEl && personaDots.length) {
+  personaDots[0].classList.add('is-active');
+
+  const dotObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.intersectionRatio < 0.6) return;
+        const index = Array.from(personaCards).indexOf(entry.target);
+        personaDots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+      });
+    },
+    { root: personaCardsEl, threshold: [0.6] }
+  );
+  personaCards.forEach(card => dotObserver.observe(card));
+}
+
+// --- How It Works (desktop) — vertical scroll-driven stage stepper ---
+const howSection = document.getElementById('how');
+const howStageEls = document.querySelectorAll('.how-desktop .how-stage');
+const howVisualEls = document.querySelectorAll('.how-desktop .how-visual');
+const howRailFillD = document.getElementById('howRailFill');
+const howHintD = document.getElementById('howHint');
+const howProcessStepsD = document.querySelectorAll('.how-desktop .how-process-step');
+
+if (howSection && howRailFillD) {
   let currentStage = 0;
 
   function setHowStage(stage) {
@@ -496,7 +523,7 @@ if (howSection && howRailFill) {
       el.classList.toggle('active', i === stage);
     });
 
-    if (stage > 0 && howHint) howHint.style.opacity = '0';
+    if (stage > 0 && howHintD) howHintD.style.opacity = '0';
   }
 
   function updateHowScroll() {
@@ -507,7 +534,7 @@ if (howSection && howRailFill) {
     const progress = Math.max(0, Math.min(-rect.top / scrollable, 1));
 
     // Rail fill: maps full progress to the height of the rail
-    howRailFill.style.height = `${progress * 100}%`;
+    howRailFillD.style.height = `${progress * 100}%`;
 
     // Three equal stage bands
     let stage;
@@ -520,18 +547,125 @@ if (howSection && howRailFill) {
     // Within the "During" stage, light up process steps progressively
     if (stage === 1) {
       const sub = (progress - 0.33) / 0.33; // 0–1 within stage 1
-      howProcessSteps.forEach((step, i) => {
+      howProcessStepsD.forEach((step, i) => {
         step.classList.toggle('active', i <= Math.floor(sub * 3.99));
       });
     } else if (stage === 0) {
-      howProcessSteps.forEach(step => step.classList.remove('active'));
+      howProcessStepsD.forEach(step => step.classList.remove('active'));
     } else {
-      howProcessSteps.forEach(step => step.classList.add('active'));
+      howProcessStepsD.forEach(step => step.classList.add('active'));
     }
   }
 
   window.addEventListener('scroll', updateHowScroll, { passive: true });
   updateHowScroll();
+}
+
+// --- How It Works (mobile) — horizontal tapestry: native scroll-snap track + tap-to-jump dots ---
+const howTrack = document.getElementById('howTrack');
+const howRailFill = document.getElementById('howRailFillM');
+const howHint = document.getElementById('howHintM');
+
+if (howTrack && howRailFill) {
+  const howPanels = Array.from(howTrack.querySelectorAll('.how-panel'));
+  const howDots = Array.from(document.querySelectorAll('.how-mobile .how-dot'));
+  const howLabels = Array.from(document.querySelectorAll('.how-mobile .how-rail-labels span'));
+  const howReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const howVisited = howPanels.map((_, i) => i === 0);
+  let howHintDismissed = false;
+  let howTicking = false;
+
+  // "During" panel: numbers read as coral (unchecked) and flip to emerald one at a
+  // time, 3s apart, like someone reading the list and mentally checking each off.
+  // Restarts from scratch every time the panel comes back into focus.
+  const howProcessNums = Array.from(document.querySelectorAll('.how-mobile .how-process-num'));
+  let howDuringTimers = [];
+  let howDuringFocused = false;
+
+  function stopDuringAnimation(resetVisual) {
+    howDuringTimers.forEach(t => clearTimeout(t));
+    howDuringTimers = [];
+    if (resetVisual) howProcessNums.forEach(num => num.classList.remove('is-checked'));
+  }
+
+  function startDuringAnimation() {
+    stopDuringAnimation(true);
+    howProcessNums.forEach((num, i) => {
+      howDuringTimers.push(setTimeout(() => num.classList.add('is-checked'), (i + 1) * 3000));
+    });
+  }
+
+  function howFocusIndex(trackRect) {
+    let best = 0;
+    let bestDist = Infinity;
+    howPanels.forEach((panel, i) => {
+      const r = panel.getBoundingClientRect();
+      const d = Math.abs(r.left - trackRect.left);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+  }
+
+  function updateHowTrack() {
+    howTicking = false;
+    const trackRect = howTrack.getBoundingClientRect();
+    const idx = howFocusIndex(trackRect);
+
+    howPanels.forEach((panel, i) => {
+      const r = panel.getBoundingClientRect();
+      const norm = Math.min(Math.abs(r.left - trackRect.left) / trackRect.width, 1);
+      const op = 1 - norm * 0.6;
+      panel.style.opacity = op.toFixed(3);
+      panel.style.transform = howReducedMotion ? 'none' : `scale(${(1 - norm * 0.08).toFixed(3)})`;
+      panel.classList.toggle('is-focus', i === idx);
+    });
+
+    howVisited[idx] = true;
+
+    howDots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === idx);
+      dot.classList.toggle('is-visited', howVisited[i] && i !== idx);
+    });
+    howLabels.forEach((label, i) => {
+      label.classList.toggle('is-active', i === idx);
+    });
+    howRailFill.style.width = `${(idx / (howPanels.length - 1)) * 100}%`;
+
+    const duringFocused = idx === 1;
+    if (duringFocused && !howDuringFocused) {
+      startDuringAnimation();
+    } else if (!duringFocused && howDuringFocused) {
+      stopDuringAnimation(true);
+    }
+    howDuringFocused = duringFocused;
+
+    if (!howHintDismissed && idx !== 0 && howHint) {
+      howHintDismissed = true;
+      howHint.style.opacity = '0';
+    }
+  }
+
+  howTrack.addEventListener('scroll', () => {
+    if (!howHintDismissed && howTrack.scrollLeft > 12 && howHint) {
+      howHintDismissed = true;
+      howHint.style.opacity = '0';
+    }
+    if (!howTicking) {
+      howTicking = true;
+      requestAnimationFrame(updateHowTrack);
+    }
+  }, { passive: true });
+
+  howDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const i = parseInt(dot.getAttribute('data-i'), 10);
+      const panel = howPanels[i];
+      const target = panel.getBoundingClientRect().left - howTrack.getBoundingClientRect().left + howTrack.scrollLeft;
+      howTrack.scrollTo({ left: target, behavior: howReducedMotion ? 'auto' : 'smooth' });
+    });
+  });
+
+  updateHowTrack();
 }
 
 // --- Scroll reveal ---

@@ -1216,6 +1216,54 @@ textarea:focus {
   line-height: 1.5;
 }
 
+.persona-dots {
+  display: none;
+}
+
+/* Rebuild the 3-across grid as a native scroll-snap swipeable row — cards
+   don't fit side by side on mobile. Tap-to-select is untouched (still the
+   click handler in js/main.js); swiping here only browses, it doesn't select. */
+@media (max-width: 700px) {
+  .persona-cards {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1rem;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+  }
+
+  .persona-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .persona-card {
+    flex: 0 0 88%;
+    scroll-snap-align: start;
+  }
+
+  .persona-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .persona-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transition: background 0.2s var(--ease-standard), transform 0.2s var(--ease-standard);
+  }
+
+  .persona-dot.is-active {
+    background: var(--emerald);
+    transform: scale(1.25);
+  }
+}
+
 /* Panel */
 .persona-panel {
   margin-top: 1.5rem;
@@ -1349,200 +1397,91 @@ textarea:focus {
   color: var(--text-light-muted);
 }
 
-/* --- How It Works — scroll-driven stepper (Section 06) --- */
+/* --- How It Works (Section 06) — two independent layouts toggled by breakpoint.
+   Desktop keeps the original vertical position:sticky narrative stepper; mobile uses a
+   horizontal swipeable "tapestry" (native scroll-snap + tap-to-jump dot rail), which is
+   what actually fixed the old layout breaking on small screens. Toggle sits at the same
+   700px breakpoint used sitewide. Shared pieces (hex honeycomb, dashboard card, process
+   list structure) are defined once below and used by both. --- */
 
 #how {
   padding: 0;
 }
 
-.how-scroll-track {
-  position: relative;
-  min-height: 270vh;
-  padding-bottom: calc(var(--section-pad) + 80px);
+.how-mobile {
+  display: none;
 }
 
-.how-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+@media (max-width: 700px) {
+  .how-desktop {
+    display: none;
+  }
+
+  .how-mobile {
+    display: block;
+    padding: var(--section-pad) 0;
+  }
+}
+
+/* ============ SHARED: scattered-tools honeycomb ============
+   Hex badges styled to match the Problem section's icon badges (mint ring, white
+   gradient fill, emerald icon). Corner radius follows the sitewide hexagon rule
+   (NimbleBee Design System v3.2/guidelines/hexagon-radius.card.html — 12% of hex
+   height); gap between hexes is applied identically on every edge (flat sides and
+   angled sides alike) by deriving the row offset from the same hex geometry rather
+   than an eyeballed margin. */
+.how-hexgrid {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.how-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: center;
-  padding-top: 5rem; /* clearance for fixed nav */
-}
-
-/* Left column */
-.how-left {
+.how-hex-row {
   display: flex;
-  flex-direction: column;
+  gap: 4px;
 }
 
-.how-rail-wrap {
+/* -0.25 * hex-height + 0.866 * gap — the vertical offset that puts a 4px gap on the
+   angled edges between rows to match the 4px flex `gap` already used within a row */
+.how-hex-row-b {
+  margin-top: -15.74px;
+}
+
+.how-hex {
   position: relative;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.how-rail-line {
-  position: absolute;
-  left: 6px;
-  top: 12px;
-  bottom: 12px;
-  width: 2px;
-  background: rgba(45, 55, 72, 0.12);
-  border-radius: 2px;
-}
-
-.how-rail-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 0%;
-  background: var(--emerald);
-  border-radius: 2px;
-  transition: height 0.08s linear;
-}
-
-.how-stages {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-
-.how-stage {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-
-.how-stage-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid rgba(45, 55, 72, 0.22);
-  background: transparent;
+  width: 66.51px;
+  height: 76.8px;
   flex-shrink: 0;
-  margin-top: 0.25rem;
-  transition: background 0.35s, border-color 0.35s, transform 0.35s;
 }
 
-.how-stage.active .how-stage-dot {
-  background: var(--coral);
-  border-color: var(--coral);
-  transform: scale(1.25);
-}
-
-.how-stage.passed .how-stage-dot {
-  background: var(--emerald);
-  border-color: var(--emerald);
-}
-
-.how-stage-content {
-  opacity: 0.28;
-  transform: translateX(-6px);
-  transition: opacity 0.42s var(--ease-out), transform 0.42s var(--ease-out);
-}
-
-.how-stage.active .how-stage-content {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.how-stage.passed .how-stage-content {
-  opacity: 0.48;
-  transform: translateX(0);
-}
-
-.how-stage-label {
-  font-weight: 700;
-  font-size: 1.0625rem;
-  color: var(--charcoal);
-  margin-bottom: 0.4rem;
-  line-height: 1;
-}
-
-.how-stage.active .how-stage-label {
-  color: var(--coral);
-}
-
-.how-stage-body {
-  font-size: 0.9375rem;
-  color: var(--text-light-muted);
-  line-height: 1.7;
-  margin: 0;
-  max-width: 380px;
-}
-
-.how-hint {
-  font-size: 0.8125rem;
-  color: var(--text-light-muted);
-  margin: 0;
-  letter-spacing: 0.04em;
-  transition: opacity 0.6s ease;
-}
-
-/* Right column — visuals */
-.how-right {
-  position: relative;
-  min-height: 320px;
-}
-
-.how-visual {
+.how-hex-border,
+.how-hex-fill {
   position: absolute;
+}
+
+.how-hex-border {
   inset: 0;
+  clip-path: path("M28.65,2.66 A9.22,9.22 0 0 1 37.86,2.66 L61.90,16.54 A9.22,9.22 0 0 1 66.51,24.52 L66.51,52.28 A9.22,9.22 0 0 1 61.90,60.26 L37.86,74.14 A9.22,9.22 0 0 1 28.65,74.14 L4.61,60.26 A9.22,9.22 0 0 1 0,52.28 L0,24.52 A9.22,9.22 0 0 1 4.61,16.54 Z");
+  background: rgba(16, 185, 129, 0.35);
+}
+
+.how-hex-fill {
+  inset: 3.6px 3.12px;
+  clip-path: path("M25.96,2.41 A8.35,8.35 0 0 1 34.31,2.41 L56.10,14.99 A8.35,8.35 0 0 1 60.28,22.22 L60.28,47.38 A8.35,8.35 0 0 1 56.10,54.61 L34.31,67.19 A8.35,8.35 0 0 1 25.96,67.19 L4.18,54.61 A8.35,8.35 0 0 1 0,47.38 L0,22.22 A8.35,8.35 0 0 1 4.18,14.99 Z");
+  background: radial-gradient(circle at 50% 35%, #fff 0%, var(--neutral-100) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
-  pointer-events: none;
 }
 
-.how-visual.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+.how-hex-fill svg {
+  width: 26px;
+  height: 26px;
+  color: var(--emerald);
+  stroke-width: 1.75;
 }
 
-/* Visual 0: scattered tool cards */
-.how-scatter {
-  position: relative;
-  width: 100%;
-  max-width: 320px;
-  height: 280px;
-}
-
-.how-tool-card {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  background: #fff;
-  border: 1px solid rgba(45, 55, 72, 0.11);
-  border-radius: 10px;
-  padding: 0.7rem 1.2rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--charcoal);
-  box-shadow: 0 4px 14px rgba(45, 55, 72, 0.09);
-  white-space: nowrap;
-}
-
-.how-tool-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-/* Visual 1: process steps */
+/* ============ SHARED: process list structure (During) ============ */
 .how-process {
   width: 100%;
   max-width: 340px;
@@ -1564,31 +1503,12 @@ textarea:focus {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(45, 55, 72, 0.08);
-  border: 2px solid rgba(45, 55, 72, 0.13);
-  color: var(--text-light-muted);
   font-size: 0.8125rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background 0.35s, border-color 0.35s, color 0.35s;
-}
-
-.how-process-step.active .how-process-num {
-  background: var(--coral);
-  border-color: var(--coral);
-  color: #fff;
-}
-
-.how-process-text {
-  opacity: 0.35;
-  transition: opacity 0.35s var(--ease-out);
-}
-
-.how-process-step.active .how-process-text {
-  opacity: 1;
 }
 
 .how-process-text strong {
@@ -1606,7 +1526,7 @@ textarea:focus {
   margin: 0;
 }
 
-/* Visual 2: dashboard card */
+/* ============ SHARED: dashboard card (After) ============ */
 .how-dashboard {
   background: #fff;
   border: 1px solid rgba(45, 55, 72, 0.10);
@@ -1688,6 +1608,350 @@ textarea:focus {
 .badge-yours {
   background: rgba(45, 55, 72, 0.08);
   color: var(--text-light-muted);
+}
+
+/* ============ DESKTOP: vertical sticky-scroll narrative ============ */
+.how-desktop .how-scroll-track {
+  position: relative;
+  min-height: 270vh;
+  padding-bottom: calc(var(--section-pad) + 80px);
+}
+
+.how-desktop .how-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.how-desktop .how-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  padding-top: 5rem; /* clearance for fixed nav */
+}
+
+.how-desktop .how-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.how-desktop .how-rail-wrap {
+  position: relative;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.how-desktop .how-rail-line {
+  position: absolute;
+  left: 6px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: rgba(45, 55, 72, 0.12);
+  border-radius: 2px;
+}
+
+.how-desktop .how-rail-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: var(--emerald);
+  border-radius: 2px;
+  transition: height 0.08s linear;
+}
+
+.how-desktop .how-stages {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.how-desktop .how-stage {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.how-desktop .how-stage-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(45, 55, 72, 0.22);
+  background: transparent;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  transition: background 0.35s, border-color 0.35s, transform 0.35s;
+}
+
+.how-desktop .how-stage.active .how-stage-dot {
+  background: var(--coral);
+  border-color: var(--coral);
+  transform: scale(1.25);
+}
+
+.how-desktop .how-stage.passed .how-stage-dot {
+  background: var(--emerald);
+  border-color: var(--emerald);
+}
+
+.how-desktop .how-stage-content {
+  opacity: 0.28;
+  transform: translateX(-6px);
+  transition: opacity 0.42s var(--ease-out), transform 0.42s var(--ease-out);
+}
+
+.how-desktop .how-stage.active .how-stage-content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.how-desktop .how-stage.passed .how-stage-content {
+  opacity: 0.48;
+  transform: translateX(0);
+}
+
+.how-desktop .how-stage-label {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--charcoal);
+  margin-bottom: 0.4rem;
+  line-height: 1;
+}
+
+.how-desktop .how-stage.active .how-stage-label {
+  color: var(--coral);
+}
+
+.how-desktop .how-stage-body {
+  font-size: 0.9375rem;
+  color: var(--text-light-muted);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 380px;
+}
+
+.how-desktop .how-hint {
+  font-size: 0.8125rem;
+  color: var(--text-light-muted);
+  margin: 0;
+  letter-spacing: 0.04em;
+  transition: opacity 0.6s ease;
+}
+
+.how-desktop .how-right {
+  position: relative;
+  min-height: 320px;
+}
+
+.how-desktop .how-visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  pointer-events: none;
+}
+
+.how-desktop .how-visual.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Default (unread) state; flips coral while the scroll progress is in this stage */
+.how-desktop .how-process-num {
+  background: rgba(45, 55, 72, 0.08);
+  border: 2px solid rgba(45, 55, 72, 0.13);
+  color: var(--text-light-muted);
+  transition: background 0.35s, border-color 0.35s, color 0.35s;
+}
+
+.how-desktop .how-process-step.active .how-process-num {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: #fff;
+}
+
+.how-desktop .how-process-text {
+  opacity: 0.35;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.how-desktop .how-process-step.active .how-process-text {
+  opacity: 1;
+}
+
+/* ============ MOBILE: horizontal swipeable "tapestry" ============ */
+
+/* Progress rail — 3 tap-to-jump dots + connecting fill, synced to track scroll */
+.how-mobile .how-rail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 280px;
+  margin: 0 auto 0;
+  padding: 0 7px;
+}
+
+.how-mobile .how-rail::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 50%;
+  height: 2px;
+  background: rgba(45, 55, 72, 0.14);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.how-mobile .how-rail-fill {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  height: 2px;
+  background: var(--emerald);
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.how-mobile .how-dot {
+  position: relative;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(45, 55, 72, 0.25);
+  background: var(--offwhite);
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.how-mobile .how-dot:focus-visible {
+  outline: 2px solid var(--charcoal);
+  outline-offset: 3px;
+}
+
+.how-mobile .how-dot.is-visited {
+  background: var(--emerald);
+  border-color: var(--emerald);
+}
+
+.how-mobile .how-dot.is-active {
+  background: var(--coral);
+  border-color: var(--coral);
+  transform: scale(1.3);
+}
+
+.how-mobile .how-rail-labels {
+  display: flex;
+  justify-content: space-between;
+  max-width: 280px;
+  margin: 0.6rem auto 0;
+  padding: 0 3px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-light-muted);
+}
+
+.how-mobile .how-rail-labels span {
+  transition: color 0.3s;
+}
+
+.how-mobile .how-rail-labels span.is-active {
+  color: var(--coral);
+}
+
+.how-mobile .how-hint {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--text-light-muted);
+  margin: 0.75rem 0 0;
+  letter-spacing: 0.03em;
+  transition: opacity 0.5s ease;
+}
+
+/* Track — native horizontal scroll-snap, no custom drag JS */
+.how-mobile .how-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--container-pad);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: 2rem calc(var(--container-pad) * -1) 0;
+  padding: 0.25rem var(--container-pad) 0.5rem;
+}
+
+.how-mobile .how-track::-webkit-scrollbar {
+  display: none;
+}
+
+.how-mobile .how-panel {
+  flex: 0 0 min(420px, 82%);
+  scroll-snap-align: start;
+  margin-right: 6%;
+  display: flex;
+  flex-direction: column;
+  will-change: opacity, transform;
+}
+
+.how-mobile .how-panel:last-child {
+  margin-right: 0;
+}
+
+.how-mobile .how-panel-label {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--charcoal);
+  margin: 0.25rem 0 1rem;
+  transition: color 0.3s;
+}
+
+.how-mobile .how-panel.is-focus .how-panel-label {
+  color: var(--coral);
+}
+
+.how-mobile .how-panel-body {
+  font-size: 0.9375rem;
+  color: var(--text-light-muted);
+  line-height: 1.7;
+  margin: 0;
+  text-align: center;
+}
+
+.how-mobile .how-visual-wrap {
+  min-height: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+/* Starts coral (unread), flips to emerald as each step is "checked off" —
+   see the read-through animation in js/main.js */
+.how-mobile .how-process-num {
+  background: var(--coral);
+  border: 2px solid var(--coral);
+  color: #fff;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.how-mobile .how-process-num.is-checked {
+  background: var(--emerald);
+  border-color: var(--emerald);
 }
 
 /* --- Footer --- */
@@ -1850,5 +2114,16 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .hero-scroll-cue {
     animation: none;
+  }
+
+  .how-mobile .how-panel {
+    transition: none !important;
+  }
+
+  .how-desktop .how-rail-fill,
+  .how-desktop .how-hint,
+  .how-mobile .how-rail-fill,
+  .how-mobile .how-hint {
+    transition: none;
   }
 }

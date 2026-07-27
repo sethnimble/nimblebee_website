@@ -214,139 +214,281 @@
             <span class="persona-sub">Community orgs, non-profits, charities</span>
           </button>
         </div>
+        <div class="persona-dots" aria-hidden="true">
+          <span class="persona-dot" data-index="0"></span>
+          <span class="persona-dot" data-index="1"></span>
+          <span class="persona-dot" data-index="2"></span>
+        </div>
         <div class="persona-panel" id="personaPanel" role="tabpanel" aria-live="polite"></div>
       </div>
     </div>
   </section>
 
   <!-- 06 HOW IT WORKS — light, transitions to dark -->
+  <!-- Two independent layouts, toggled by breakpoint (css/main.css, .how-desktop/.how-mobile):
+       desktop keeps the original vertical position:sticky narrative stepper; mobile uses a
+       horizontal swipeable "tapestry" (native scroll-snap + tap-to-jump dot rail), which fixed
+       the old layout collapsing/overlapping and bleeding its scroll-height math into the
+       "Who it's for" section below on small screens. Both share the same honeycomb hex-icon
+       visual and dashboard card for "Before"/"After" (js/main.js drives each independently). -->
   <section id="how" class="section-light edge-to-dark">
-    <div class="how-scroll-track">
-      <div class="how-sticky">
-        <div class="container">
-          <div class="how-inner">
 
-            <!-- Left: progress rail + narrative -->
-            <div class="how-left">
-              <p class="eyebrow">How it works</p>
-              <div class="how-rail-wrap">
-                <div class="how-rail-line"><div class="how-rail-fill" id="howRailFill"></div></div>
-                <div class="how-stages">
+    <!-- Desktop (>700px): vertical sticky-scroll narrative -->
+    <div class="how-desktop">
+      <div class="how-scroll-track">
+        <div class="how-sticky">
+          <div class="container">
+            <div class="how-inner">
 
-                  <div class="how-stage active" data-stage="0" id="howStage0">
-                    <div class="how-stage-dot"></div>
-                    <div class="how-stage-content">
-                      <p class="how-stage-label">Before.</p>
-                      <p class="how-stage-body">Scattered tools. Subscriptions you're not really using. Processes that live entirely in your head. It works — but only because you make it work, every single day.</p>
+              <!-- Left: progress rail + narrative -->
+              <div class="how-left">
+                <p class="eyebrow">How it works</p>
+                <div class="how-rail-wrap">
+                  <div class="how-rail-line"><div class="how-rail-fill" id="howRailFill"></div></div>
+                  <div class="how-stages">
+
+                    <div class="how-stage active" data-stage="0" id="howStage0">
+                      <div class="how-stage-dot"></div>
+                      <div class="how-stage-content">
+                        <p class="how-stage-label">Before.</p>
+                        <p class="how-stage-body">Scattered tools like spreadsheets, emails and cloud files. Subscriptions you're not really using. Processes that live entirely in your head. It works — but only because you make it work, every single day.</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="how-stage" data-stage="1" id="howStage1">
-                    <div class="how-stage-dot"></div>
-                    <div class="how-stage-content">
-                      <p class="how-stage-label">During.</p>
-                      <p class="how-stage-body">We get under the skin of your operations, design a system that fits, and build it with you involved throughout. Typically 2–4 weeks, start to finish.</p>
+                    <div class="how-stage" data-stage="1" id="howStage1">
+                      <div class="how-stage-dot"></div>
+                      <div class="how-stage-content">
+                        <p class="how-stage-label">During.</p>
+                        <p class="how-stage-body">We get under the skin of your operations, design a system that fits, and build it with you involved throughout. Typically 2–4 weeks, start to finish.</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="how-stage" data-stage="2" id="howStage2">
-                    <div class="how-stage-dot"></div>
-                    <div class="how-stage-content">
-                      <p class="how-stage-label">After.</p>
-                      <p class="how-stage-body">No dependency on us. No ongoing bills. Just a clear, working system, properly documented, and a team that knows how to use it.</p>
+                    <div class="how-stage" data-stage="2" id="howStage2">
+                      <div class="how-stage-dot"></div>
+                      <div class="how-stage-content">
+                        <p class="how-stage-label">After.</p>
+                        <p class="how-stage-body">No dependency on us. No ongoing bills. Just a clear, working system, properly documented, and a team that knows how to use it.</p>
+                      </div>
                     </div>
-                  </div>
 
+                  </div>
                 </div>
-              </div>
-              <p class="how-hint" id="howHint">Scroll to progress <span aria-hidden="true">↓</span></p>
-            </div>
-
-            <!-- Right: stage visuals -->
-            <div class="how-right">
-
-              <!-- Visual 0: Before — scattered tool cards -->
-              <div class="how-visual active" id="howVisual0">
-                <div class="how-scatter">
-                  <div class="how-tool-card" style="top:0;left:0;transform:rotate(-8deg)"><img src="assets/icons/hex-icon-stripes-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Email threads</div>
-                  <div class="how-tool-card" style="top:8px;left:160px;transform:rotate(6deg)"><img src="assets/icons/hex-icon-concentric-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Spreadsheet</div>
-                  <div class="how-tool-card" style="top:95px;left:15px;transform:rotate(-4deg)"><img src="assets/icons/hex-icon-radial-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Phone notes</div>
-                  <div class="how-tool-card" style="top:108px;left:175px;transform:rotate(10deg)"><img src="assets/icons/hex-icon-topo-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Group chat</div>
-                  <div class="how-tool-card" style="top:196px;left:75px;transform:rotate(-5deg)"><img src="assets/icons/hex-icon-subhex-charcoal.svg" alt="" aria-hidden="true" class="how-tool-icon" /> Shared drive</div>
-                </div>
+                <p class="how-hint" id="howHint">Scroll to progress <span aria-hidden="true">↓</span></p>
               </div>
 
-              <!-- Visual 1: During — four process steps that light up as you scroll -->
-              <div class="how-visual" id="howVisual1">
-                <div class="how-process">
-                  <div class="how-process-step" id="howStep0">
-                    <div class="how-process-num">1</div>
-                    <div class="how-process-text">
-                      <strong>Understand</strong>
-                      <p>Map your workflows and identify the real gaps</p>
+              <!-- Right: stage visuals -->
+              <div class="how-right">
+
+                <!-- Visual 0: Before — scattered-tools honeycomb -->
+                <div class="how-visual active" id="howVisual0">
+                  <div class="how-hexgrid">
+                    <div class="how-hex-row how-hex-row-a">
+                      <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="mail"></i></div></div>
+                      <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="folder"></i></div></div>
+                      <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="phone"></i></div></div>
                     </div>
-                  </div>
-                  <div class="how-process-step" id="howStep1">
-                    <div class="how-process-num">2</div>
-                    <div class="how-process-text">
-                      <strong>Design</strong>
-                      <p>Architecture built around how you actually work</p>
-                    </div>
-                  </div>
-                  <div class="how-process-step" id="howStep2">
-                    <div class="how-process-num">3</div>
-                    <div class="how-process-text">
-                      <strong>Build</strong>
-                      <p>Configured, tested, connected — with you involved</p>
-                    </div>
-                  </div>
-                  <div class="how-process-step" id="howStep3">
-                    <div class="how-process-num">4</div>
-                    <div class="how-process-text">
-                      <strong>Hand over</strong>
-                      <p>Trained, documented, yours to run from day one</p>
+                    <div class="how-hex-row how-hex-row-b">
+                      <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="database"></i></div></div>
+                      <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="message-circle"></i></div></div>
+                      <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="file-spreadsheet"></i></div></div>
+                      <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="laptop"></i></div></div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Visual 2: After — system dashboard card -->
-              <div class="how-visual" id="howVisual2">
-                <div class="how-dashboard">
-                  <div class="how-dashboard-header">
-                    <span class="how-db-dot"></span>
-                    Your NimbleBee system
-                  </div>
-                  <div class="how-dashboard-rows">
-                    <div class="how-db-row">
-                      <span class="how-db-check">✓</span>
-                      <span class="how-db-label">Client &amp; project tracker</span>
-                      <span class="how-db-badge badge-live">Live</span>
+                <!-- Visual 1: During — four process steps that light up as you scroll -->
+                <div class="how-visual" id="howVisual1">
+                  <div class="how-process">
+                    <div class="how-process-step" id="howStep0">
+                      <div class="how-process-num">1</div>
+                      <div class="how-process-text">
+                        <strong>Understand</strong>
+                        <p>Map your workflows and identify the real gaps</p>
+                      </div>
                     </div>
-                    <div class="how-db-row">
-                      <span class="how-db-check">✓</span>
-                      <span class="how-db-label">Workflows &amp; automations</span>
-                      <span class="how-db-badge badge-live">Live</span>
+                    <div class="how-process-step" id="howStep1">
+                      <div class="how-process-num">2</div>
+                      <div class="how-process-text">
+                        <strong>Design</strong>
+                        <p>Architecture built around how you actually work</p>
+                      </div>
                     </div>
-                    <div class="how-db-row">
-                      <span class="how-db-check">✓</span>
-                      <span class="how-db-label">Team handover docs</span>
-                      <span class="how-db-badge badge-yours">Yours to keep</span>
+                    <div class="how-process-step" id="howStep2">
+                      <div class="how-process-num">3</div>
+                      <div class="how-process-text">
+                        <strong>Build</strong>
+                        <p>Configured, tested, connected — with you involved</p>
+                      </div>
                     </div>
-                    <div class="how-db-row">
-                      <span class="how-db-check">✓</span>
-                      <span class="how-db-label">Training &amp; onboarding</span>
-                      <span class="how-db-badge badge-yours">Yours to keep</span>
+                    <div class="how-process-step" id="howStep3">
+                      <div class="how-process-num">4</div>
+                      <div class="how-process-text">
+                        <strong>Hand over</strong>
+                        <p>Trained, documented, yours to run from day one</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
+                <!-- Visual 2: After — system dashboard card -->
+                <div class="how-visual" id="howVisual2">
+                  <div class="how-dashboard">
+                    <div class="how-dashboard-header">
+                      <span class="how-db-dot"></span>
+                      Your NimbleBee system
+                    </div>
+                    <div class="how-dashboard-rows">
+                      <div class="how-db-row">
+                        <span class="how-db-check">✓</span>
+                        <span class="how-db-label">Client &amp; project tracker</span>
+                        <span class="how-db-badge badge-live">Live</span>
+                      </div>
+                      <div class="how-db-row">
+                        <span class="how-db-check">✓</span>
+                        <span class="how-db-label">Workflows &amp; automations</span>
+                        <span class="how-db-badge badge-live">Live</span>
+                      </div>
+                      <div class="how-db-row">
+                        <span class="how-db-check">✓</span>
+                        <span class="how-db-label">Team handover docs</span>
+                        <span class="how-db-badge badge-yours">Yours to keep</span>
+                      </div>
+                      <div class="how-db-row">
+                        <span class="how-db-check">✓</span>
+                        <span class="how-db-label">Training &amp; onboarding</span>
+                        <span class="how-db-badge badge-yours">Yours to keep</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Mobile (≤700px): horizontal swipeable "tapestry" -->
+    <div class="how-mobile">
+      <div class="container reveal">
+        <p class="eyebrow">How it works</p>
+
+        <div class="how-rail" id="howRailM">
+          <div class="how-rail-fill" id="howRailFillM"></div>
+          <button class="how-dot" type="button" data-i="0" aria-label="Jump to Before"></button>
+          <button class="how-dot" type="button" data-i="1" aria-label="Jump to During"></button>
+          <button class="how-dot" type="button" data-i="2" aria-label="Jump to After"></button>
+        </div>
+        <div class="how-rail-labels">
+          <span data-l="0">Before</span>
+          <span data-l="1">During</span>
+          <span data-l="2">After</span>
+        </div>
+
+        <p class="how-hint" id="howHintM">Swipe to explore the journey <span aria-hidden="true">→</span></p>
+
+        <div class="how-track" id="howTrack">
+
+          <!-- Panel 0: Before — scattered-tools honeycomb -->
+          <div class="how-panel" data-i="0">
+            <p class="how-panel-label">Before.</p>
+            <div class="how-visual-wrap">
+              <div class="how-hexgrid">
+                <div class="how-hex-row how-hex-row-a">
+                  <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="mail"></i></div></div>
+                  <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="folder"></i></div></div>
+                  <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="phone"></i></div></div>
+                </div>
+                <div class="how-hex-row how-hex-row-b">
+                  <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="database"></i></div></div>
+                  <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="message-circle"></i></div></div>
+                  <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="file-spreadsheet"></i></div></div>
+                  <div class="how-hex"><div class="how-hex-border"></div><div class="how-hex-fill"><i data-lucide="laptop"></i></div></div>
+                </div>
+              </div>
+            </div>
+            <p class="how-panel-body">Scattered tools like spreadsheets, emails and cloud files. Subscriptions you're not really using. Processes that live entirely in your head. It works — but only because you make it work, every single day.</p>
+          </div>
+
+          <!-- Panel 1: During — four process steps -->
+          <div class="how-panel" data-i="1">
+            <p class="how-panel-label">During.</p>
+            <div class="how-visual-wrap">
+              <div class="how-process">
+                <div class="how-process-step">
+                  <div class="how-process-num">1</div>
+                  <div class="how-process-text">
+                    <strong>Understand</strong>
+                    <p>Map your workflows and identify the real gaps</p>
+                  </div>
+                </div>
+                <div class="how-process-step">
+                  <div class="how-process-num">2</div>
+                  <div class="how-process-text">
+                    <strong>Design</strong>
+                    <p>Architecture built around how you actually work</p>
+                  </div>
+                </div>
+                <div class="how-process-step">
+                  <div class="how-process-num">3</div>
+                  <div class="how-process-text">
+                    <strong>Build</strong>
+                    <p>Configured, tested, connected — with you involved</p>
+                  </div>
+                </div>
+                <div class="how-process-step">
+                  <div class="how-process-num">4</div>
+                  <div class="how-process-text">
+                    <strong>Hand over</strong>
+                    <p>Trained, documented, yours to run from day one</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="how-panel-body">We get under the skin of your operations, design a system that fits, and build it with you involved throughout. Typically 2–4 weeks, start to finish.</p>
+          </div>
+
+          <!-- Panel 2: After — system dashboard card -->
+          <div class="how-panel" data-i="2">
+            <p class="how-panel-label">After.</p>
+            <div class="how-visual-wrap">
+              <div class="how-dashboard">
+                <div class="how-dashboard-header">
+                  <span class="how-db-dot"></span>
+                  Your NimbleBee system
+                </div>
+                <div class="how-dashboard-rows">
+                  <div class="how-db-row">
+                    <span class="how-db-check">✓</span>
+                    <span class="how-db-label">Client &amp; project tracker</span>
+                    <span class="how-db-badge badge-live">Live</span>
+                  </div>
+                  <div class="how-db-row">
+                    <span class="how-db-check">✓</span>
+                    <span class="how-db-label">Workflows &amp; automations</span>
+                    <span class="how-db-badge badge-live">Live</span>
+                  </div>
+                  <div class="how-db-row">
+                    <span class="how-db-check">✓</span>
+                    <span class="how-db-label">Team handover docs</span>
+                    <span class="how-db-badge badge-yours">Yours to keep</span>
+                  </div>
+                  <div class="how-db-row">
+                    <span class="how-db-check">✓</span>
+                    <span class="how-db-label">Training &amp; onboarding</span>
+                    <span class="how-db-badge badge-yours">Yours to keep</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="how-panel-body">No dependency on us. No ongoing bills. Just a clear, working system, properly documented, and a team that knows how to use it.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- 07 SOCIAL PROOF — dark, no edge (followed by dark contact) -->
@@ -418,6 +560,7 @@
     </svg>
   </a>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
