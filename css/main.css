@@ -815,6 +815,28 @@ textarea:focus {
   justify-content: center;
 }
 
+/* stack the problem-section grid to 1 column — keep DOM order
+   (eyebrow + heading + paragraph, then animation below) and centre text */
+@media (max-width: 700px) {
+  .problem-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .problem-text {
+    text-align: center;
+  }
+
+  .problem-text .eyebrow {
+    text-align: left;
+  }
+
+  .problem-graphic {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
 .problem-placeholder {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -964,6 +986,24 @@ textarea:focus {
 
 #what h2 {
   max-width: 620px;
+}
+
+/* centre h2/body on mobile — eyebrow stays left. Font-size is a separate
+   later pass, not part of this fix. */
+@media (max-width: 700px) {
+  #what h2,
+  #what .what-body {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #why h2,
+  #why .body-lg {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 /* --- Before / During / After cards --- */
@@ -1203,6 +1243,14 @@ textarea:focus {
   grid-template-columns: 1fr 1fr;
   gap: 2.5rem;
   margin-bottom: 2rem;
+}
+
+/* stack Before above After on mobile — DOM order already puts Before first */
+@media (max-width: 700px) {
+  .persona-ba {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 
 .persona-ba-col-label {
@@ -1706,16 +1754,17 @@ footer {
   align-items: center;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 128px, #000 calc(100% - 128px), transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0, #000 128px, #000 calc(100% - 128px), transparent 100%);
+  /* horizontal drag is handled in JS (position set via inline transform);
+     pan-y keeps native vertical page scroll working over the ticker */
+  touch-action: pan-y;
 }
 
+/* position is driven entirely by JS (js/main.js) via inline transform, so it
+   can be paused/dragged without fighting a CSS keyframe animation — touch has
+   no real ":hover" to un-stick, so pause/caption state needs explicit JS state */
 .tools-ticker-track {
   display: flex;
   width: max-content;
-  animation: tools-ticker-scroll 32s linear infinite;
-}
-
-.tools-ticker:hover .tools-ticker-track {
-  animation-play-state: paused;
 }
 
 .tools-ticker-group {
@@ -1727,7 +1776,7 @@ footer {
 .tools-ticker-item {
   position: relative;
   display: inline-block;
-  padding: 0 2.25rem;
+  padding: 0 1.125rem;
   font-family: var(--font-sans);
   font-size: 1.25rem;
   font-weight: 400;
@@ -1798,16 +1847,7 @@ footer {
   transform: translate(-50%, 0);
 }
 
-@keyframes tools-ticker-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .tools-ticker-track {
-    animation: none;
-  }
-
   .hero-scroll-cue {
     animation: none;
   }

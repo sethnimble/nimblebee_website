@@ -587,32 +587,134 @@ const countObserver = new IntersectionObserver(
 );
 countEls.forEach(el => countObserver.observe(el));
 
-// --- Tools ticker: hover tooltip (lives outside the ticker's clipped track so it never gets cut off) ---
+// --- Tools ticker: auto-scroll + hover tooltip + touch support (Why NimbleBee) ---
+// Position is driven by rAF (not a CSS keyframe animation) so pause/drag/resume
+// can all share one source of truth — touch has no real ":hover" to un-stick,
+// so pause has to be explicit JS state rather than CSS.
 const tickerEl = document.querySelector('.tools-ticker');
+const tickerTrack = document.querySelector('.tools-ticker-track');
 const tickerTooltip = document.getElementById('toolsTickerTooltip');
 
-if (tickerEl && tickerTooltip) {
-  tickerEl.addEventListener('mouseover', (e) => {
-    const item = e.target.closest('.tools-ticker-item');
-    if (!item || !item.dataset.caption) return;
+if (tickerEl && tickerTrack && tickerTooltip) {
+  const tickerReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const halfWidth = tickerTrack.scrollWidth / 2;
+  const TICKER_SPEED = halfWidth / 32000; // px/ms — matches the old 32s CSS loop
+  const DRAG_RESUME_DELAY = 600;
+
+  let pos = 0;
+  let lastFrame = null;
+  let hoverPaused = false;
+  let tapPaused = false;
+  let dragPaused = false;
+  let dragging = false;
+  let dragStartX = 0;
+  let dragStartPos = 0;
+  let resumeTimer = null;
+  let activeCaptionItem = null;
+
+  function showTickerCaption(item) {
     const label = item.querySelector('.tools-ticker-label');
     const rect = label.getBoundingClientRect();
     tickerTooltip.textContent = item.dataset.caption;
     const margin = 16;
-    const halfWidth = tickerTooltip.offsetWidth / 2;
+    const half = tickerTooltip.offsetWidth / 2;
     const center = rect.left + rect.width / 2;
     const clampedCenter = Math.min(
-      Math.max(center, halfWidth + margin),
-      window.innerWidth - halfWidth - margin
+      Math.max(center, half + margin),
+      window.innerWidth - half - margin
     );
     tickerTooltip.style.left = `${clampedCenter}px`;
     tickerTooltip.style.top = `${rect.bottom + 12}px`;
     tickerTooltip.classList.add('is-visible');
+  }
+
+  function hideTickerCaption() {
+    tickerTooltip.classList.remove('is-visible');
+  }
+
+  function dismissTapCaption() {
+    if (!activeCaptionItem) return;
+    activeCaptionItem = null;
+    tapPaused = false;
+    hideTickerCaption();
+  }
+
+  function tick(now) {
+    if (lastFrame === null) lastFrame = now;
+    const dt = now - lastFrame;
+    lastFrame = now;
+
+    if (!dragging && !hoverPaused && !tapPaused && !dragPaused && !tickerReduceMotion) {
+      pos -= TICKER_SPEED * dt;
+    }
+    if (pos <= -halfWidth) pos += halfWidth;
+    if (pos > 0) pos -= halfWidth;
+    tickerTrack.style.transform = `translateX(${pos}px)`;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // Desktop mouse: hover an item shows its caption; hovering the ticker pauses.
+  tickerEl.addEventListener('mouseover', (e) => {
+    const item = e.target.closest('.tools-ticker-item');
+    if (!item || !item.dataset.caption) return;
+    showTickerCaption(item);
   });
 
   tickerEl.addEventListener('mouseout', (e) => {
     const item = e.target.closest('.tools-ticker-item');
     if (!item || item.contains(e.relatedTarget)) return;
-    tickerTooltip.classList.remove('is-visible');
+    hideTickerCaption();
+  });
+
+  tickerEl.addEventListener('mouseenter', () => { hoverPaused = true; });
+  tickerEl.addEventListener('mouseleave', () => { hoverPaused = false; });
+
+  // Touch: tap an item to pin its caption + pause (tap again, or tap outside,
+  // to dismiss). Any touch on the track can also drag it — auto-scroll
+  // resumes a short idle delay after the finger lifts.
+  tickerEl.addEventListener('touchstart', (e) => {
+    const item = e.target.closest('.tools-ticker-item');
+    if (item && item.dataset.caption) {
+      if (activeCaptionItem === item) {
+        dismissTapCaption();
+      } else {
+        activeCaptionItem = item;
+        tapPaused = true;
+        showTickerCaption(item);
+      }
+    }
+
+    dragging = true;
+    dragPaused = true;
+    if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
+    dragStartX = e.touches[0].clientX;
+    dragStartPos = pos;
+  }, { passive: true });
+
+  tickerEl.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    pos = dragStartPos + (e.touches[0].clientX - dragStartX);
+    // paint immediately rather than waiting for the next rAF tick, so the
+    // track tracks the finger 1:1 with no perceptible lag
+    tickerTrack.style.transform = `translateX(${pos}px)`;
+  }, { passive: true });
+
+  function endTickerDrag() {
+    if (!dragging) return;
+    dragging = false;
+    resumeTimer = setTimeout(() => {
+      dragPaused = false;
+      resumeTimer = null;
+    }, DRAG_RESUME_DELAY);
+  }
+
+  tickerEl.addEventListener('touchend', endTickerDrag);
+  tickerEl.addEventListener('touchcancel', endTickerDrag);
+
+  document.addEventListener('touchstart', (e) => {
+    if (activeCaptionItem && !tickerEl.contains(e.target)) {
+      dismissTapCaption();
+    }
   });
 }
