@@ -457,7 +457,10 @@ textarea:focus {
   color: var(--text-light);
 }
 
-.nav-cta {
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
   justify-self: end;
 }
 
@@ -471,6 +474,82 @@ textarea:focus {
 .nav-logo img {
   height: 48px;
   width: auto;
+}
+
+/* --- Nav: hamburger toggle (hidden on desktop, shown below the nav breakpoint) --- */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text-light);
+  transition: transform 220ms var(--ease-standard), opacity 220ms var(--ease-standard);
+}
+
+#nav.nav-open .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+#nav.nav-open .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+#nav.nav-open .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 860px) {
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: var(--offwhite);
+    padding: 0 var(--container-pad);
+    max-height: 0;
+    overflow: hidden;
+    box-shadow: 0 1px 0 rgba(45, 55, 72, 0.10);
+    transition: max-height 320ms var(--ease-standard), padding 320ms var(--ease-standard);
+  }
+
+  #nav.nav-open .nav-links {
+    max-height: 320px;
+    padding: 0.5rem var(--container-pad) 1.5rem;
+  }
+
+  .nav-links .nav-link {
+    width: 100%;
+    padding: 0.875rem 0;
+  }
 }
 
 /* --- HERO --- */

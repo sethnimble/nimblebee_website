@@ -8,6 +8,25 @@ function updateNav() {
 window.addEventListener('scroll', updateNav, { passive: true });
 updateNav();
 
+// --- Nav: mobile hamburger toggle ---
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+if (navToggle && navLinks) {
+  function closeNavMenu() {
+    nav.classList.remove('nav-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Open menu');
+  }
+  navToggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('nav-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+  navLinks.querySelectorAll('.nav-link').forEach((link) => {
+    link.addEventListener('click', closeNavMenu);
+  });
+}
+
 // --- Hero video: intro plays once, then crossfades into the loop ---
 const heroIntroVideo = document.querySelector('.hero-video--intro');
 const heroLoopVideo = document.querySelector('.hero-video--loop');
