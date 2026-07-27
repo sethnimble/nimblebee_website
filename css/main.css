@@ -322,7 +322,7 @@ p:last-child {
   margin-top: 1.5rem;
 }
 
-/* --- Forms (dormant — no inputs/selects on the site yet; ready for whenever they're added) --- */
+/* --- Forms --- */
 input,
 select,
 textarea {
@@ -801,6 +801,40 @@ textarea:focus {
   color: var(--text-dark-muted);
 }
 
+.proof-stats-source {
+  font-size: 0.75rem;
+  color: var(--text-dark-muted);
+  opacity: 0.6;
+  margin-top: -1.75rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+/* centre h2/subline/body at every size — eyebrow stays left (default,
+   section isn't container-center); stats row is centred as a group too */
+#proof h2,
+#proof .proof-subline,
+#proof > .container > p:not(.eyebrow):not(.proof-subline):not(.proof-stats-source) {
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.proof-stats {
+  justify-content: center;
+  text-align: center;
+}
+
+/* stats go 2x2 on mobile since 4 no longer fit one row */
+@media (max-width: 700px) {
+  .proof-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.5rem;
+  }
+}
+
 /* --- Problem section grid --- */
 .problem-grid {
   display: grid;
@@ -1113,6 +1147,161 @@ textarea:focus {
   line-height: 1.7;
 }
 
+/* --- Case studies (mobile): full-bleed tap switcher + swipeable media gallery ---
+   Desktop keeps .product-cards (3-across grid) untouched. Mobile hides that grid
+   and shows this instead: tabs are tap-only (no scroll/swipe on the outer switcher
+   at all), so there's no gesture conflict with the swipeable inner .case-gallery. */
+.case-mobile {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .product-cards {
+    display: none;
+  }
+
+  .case-mobile {
+    display: block;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    margin-top: 3rem;
+  }
+
+  .case-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 var(--container-pad);
+    margin-bottom: 1.5rem;
+  }
+
+  .case-tab {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-dark-muted);
+    background: rgba(250, 248, 246, 0.06);
+    border: 1px solid rgba(250, 248, 246, 0.12);
+    border-radius: 999px;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    transition: background 0.2s var(--ease-standard), border-color 0.2s var(--ease-standard), color 0.2s var(--ease-standard);
+  }
+
+  .case-tab.is-active {
+    background: var(--emerald);
+    border-color: var(--emerald);
+    color: var(--text-dark);
+  }
+
+  .case-panel[hidden] {
+    display: none;
+  }
+
+  /* Gallery bleeds edge-to-edge; text content below keeps normal container padding */
+  .case-gallery {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .case-gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  .case-gallery-track {
+    display: flex;
+    width: 100%;
+  }
+
+  .case-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    aspect-ratio: 16 / 11;
+    background: rgba(250, 248, 246, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .case-slide-icon {
+    width: 96px;
+    height: 96px;
+  }
+
+  .case-gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0.9rem 0 0;
+  }
+
+  .case-gallery-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(250, 248, 246, 0.25);
+    transition: background 0.2s var(--ease-standard), transform 0.2s var(--ease-standard);
+  }
+
+  .case-gallery-dot.is-active {
+    background: var(--emerald);
+    transform: scale(1.25);
+  }
+
+  /* Tap-to-play video slide plumbing — not used by any current case study yet */
+  .case-slide-video {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .case-video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .case-video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(45, 55, 72, 0.55);
+    border: 1.5px solid rgba(250, 248, 246, 0.5);
+    color: var(--text-dark);
+    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .case-slide-video iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .case-body {
+    padding: 1.75rem var(--container-pad) 0;
+  }
+
+  .case-body h3 {
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+}
+
 /* --- Contact / CTA --- */
 .section-contact {
   overflow: hidden;
@@ -1142,6 +1331,67 @@ textarea:focus {
 .section-contact .body-lg {
   color: var(--text-dark-muted);
   max-width: 560px;
+}
+
+/* eyebrow stays left like every other section — .container-center centres the
+   rest of this section's flex column, but the eyebrow should opt back out */
+.section-contact .eyebrow {
+  align-self: flex-start;
+}
+
+.contact-form {
+  width: 100%;
+  max-width: 480px;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.contact-form-row input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.contact-form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.contact-form-actions .btn-lg {
+  margin-top: 0;
+}
+
+.contact-whatsapp-link {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-dark-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--ease-standard);
+}
+
+.contact-whatsapp-link:hover {
+  color: var(--text-dark);
+}
+
+@media (max-width: 700px) {
+  .contact-form-row {
+    flex-direction: column;
+  }
 }
 
 /* --- Persona Picker (Section 05) --- */

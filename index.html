@@ -504,14 +504,20 @@
           <p class="proof-stat-label">Years of experience</p>
         </div>
         <div class="proof-stat">
-          <span class="proof-stat-num" data-count-to="3">0</span>
-          <p class="proof-stat-label">Systems we use ourselves</p>
-        </div>
-        <div class="proof-stat">
           <span class="proof-stat-num" data-count-to="100" data-suffix="%">0</span>
           <p class="proof-stat-label">Yours to edit forever</p>
         </div>
+        <div class="proof-stat">
+          <span class="proof-stat-num" data-count-to="86" data-suffix="%">0</span>
+          <p class="proof-stat-label">Report working faster with AI</p>
+        </div>
+        <div class="proof-stat">
+          <span class="proof-stat-num" data-count-to="100" data-suffix="M+">0</span>
+          <p class="proof-stat-label">People use the tools we build on</p>
+        </div>
       </div>
+      <p class="proof-stats-source">Sources: Anthropic Economic Index, June 2026 · Notion</p>
+      <!-- Desktop (>700px): 3-across grid, unchanged -->
       <div class="product-cards">
         <div class="product-card reveal">
           <img src="assets/icons/hex-icon-isometric-emerald.svg" alt="" aria-hidden="true" class="product-icon" />
@@ -533,6 +539,71 @@
         </div>
       </div>
     </div>
+
+    <!-- Mobile (≤700px): full-bleed tap switcher (tabs, not swipe) wrapping a
+         swipeable inner media gallery per case study — avoids a nested-swipe
+         gesture conflict. Gallery/dot plumbing supports multiple images and a
+         tap-to-play YouTube slide per case study for future content; today
+         each case study only has its icon as a single slide, so no dots or
+         video render yet. -->
+    <div class="case-mobile">
+      <div class="case-tabs" role="tablist" aria-label="Select a case study">
+        <button class="case-tab is-active" type="button" data-case="0" role="tab" aria-selected="true" aria-controls="casePanel0">PM</button>
+        <button class="case-tab" type="button" data-case="1" role="tab" aria-selected="false" aria-controls="casePanel1">Content</button>
+        <button class="case-tab" type="button" data-case="2" role="tab" aria-selected="false" aria-controls="casePanel2">CRM</button>
+      </div>
+
+      <div class="case-panels">
+        <div class="case-panel is-active" id="casePanel0" data-case="0" role="tabpanel">
+          <div class="case-gallery">
+            <div class="case-gallery-track">
+              <div class="case-slide">
+                <img src="assets/icons/hex-icon-isometric-emerald.svg" alt="Nimble PM" class="case-slide-icon" />
+              </div>
+            </div>
+          </div>
+          <div class="case-body">
+            <h3>Nimble PM</h3>
+            <p class="product-tagline">For small teams who need to stay on top of projects without the complexity of enterprise software.</p>
+            <p>A lightweight project management system built in Notion — tasks, timelines, and accountability, all in one place.</p>
+          </div>
+        </div>
+
+        <div class="case-panel" id="casePanel1" data-case="1" role="tabpanel" hidden>
+          <div class="case-gallery">
+            <div class="case-gallery-track">
+              <div class="case-slide">
+                <img src="assets/icons/hex-icon-topo-coral.svg" alt="Nimble Content Planner" class="case-slide-icon" />
+              </div>
+              <div class="case-slide case-slide-video" data-video-id="JYBWSSel9pY">
+                <img src="https://img.youtube.com/vi/JYBWSSel9pY/hqdefault.jpg" alt="Nimble Content Planner walkthrough video" class="case-video-thumb" />
+                <button class="case-video-play" type="button" aria-label="Play video">▶</button>
+              </div>
+            </div>
+          </div>
+          <div class="case-body">
+            <h3>Nimble Content Planner</h3>
+            <p class="product-tagline">For business owners managing their own marketing without a dedicated team.</p>
+            <p>A social media and content planning system that keeps your pipeline organised and your publishing consistent.</p>
+          </div>
+        </div>
+
+        <div class="case-panel" id="casePanel2" data-case="2" role="tabpanel" hidden>
+          <div class="case-gallery">
+            <div class="case-gallery-track">
+              <div class="case-slide">
+                <img src="assets/icons/hex-icon-concentric-offwhite.svg" alt="Nimble CRM" class="case-slide-icon" />
+              </div>
+            </div>
+          </div>
+          <div class="case-body">
+            <h3>Nimble CRM</h3>
+            <p class="product-tagline">For owner-operators who need to track clients and leads without a full sales platform.</p>
+            <p>A simple, flexible CRM built in Notion — contacts, pipeline, and follow-ups, all connected and easy to maintain.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 08 CONTACT / CTA — dark -->
@@ -542,7 +613,17 @@
       <p class="eyebrow">Let's talk</p>
       <h2>Not sure yet? That's fine.<br>Let's talk anyway.</h2>
       <p class="body-lg">Most of our best conversations start with "I'm not quite sure what I need." That's exactly what the first call is for. No hard sell, no commitment — just a chat about where you are and whether NimbleBee can help.</p>
-      <a href="mailto:seth@nimblebee.co.za" class="btn btn-coral btn-lg">Let's Talk</a>
+      <form class="contact-form" id="contactForm">
+        <div class="contact-form-row">
+          <input type="text" id="contactName" name="name" placeholder="Your name" autocomplete="name" required />
+          <input type="email" id="contactEmail" name="email" placeholder="Your email" autocomplete="email" required />
+        </div>
+        <textarea id="contactMessage" name="message" rows="3" placeholder="What's going on? A sentence or two is plenty." required></textarea>
+        <div class="contact-form-actions">
+          <button type="submit" class="btn btn-coral btn-lg">Let's Talk</button>
+          <a href="https://wa.me/27639344839?text=Hi!%20I'd%20like%20to%20chat%20about%20how%20NimbleBee%20could%20help%20my%20business." class="contact-whatsapp-link" target="_blank" rel="noopener">Prefer WhatsApp?</a>
+        </div>
+      </form>
     </div>
   </section>
 

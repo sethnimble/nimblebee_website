@@ -668,6 +668,86 @@ if (howTrack && howRailFill) {
   updateHowTrack();
 }
 
+// --- Case studies (mobile): tap switcher between case studies + swipeable
+// media gallery per case study. The switcher is tap-only (no scroll/swipe),
+// so it can't conflict with the gallery's own scroll-snap swipe.
+const caseTabs = Array.from(document.querySelectorAll('.case-tab'));
+const casePanels = Array.from(document.querySelectorAll('.case-panel'));
+
+if (caseTabs.length && casePanels.length) {
+  caseTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const key = tab.dataset.case;
+      caseTabs.forEach(t => {
+        const active = t.dataset.case === key;
+        t.classList.toggle('is-active', active);
+        t.setAttribute('aria-selected', String(active));
+      });
+      casePanels.forEach(panel => {
+        panel.classList.toggle('is-active', panel.dataset.case === key);
+        panel.hidden = panel.dataset.case !== key;
+      });
+    });
+  });
+}
+
+// Gallery dots: only relevant once a case study has more than one slide
+// (multiple images, or an image + a video). Built dynamically per gallery
+// rather than hardcoded, so adding slides later doesn't need matching markup.
+document.querySelectorAll('.case-gallery').forEach(gallery => {
+  const track = gallery.querySelector('.case-gallery-track');
+  const slides = track ? Array.from(track.children) : [];
+  if (slides.length < 2) return;
+
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'case-gallery-dots';
+  slides.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'case-gallery-dot' + (i === 0 ? ' is-active' : '');
+    dotsWrap.appendChild(dot);
+  });
+  gallery.insertAdjacentElement('afterend', dotsWrap);
+  const dots = Array.from(dotsWrap.children);
+
+  const dotObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.intersectionRatio < 0.6) return;
+        const index = slides.indexOf(entry.target);
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+      });
+    },
+    { root: gallery, threshold: [0.6] }
+  );
+  slides.forEach(slide => dotObserver.observe(slide));
+});
+
+// Tap-to-play video slides: swap the thumbnail for a YouTube iframe on tap,
+// so nobody eager-loads a player for a slide they haven't scrolled to.
+document.querySelectorAll('.case-slide-video').forEach(slide => {
+  slide.addEventListener('click', () => {
+    const videoId = slide.dataset.videoId;
+    if (!videoId) return;
+    slide.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="Case study video" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }, { once: true });
+});
+
+// --- Contact form: builds a pre-filled mailto: link on submit, no backend ---
+const contactForm = document.getElementById('contactForm');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+
+    const subject = `Enquiry from ${name || 'the NimbleBee site'}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    window.location.href = `mailto:seth@nimblebee.co.za?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+}
+
 // --- Scroll reveal ---
 const revealEls = document.querySelectorAll('.reveal');
 
