@@ -517,25 +517,76 @@
         </div>
       </div>
       <p class="proof-stats-source">Sources: Anthropic Economic Index, June 2026 · Notion</p>
-      <!-- Desktop (>700px): 3-across grid, unchanged -->
+      <!-- Desktop (>700px): 3-across grid; each card flips to reveal a media
+           gallery on the back (images + tap-to-play YouTube where available).
+           Hidden entirely on mobile (see .case-mobile below instead). -->
       <div class="product-cards">
-        <div class="product-card reveal">
-          <img src="assets/icons/hex-icon-isometric-emerald.svg" alt="" aria-hidden="true" class="product-icon" />
-          <h3>Nimble PM</h3>
-          <p class="product-tagline">For small teams who need to stay on top of projects without the complexity of enterprise software.</p>
-          <p>A lightweight project management system built in Notion — tasks, timelines, and accountability, all in one place.</p>
+        <div class="product-card product-card--flip reveal" role="button" tabindex="0" aria-label="Nimble PM — click to view media">
+          <div class="product-card-inner">
+            <div class="product-card-face product-card-front">
+              <img src="assets/icons/hex-icon-isometric-emerald.svg" alt="" aria-hidden="true" class="product-icon" />
+              <h3>Nimble PM</h3>
+              <p class="product-tagline">For small teams who need to stay on top of projects without the complexity of enterprise software.</p>
+              <p>A lightweight project management system built in Notion — tasks, timelines, and accountability, all in one place.</p>
+              <span class="product-card-flip-hint">View media <span aria-hidden="true">↻</span></span>
+            </div>
+            <div class="product-card-face product-card-back">
+              <span class="product-card-flip-hint product-card-flip-hint--back"><span aria-hidden="true">←</span> Back</span>
+              <div class="flip-gallery">
+                <div class="flip-gallery-track">
+                  <div class="flip-slide">
+                    <img src="assets/icons/hex-icon-isometric-emerald.svg" alt="Nimble PM" class="flip-slide-icon" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="product-card reveal">
-          <img src="assets/icons/hex-icon-topo-coral.svg" alt="" aria-hidden="true" class="product-icon" />
-          <h3>Nimble Content Planner</h3>
-          <p class="product-tagline">For business owners managing their own marketing without a dedicated team.</p>
-          <p>A social media and content planning system that keeps your pipeline organised and your publishing consistent.</p>
+        <div class="product-card product-card--flip reveal" role="button" tabindex="0" aria-label="Nimble Content Planner — click to view media">
+          <div class="product-card-inner">
+            <div class="product-card-face product-card-front">
+              <img src="assets/icons/hex-icon-topo-coral.svg" alt="" aria-hidden="true" class="product-icon" />
+              <h3>Nimble Content Planner</h3>
+              <p class="product-tagline">For business owners managing their own marketing without a dedicated team.</p>
+              <p>A social media and content planning system that keeps your pipeline organised and your publishing consistent.</p>
+              <span class="product-card-flip-hint">View media <span aria-hidden="true">↻</span></span>
+            </div>
+            <div class="product-card-face product-card-back">
+              <span class="product-card-flip-hint product-card-flip-hint--back"><span aria-hidden="true">←</span> Back</span>
+              <div class="flip-gallery">
+                <div class="flip-gallery-track">
+                  <div class="flip-slide">
+                    <img src="assets/icons/hex-icon-topo-coral.svg" alt="Nimble Content Planner" class="flip-slide-icon" />
+                  </div>
+                  <div class="flip-slide flip-slide-video" data-video-id="JYBWSSel9pY">
+                    <img src="https://img.youtube.com/vi/JYBWSSel9pY/hqdefault.jpg" alt="Nimble Content Planner walkthrough video" class="flip-video-thumb" />
+                    <button type="button" class="flip-video-play" aria-label="Play video">▶</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="product-card reveal">
-          <img src="assets/icons/hex-icon-concentric-offwhite.svg" alt="" aria-hidden="true" class="product-icon" />
-          <h3>Nimble CRM</h3>
-          <p class="product-tagline">For owner-operators who need to track clients and leads without a full sales platform.</p>
-          <p>A simple, flexible CRM built in Notion — contacts, pipeline, and follow-ups, all connected and easy to maintain.</p>
+        <div class="product-card product-card--flip reveal" role="button" tabindex="0" aria-label="Nimble CRM — click to view media">
+          <div class="product-card-inner">
+            <div class="product-card-face product-card-front">
+              <img src="assets/icons/hex-icon-concentric-offwhite.svg" alt="" aria-hidden="true" class="product-icon" />
+              <h3>Nimble CRM</h3>
+              <p class="product-tagline">For owner-operators who need to track clients and leads without a full sales platform.</p>
+              <p>A simple, flexible CRM built in Notion — contacts, pipeline, and follow-ups, all connected and easy to maintain.</p>
+              <span class="product-card-flip-hint">View media <span aria-hidden="true">↻</span></span>
+            </div>
+            <div class="product-card-face product-card-back">
+              <span class="product-card-flip-hint product-card-flip-hint--back"><span aria-hidden="true">←</span> Back</span>
+              <div class="flip-gallery">
+                <div class="flip-gallery-track">
+                  <div class="flip-slide">
+                    <img src="assets/icons/hex-icon-concentric-offwhite.svg" alt="Nimble CRM" class="flip-slide-icon" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

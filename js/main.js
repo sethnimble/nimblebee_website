@@ -732,6 +732,94 @@ document.querySelectorAll('.case-slide-video').forEach(slide => {
   }, { once: true });
 });
 
+// --- Case studies (desktop): flip cards reveal a media gallery on the back.
+// The whole card is the flip trigger (backs up the existing hover-lift as a
+// UI hint) — the gallery's own nav/video controls stop propagation so
+// paging through slides or playing the video doesn't also re-flip the card.
+document.querySelectorAll('.product-card--flip').forEach(card => {
+  card.addEventListener('click', () => {
+    card.classList.toggle('is-flipped');
+  });
+  card.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    card.classList.toggle('is-flipped');
+  });
+});
+
+// Back-face gallery: same "build dots only if 2+ slides" pattern as the
+// mobile case-studies gallery, plus prev/next arrows since a fixed-width
+// card back favours click navigation over touch swiping.
+document.querySelectorAll('.flip-gallery').forEach(gallery => {
+  const track = gallery.querySelector('.flip-gallery-track');
+  const slides = track ? Array.from(track.children) : [];
+  if (slides.length < 2) return;
+
+  const prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.className = 'flip-gallery-nav flip-gallery-prev';
+  prevBtn.setAttribute('aria-label', 'Previous');
+  prevBtn.textContent = '‹';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'flip-gallery-nav flip-gallery-next';
+  nextBtn.setAttribute('aria-label', 'Next');
+  nextBtn.textContent = '›';
+
+  gallery.append(prevBtn, nextBtn);
+
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'flip-gallery-dots';
+  slides.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'flip-gallery-dot' + (i === 0 ? ' is-active' : '');
+    dotsWrap.appendChild(dot);
+  });
+  gallery.insertAdjacentElement('afterend', dotsWrap);
+  const dots = Array.from(dotsWrap.children);
+
+  function goTo(index) {
+    const clamped = Math.max(0, Math.min(index, slides.length - 1));
+    const slide = slides[clamped];
+    const target = slide.getBoundingClientRect().left - gallery.getBoundingClientRect().left + gallery.scrollLeft;
+    gallery.scrollTo({ left: target, behavior: 'smooth' });
+  }
+
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const current = dots.findIndex(d => d.classList.contains('is-active'));
+    goTo(current - 1);
+  });
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const current = dots.findIndex(d => d.classList.contains('is-active'));
+    goTo(current + 1);
+  });
+
+  const dotObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.intersectionRatio < 0.6) return;
+        const index = slides.indexOf(entry.target);
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+      });
+    },
+    { root: gallery, threshold: [0.6] }
+  );
+  slides.forEach(slide => dotObserver.observe(slide));
+});
+
+// Tap-to-play video on the flip-card back (same pattern as the mobile gallery)
+document.querySelectorAll('.flip-slide-video').forEach(slide => {
+  slide.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const videoId = slide.dataset.videoId;
+    if (!videoId) return;
+    slide.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="Case study video" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }, { once: true });
+});
+
 // --- Contact form: builds a pre-filled mailto: link on submit, no backend ---
 const contactForm = document.getElementById('contactForm');
 

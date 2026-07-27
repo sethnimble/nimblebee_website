@@ -1107,19 +1107,79 @@ textarea:focus {
   margin-top: 3rem;
 }
 
+/* Flip wrapper: perspective lives on the outer element so the inner rotateY
+   reads as 3D; hover-lift also stays on the outer so it never fights the
+   inner's own flip transform (two different elements, transforms compose
+   independently instead of overwriting one another). */
 .product-card {
+  perspective: 1600px;
+  transition: transform 0.24s var(--ease-standard);
+}
+
+.product-card--flip {
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-card:hover .product-card-face {
+  background: rgba(250, 248, 246, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), var(--glow-emerald);
+}
+
+.product-card:hover .product-card-flip-hint {
+  color: var(--text-dark);
+}
+
+/* Front stays in normal flow (so its content height sets the card's height);
+   back is absolutely positioned to overlay that same box — avoids needing a
+   fixed/aspect-ratio height while card copy lengths vary card to card. */
+.product-card-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease-standard);
+}
+
+.product-card--flip.is-flipped .product-card-inner {
+  transform: rotateY(180deg);
+}
+
+.product-card-face {
   /* dark surface: no v3.1 gradient token for this context, so keep the flat translucent fill */
   background: rgba(250, 248, 246, 0.05);
   border: 1px solid rgba(250, 248, 246, 0.09);
   border-radius: var(--r-lg);
   padding: 1.75rem;
-  transition: transform 0.24s var(--ease-standard), box-shadow 0.24s var(--ease-standard), background 0.24s;
+  backface-visibility: hidden;
+  transition: background 0.24s var(--ease-standard), box-shadow 0.24s var(--ease-standard);
 }
 
-.product-card:hover {
-  transform: translateY(-4px);
-  background: rgba(250, 248, 246, 0.08);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), var(--glow-emerald);
+.product-card-front {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  /* backface-visibility only hides the paint, not hit-testing — without this,
+     the absolutely-positioned back stacks above the front by default and
+     silently eats clicks (including its own hidden gallery/video controls)
+     before the card has ever been flipped */
+  pointer-events: none;
+}
+
+.product-card--flip.is-flipped .product-card-back {
+  pointer-events: auto;
+}
+
+.product-card--flip.is-flipped .product-card-front {
+  pointer-events: none;
 }
 
 .product-icon {
@@ -1141,10 +1201,145 @@ textarea:focus {
   line-height: 1.55;
 }
 
-.product-card > p:last-child {
+.product-card-front > p:last-child {
   font-size: 0.9rem;
   color: var(--text-dark-muted);
   line-height: 1.7;
+}
+
+.product-card-flip-hint {
+  align-self: flex-start;
+  margin-top: 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--emerald);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 0.2s var(--ease-standard);
+}
+
+.product-card-flip-hint--back {
+  align-self: flex-end;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--text-dark-muted);
+}
+
+/* --- Flip-card back: media gallery (images + tap-to-play YouTube) --- */
+.flip-gallery {
+  position: relative;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: var(--r-md);
+}
+
+.flip-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.flip-gallery-track {
+  display: flex;
+  width: 100%;
+}
+
+.flip-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  background: rgba(250, 248, 246, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+}
+
+.flip-slide-icon {
+  width: 72px;
+  height: 72px;
+}
+
+.flip-slide-video {
+  position: relative;
+  cursor: pointer;
+}
+
+.flip-video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--r-md);
+}
+
+.flip-video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(45, 55, 72, 0.55);
+  border: 1.5px solid rgba(250, 248, 246, 0.5);
+  color: var(--text-dark);
+  font-size: 0.9375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.flip-slide-video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  border-radius: var(--r-md);
+}
+
+.flip-gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(45, 55, 72, 0.6);
+  border: 1px solid rgba(250, 248, 246, 0.2);
+  color: var(--text-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.flip-gallery-prev { left: 0.5rem; }
+.flip-gallery-next { right: 0.5rem; }
+
+.flip-gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.flip-gallery-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(250, 248, 246, 0.25);
+  transition: background 0.2s var(--ease-standard), transform 0.2s var(--ease-standard);
+}
+
+.flip-gallery-dot.is-active {
+  background: var(--emerald);
+  transform: scale(1.25);
 }
 
 /* --- Case studies (mobile): full-bleed tap switcher + swipeable media gallery ---
