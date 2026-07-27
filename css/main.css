@@ -464,6 +464,10 @@ textarea:focus {
   justify-self: end;
 }
 
+.nav-cta--mobile {
+  display: none;
+}
+
 #nav.scrolled {
   background: rgba(250, 248, 246, 0.80);
   backdrop-filter: blur(12px);
@@ -474,6 +478,7 @@ textarea:focus {
 .nav-logo img {
   height: 48px;
   width: auto;
+  object-fit: contain;
 }
 
 /* --- Nav: hamburger toggle (hidden on desktop, shown below the nav breakpoint) --- */
@@ -542,13 +547,24 @@ textarea:focus {
   }
 
   #nav.nav-open .nav-links {
-    max-height: 320px;
+    max-height: 420px;
     padding: 0.5rem var(--container-pad) 1.5rem;
   }
 
   .nav-links .nav-link {
     width: 100%;
     padding: 0.875rem 0;
+  }
+
+  .nav-actions .nav-cta {
+    display: none;
+  }
+
+  .nav-cta--mobile {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 0.75rem;
   }
 }
 

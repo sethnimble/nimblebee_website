@@ -22,7 +22,7 @@ if (navToggle && navLinks) {
     navToggle.setAttribute('aria-expanded', String(isOpen));
     navToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
   });
-  navLinks.querySelectorAll('.nav-link').forEach((link) => {
+  navLinks.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', closeNavMenu);
   });
 }
