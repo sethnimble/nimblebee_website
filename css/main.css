@@ -628,7 +628,80 @@ textarea:focus {
 .hero-video-scrim {
   position: absolute;
   inset: 0;
+  z-index: 3; /* was stacking under both videos (their z-index:1/2 beat this
+                 element's default z-index:auto) — overlay had zero effect */
   background: rgba(45, 55, 72, 0.55);
+}
+
+/* Scroll-down cue — only needed on mobile, where the hero is capped short of
+   100vh and the next section's fade-in content isn't visible yet, so the
+   peek at the bottom would otherwise just look like a blank strip */
+.hero-scroll-cue {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 4;
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: hero-scroll-bounce 1.8s ease-in-out infinite;
+}
+
+.hero-scroll-cue::before {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid rgba(250, 248, 246, 0.6);
+  border-bottom: 2px solid rgba(250, 248, 246, 0.6);
+  transform: rotate(45deg);
+}
+
+@keyframes hero-scroll-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+  50%      { transform: translateX(-50%) translateY(6px); opacity: 0.9; }
+}
+
+@media (max-width: 700px) {
+  /* video subject (hex) sits right-of-centre in the source frame; on a tall
+     mobile crop a plain centre object-position pushes most of it off-screen */
+  .hero-video-bg video {
+    object-position: 68% center;
+  }
+
+  .hero-video-scrim {
+    background: linear-gradient(90deg, rgba(45, 55, 72, 0.72) 0%, rgba(45, 55, 72, 0.60) 55%, rgba(45, 55, 72, 0.45) 100%);
+  }
+
+  /* pull the hero in a bit short of 100vh so the next section peeks at the
+     bottom (also nudges the video's cover-scale down slightly, showing a
+     little more of the source frame width). min-height is a content-safe
+     floor so nothing clips on short devices — the peek just shrinks there. */
+  #hero {
+    min-height: 744px;
+    height: 744px;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-content .eyebrow {
+    text-align: left;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-content h1 {
+    margin-bottom: 2.25rem;
+  }
+
+  .hero-content .hero-body {
+    margin-bottom: 2.75rem;
+  }
+
+  .hero-scroll-cue {
+    display: block;
+  }
 }
 
 /* Hero hex cluster — animated on load, exits on scroll */
@@ -1732,6 +1805,10 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   .tools-ticker-track {
+    animation: none;
+  }
+
+  .hero-scroll-cue {
     animation: none;
   }
 }
