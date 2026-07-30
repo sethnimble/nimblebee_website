@@ -2,7 +2,7 @@
    NimbleBee — main.css
    ================================ */
 
-/* --- Custom Properties (NimbleBee Design System v3.1) --- */
+/* --- Custom Properties (see nimblebee/design-system/ for full brand system) --- */
 :root {
   /* brand */
   --charcoal:  #2D3748;
@@ -1871,7 +1871,7 @@ textarea:focus {
 /* ============ SHARED: scattered-tools honeycomb ============
    Hex badges styled to match the Problem section's icon badges (mint ring, white
    gradient fill, emerald icon). Corner radius follows the sitewide hexagon rule
-   (NimbleBee Design System v3.2/guidelines/hexagon-radius.card.html — 12% of hex
+   (nimblebee/design-system/guidelines/hexagon-radius.card.html — 12% of hex
    height); gap between hexes is applied identically on every edge (flat sides and
    angled sides alike) by deriving the row offset from the same hex geometry rather
    than an eyeballed margin. */

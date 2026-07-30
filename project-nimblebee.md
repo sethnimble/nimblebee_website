@@ -18,6 +18,8 @@ metadata:
 
 ## Design System
 
+**Full brand system (colors, type, logo, hexagon/texture assets, guidelines) now lives at `nimblebee/design-system/` — the single source of truth across all NimbleBee projects. Moved 2026-07-30 from a project-local copy to keep it available after this project archives; treat any duplicate here as stale.** The token summary below is a quick-reference snapshot of values as implemented on the live site.
+
 | Token | Value |
 |---|---|
 | `--charcoal` | `#2D3748` |
