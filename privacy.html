@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-ZA">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy - NimbleWall | NimbleBee</title>
-  <meta name="description" content="How NimbleWall, a personal desktop wallpaper, uses Google Calendar data." />
-  <meta name="robots" content="noindex" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png" />
+  <meta name="description" content="How NimbleWall, a personal desktop wallpaper, uses Google Calendar data.">
+  <meta name="robots" content="noindex">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
   <style>
-    .policy { max-width: 680px; margin: 0 auto; padding: 6rem 0 5rem; }
-    .policy h1 { font-size: 2rem; font-weight: 600; margin: 0 0 1.5rem; }
-    .policy h2 { font-size: 1.05rem; font-weight: 600; margin: 2rem 0 0.4rem; }
-    .policy p { margin: 0 0 1rem; color: var(--fg-2-on-dark); }
-    .policy a { color: var(--coral); }
-    .policy .updated { color: var(--fg-3-on-dark); font-size: 0.9rem; margin-top: 2.5rem; }
+    .policy { max-width: 680px; margin: 0 auto; padding: 120px 0 40px; display: flex; flex-direction: column; gap: 16px; }
+    .policy h1 { margin: 0 0 8px; }
+    .policy h2 { font-size: 20px; line-height: 1.3; font-weight: 800; letter-spacing: -0.02em; margin: 16px 0 0; }
+    .policy .updated { font-size: 15px; font-weight: 600; margin-top: 24px; }
+    .foot { max-width: 680px; margin: 0 auto; padding: 24px 0 64px; font-size: 15px; font-weight: 600; }
   </style>
 </head>
 <body>
-  <main class="container">
+  <header class="nav">
+    <div class="navin">
+      <a class="brand" href="/"><img src="assets/logos/logomark-slim-sm.svg" alt="NimbleBee home" width="150" height="37.5"></a>
+    </div>
+  </header>
+  <main class="wrap">
     <article class="policy">
-      <h1>Privacy - NimbleWall</h1>
+      <h1 class="display-h3">Privacy - NimbleWall</h1>
 
       <p>NimbleWall is a personal desktop wallpaper I built for my own use. It shows my tasks, the weather and my calendar. It is not offered to anyone else, and nobody else signs in to it.</p>
 
@@ -41,13 +46,7 @@
 
       <p class="updated">Last updated 30 September 2026</p>
     </article>
+    <p class="foot">© 2026 StudioOne Creative Solutions PTY LTD · <a href="/">nimblebee.co.za</a></p>
   </main>
-
-  <footer>
-    <div class="container footer-inner">
-      <img src="assets/brand/logomark - light - trans.png" alt="NimbleBee" height="28" class="footer-logo" />
-      <p class="footer-copy">© 2026 StudioOne Creative Solutions PTY LTD · <a href="/" style="color:inherit">nimblebee.co.za</a></p>
-    </div>
-  </footer>
 </body>
 </html>

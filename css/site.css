@@ -1,0 +1,80 @@
+/* NimbleBee site layer: page-level rules on top of tokens.css and base.css.
+   Port 1 holds the page shell and the hero (kinetic headline, "I need..." bubble). Ports 2 and 3 add their sections below.
+   Values point at the design-system tokens; nothing is hard-coded from the mock-up. */
+
+/* ---------- page shell ---------- */
+html{scroll-behavior:smooth}
+body{overflow-x:clip}
+h1,h2,h3,h4,p,ol,ul{margin:0}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:var(--gut)}
+section{scroll-margin-top:90px}
+[hidden]{display:none!important}
+/* nav: keep the logomark at its set height and the button on one line (the bar never squeezes the logo) */
+.brand{flex:none}
+.btn{white-space:nowrap}
+/* the design system steps the logo down to 30px under 370px; at 375px (iPhone) the burger then touches the bar's edge, so step down under 390px */
+@media(max-width:389px){.brand img{height:30px}}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -5px}}
+
+/* ---------- hero ---------- */
+.hero{padding-top:clamp(96px,14vw,128px);padding-bottom:40px}
+.hgrid{display:grid;gap:32px;align-items:center;grid-template-columns:minmax(0,1fr)}
+@media(min-width:900px){.hgrid{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:start}.hgrid>.gcol{margin-top:calc(13px*1.3 + 14px + 22px)}}
+.htext{display:flex;flex-direction:column;gap:22px;min-width:0}
+.htext .chip{align-self:flex-start;rotate:-2deg;animation:pop 560ms var(--ease) both}
+.lede{font-size:clamp(18px,2.4vw,20px);line-height:1.5;font-weight:500;max-width:34em;animation:pop 560ms var(--ease) .5s both}
+.ctas{display:flex;flex-wrap:wrap;gap:14px;animation:pop 560ms var(--ease) .5s both}
+
+/* kinetic headline: the h1 uses .display-h1 for size, weight and tracking */
+.kin{margin:0}
+.kin .ln{display:block;white-space:nowrap;position:relative;isolation:isolate}
+.kin .ln+.ln{margin-top:.04em}
+.kin .wd{display:inline-block;white-space:nowrap}
+.kin .ch{display:inline-block;transition:transform 320ms var(--ease);animation:chin 640ms var(--ease) calc(var(--i)*38ms) backwards}
+.kin .ch:hover{transform:translateY(-.09em) rotate(-7deg) scale(1.08)}
+.hlw .sw .ch{animation:none}
+.hlw .sw.init .ch{animation:chin 640ms var(--ease) calc(var(--i)*38ms) backwards}
+@keyframes chin{from{opacity:0;transform:translateY(.55em) rotate(10deg) scale(.8)}}
+.hlw{position:relative;display:inline-block;vertical-align:baseline;white-space:nowrap}
+.hlw .mk{position:absolute;left:-.16em;width:calc(100% + .36em);bottom:-.04em;height:.7em;z-index:-1;overflow:visible;pointer-events:none;rotate:var(--mr,-1deg);transform-origin:left center}
+.mk path{fill:none;stroke:var(--hc,var(--mint));stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}
+.mk .p1{stroke-width:var(--sw,34px)}
+.mk .p2{stroke-width:calc(var(--sw,34px)*.4);opacity:.9}
+.mk g{filter:url(#nb-dry)}
+.mk.draw .p1{animation:mkd 560ms cubic-bezier(.5,.08,.2,1) both}
+.mk.draw .p2{animation:mkd 300ms cubic-bezier(.4,.1,.3,1) 380ms both}
+.mk.draw{animation:mksq 220ms ease-out 520ms both}
+.mk.erase path{animation:mke 260ms cubic-bezier(.6,0,.9,.5) both}
+.mk.hid path{stroke-dashoffset:1}
+@keyframes mkd{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes mke{to{stroke-dashoffset:-1}}
+@keyframes mksq{40%{transform:scaleY(1.1)}}
+.hlw .sws{position:relative;z-index:1;display:inline-block}
+.hlw .sw{position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap}
+.hlw .sw.on{position:relative;visibility:visible}
+.hlw .sw.out{visibility:visible;animation:swout 260ms cubic-bezier(.6,0,.9,.5) both}
+.hlw .sw.on:not(.init) .ch{animation:chin 560ms var(--ease) calc(var(--j)*34ms) backwards}
+@keyframes swout{to{opacity:0;transform:translateY(-.5em) rotate(-5deg)}}
+
+/* ---------- hero graphic: the "I need..." bubble ---------- */
+.gcol{min-width:0;display:flex;flex-direction:column;align-items:center;gap:12px}
+.gwrap{container-type:inline-size;position:relative;width:100%;max-width:440px;aspect-ratio:1/1;touch-action:pan-y;animation:pop 640ms var(--ease) .3s both}
+.bub{position:absolute;left:0;right:0;top:0;min-height:36cqw;padding:5cqw 6cqw;border:var(--line) solid var(--ink);border-radius:7cqw;background:var(--paper);box-shadow:var(--sh-lg);display:flex;align-items:center;transition:translate 400ms cubic-bezier(.2,.7,.3,1);cursor:pointer;text-align:left;font-family:inherit;color:inherit;width:100%}
+.bub::after{content:"";position:absolute;left:14cqw;bottom:-4.2cqw;width:7cqw;height:7cqw;background:var(--paper);border-right:var(--line) solid var(--ink);border-bottom:var(--line) solid var(--ink);rotate:45deg;border-radius:0 0 1.6cqw 0;box-shadow:4px 4px 0 var(--ink);clip-path:polygon(100% 0,100% 100%,0 100%)}
+.bub .t{font-size:max(19px,7cqw);font-weight:800;letter-spacing:-.035em;line-height:1.08;min-height:2.16em;display:block;margin:0}
+.bub .caret{display:inline-block;width:.09em;height:.95em;margin-left:.06em;background:var(--coral);vertical-align:-.1em;animation:blink 900ms steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.bhint{position:absolute;right:0;top:41cqw;margin:0;font-size:max(13px,3.2cqw);font-weight:500;line-height:1.2;text-align:right}
+.tiles{position:absolute;left:0;right:0;bottom:0;top:49cqw;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3.4cqw}
+.slot{position:relative;min-width:0;min-height:0}
+.slot::before{content:"";position:absolute;inset:0;border:var(--line-dash);border-radius:5cqw}
+
+/* paused: the hero pause control stops every animation on the page */
+.nb-paused *{animation-play-state:paused!important}
+
+/* ---------- reduced motion (page layer) ---------- */
+@media (prefers-reduced-motion: reduce){
+  .bub .caret{opacity:0}
+}

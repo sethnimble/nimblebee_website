@@ -1,0 +1,126 @@
+/* NimbleBee Sticker design system v1: component styles, copied from design-system/v4-sticker/components/bundle.css.
+   Tokens come from tokens.css. Preview-only Google Fonts import and .motion-reduced block removed. */
+
+/* ---------- base ---------- */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.5;font-weight:500}
+/* page background dot grid: the one texture that stays from the Sticker export (22px grid, ink at about 7%) */
+body{background-image:radial-gradient(rgba(45,55,72,.07) 1.5px,transparent 1.6px);background-size:22px 22px}
+a{color:var(--ink);text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{color:var(--ink);text-decoration-color:var(--coral)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:var(--focus-width) solid var(--ink);outline-offset:var(--focus-offset)}
+:where(:focus-visible){border-radius:var(--r-sm)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.f-mint{--f:var(--mint)}.f-peach{--f:var(--peach)}.f-pink{--f:var(--pink)}.f-cyan{--f:var(--cyan)}.f-butter{--f:var(--butter)}.f-paper{--f:var(--paper)}.f-coral{--f:var(--coral)}.f-ok{--f:var(--ok)}
+.ic{display:inline-block;width:1em;height:1em;flex:none}
+.ic svg{width:100%;height:100%;display:block}
+
+/* ---------- display type: fluid versions of the type tokens ---------- */
+.display-h1{font-size:clamp(34px,calc((100vw - 32px)/8.9),60px)}
+@media(min-width:900px){.display-h1{font-size:clamp(46px,calc((min(100vw,1120px) - 88px)*.0674),69px)}}
+.display-h2{font-size:clamp(32px,5.6vw,56px)}
+.display-h3{font-size:clamp(28px,3vw,34px)}
+.display-h4{font-size:clamp(22px,3vw,30px)}
+.text-label{text-transform:uppercase}
+
+/* ---------- sticker hex (inline SVG sprite, one symbol per tier) ---------- */
+.hex{position:relative;display:inline-grid;place-items:center;flex:none;width:var(--hex-w,50px);height:var(--hex-h,54.8px);vertical-align:middle}
+.hex>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hex.is-marker{--hex-sh-o:0}
+.hex .hc{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;line-height:1.1;font-weight:800;color:var(--ink)}
+.hex-15{--hex-w:15px;--hex-h:16.24px}
+.hex-26{--hex-w:26px;--hex-h:28.17px}
+.hex-36{--hex-w:36px;--hex-h:38.94px}
+.hex-50{--hex-w:50px;--hex-h:54.80px}
+.hex-76{--hex-w:76px;--hex-h:84.01px}
+.hex-110{--hex-w:110px;--hex-h:121.60px}
+.hex-150{--hex-w:150px;--hex-h:165.82px}
+.hex-50 .hc{font-size:20px}.hex-76 .hc{font-size:24px}.hex-110 .hc,.hex-150 .hc{font-size:34px}
+.hex-36 .hc .ic{font-size:18px}.hex-50 .hc .ic{font-size:24px}.hex-76 .hc .ic{font-size:34px}.hex-110 .hc .ic{font-size:48px}.hex-150 .hc .ic{font-size:64px}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border:var(--line) solid var(--ink);border-radius:var(--r-pill);background:var(--pink);color:var(--ink);font-family:inherit;font-weight:800;font-size:16px;line-height:1.2;text-decoration:none;box-shadow:var(--sh-md);cursor:pointer;transition:transform 180ms var(--ease),box-shadow 180ms var(--ease);-webkit-tap-highlight-color:transparent}
+.btn:hover,.btn.is-hover{color:var(--ink);text-decoration:none;transform:translate(-2px,-2px) rotate(-1deg);box-shadow:var(--sh-lg)}
+.btn:active,.btn.is-active{transform:translate(3px,3px);box-shadow:var(--sh-0)}
+.btn.alt{background:var(--paper)}
+.btn.sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn .ic{font-size:18px}
+.btn.icon{width:48px;padding:0}
+.btn.icon.sm{width:44px}
+.btn.icon .ic{font-size:20px}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.35;pointer-events:none;cursor:default}
+
+/* tab pill: the "Who it's for" picker (export .wpill) and the plain text tab (export .tab) */
+.tabpill{appearance:none;font:inherit;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:10px;min-height:54px;padding:4px 20px 4px 8px;border:var(--line) solid var(--ink);border-radius:var(--r-pill);background:var(--paper);box-shadow:var(--sh-md);font-weight:800;font-size:16px;transition:transform 260ms var(--ease),box-shadow 260ms,background 260ms}
+.tabpill.plain{min-height:48px;padding:0 22px}
+.tabpill:hover,.tabpill.is-hover{transform:translate(-2px,-2px) rotate(-1deg)}
+.tabpill:active,.tabpill.is-active{transform:translate(2px,2px);box-shadow:var(--sh-0)}
+.tabpill[aria-selected="true"]{background:var(--f,var(--mint));rotate:-2deg;transform:translate(-1px,-3px);box-shadow:var(--sh-lg)}
+.tabpill:disabled{opacity:.35;pointer-events:none}
+
+/* ---------- eyebrow chip ---------- */
+.chip{display:inline-flex;align-items:center;gap:8px;padding:5px 13px;border:var(--line) solid var(--ink);border-radius:var(--r-pill);background:var(--f,var(--cyan));color:var(--ink);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;line-height:1.3}
+
+/* ---------- sticker card ---------- */
+.card{position:relative;display:flex;flex-direction:column;gap:16px;padding:clamp(22px,3.5vw,40px);border:var(--line) solid var(--ink);border-radius:var(--r-card);background:var(--f,var(--paper));box-shadow:var(--sh-xl);color:var(--ink);font-size:18px;font-weight:500;min-width:0}
+.card .stk{position:absolute;right:-8px;top:-22px;rotate:6deg}
+a.card{text-decoration:none;transition:transform 260ms var(--ease)}
+a.card:hover,a.card.is-hover{transform:translate(-3px,-3px) rotate(-1deg)}
+.card .divider{border:0;border-top:var(--line-dash);margin:4px 0}
+.card .media{border:var(--line) solid var(--ink);border-radius:var(--r-sm);background:var(--paper);transition:opacity 300ms}
+.card.is-inactive .media{opacity:.45}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:0;right:0;z-index:40;padding-inline:var(--gut);pointer-events:none}
+.nav.is-static{position:relative;top:auto}
+.navin{pointer-events:auto;max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 7px 7px 20px;border:var(--line) solid var(--ink);border-radius:var(--r-pill);background:var(--paper);box-shadow:var(--sh-md)}
+.brand{display:inline-flex;align-items:center;min-height:44px;text-decoration:none}
+.brand img{display:block;height:37.5px;width:auto}
+@media(max-width:369px){.brand img{height:30px}}
+.navl{display:none;gap:4px}
+.navl a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:var(--r-pill);font-weight:600;font-size:15px;white-space:nowrap;text-decoration:none;transition:background 160ms,transform 200ms var(--ease)}
+.navl a:hover{background:var(--peach);transform:rotate(-2deg) scale(1.05)}
+.navr{display:flex;align-items:center;gap:8px}
+.burger{width:44px;height:44px;border:var(--line) solid var(--ink);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer;display:grid;place-items:center;font-size:20px;padding:0}
+/* open state keeps the outline only; the icon swaps to an X */
+.menu{pointer-events:auto;max-width:1120px;margin:10px auto 0;display:flex;flex-direction:column;gap:8px;padding:14px;border:var(--line) solid var(--ink);border-radius:var(--r-card);background:var(--paper);box-shadow:var(--sh-md)}
+.menu[hidden]{display:none}
+.menu a{display:flex;align-items:center;min-height:48px;padding:0 16px;border-radius:var(--r-pill);font-weight:600;font-size:18px;text-decoration:none}
+.menu a:hover{background:var(--peach)}
+@media(min-width:960px){.navl{display:flex}.burger,.menu{display:none!important}}
+/* preview hooks: force one layout regardless of width */
+.nav[data-layout="desktop"] .navl{display:flex!important}
+.nav[data-layout="desktop"] .burger,.nav[data-layout="desktop"] .menu{display:none!important}
+.nav[data-layout="mobile"] .navl{display:none!important}
+.nav[data-layout="mobile"] .burger{display:grid!important}
+.nav[data-layout="mobile"] .menu:not([hidden]){display:flex!important}
+
+/* ---------- form (provisional) ---------- */
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field-label{font-size:15px;font-weight:800;line-height:1.4}
+.input,.textarea{width:100%;font:inherit;font-size:16px;font-weight:500;line-height:1.5;color:var(--ink);background:var(--paper);border:var(--line) solid var(--ink);box-shadow:var(--sh-sm);transition:box-shadow 180ms var(--ease),background 200ms}
+.input{min-height:48px;padding:0 20px;border-radius:var(--r-pill)}
+.textarea{min-height:132px;padding:14px 20px;border-radius:var(--r-card);resize:vertical}
+.input::placeholder,.textarea::placeholder{color:rgba(45,55,72,.75);opacity:1}
+.input:hover,.textarea:hover{box-shadow:var(--sh-md)}
+.input:focus-visible,.textarea:focus-visible,.input.is-focus,.textarea.is-focus{outline:var(--focus-width) solid var(--ink);outline-offset:var(--focus-offset)}
+.field.is-error .input,.field.is-error .textarea,.input[aria-invalid="true"],.textarea[aria-invalid="true"]{background:var(--peach)}
+.field-error{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;line-height:1.4}
+.field-error .hex{flex:none}
+
+/* ---------- entrance motion ---------- */
+.navin{animation:drop 600ms var(--ease) both}
+.rv.on{animation:pop 620ms var(--ease) both}
+.nbjs .rv:not(.on){opacity:0}
+@keyframes drop{from{opacity:0;transform:translateY(-30px)}}
+@keyframes pop{from{opacity:0;transform:translateY(24px) scale(.92)}}
+
+/* ---------- reduced motion ----------
+   The @media block is the production rule set. */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .nbjs .rv:not(.on){opacity:1}
+  .btn:hover,.btn.is-hover,.btn:active,.btn.is-active,.tabpill:not([aria-selected="true"]):hover,.tabpill:not([aria-selected="true"]).is-hover,.tabpill:not([aria-selected="true"]):active,.tabpill:not([aria-selected="true"]).is-active,a.card:hover,a.card.is-hover,.navl a:hover{transform:none}
+  html{scroll-behavior:auto}
+}
