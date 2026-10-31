@@ -177,3 +177,41 @@ section{scroll-margin-top:90px}
 .tape .item a,.tape .item a:hover{color:var(--pink);text-decoration:none}
 .tapebar{display:flex;justify-content:flex-end;margin-top:6px}
 @keyframes slide{to{transform:translateX(-50%)}}
+
+/* ---------- how it works ---------- */
+.hw{padding:0}
+.hwtop{display:flex;flex-direction:column;gap:28px;margin-bottom:26px}
+.hwtop .chip{align-self:flex-start}
+.hwtabs{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cue{font-size:14px;font-weight:500;line-height:1.2;padding:0 4px}
+.cue.d{display:none}
+.slides{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px var(--gut) 24px;margin-inline:calc(var(--gut)*-1);scrollbar-width:none}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:0 0 min(88%,520px);scroll-snap-align:center;display:grid;gap:22px;align-content:start;min-width:0}
+.sc.card{gap:12px}
+.sc h3{line-height:1}
+.sc p{margin:0}
+.vis{display:none}
+.hwbar{display:none}
+@media(min-width:900px){
+  .cue.m{display:none}.cue.d{display:inline-block}
+  .hwpin{height:300svh;position:relative}
+  .hwstick{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:72px}
+  .hwtop{margin-bottom:18px}
+  .slides{display:grid;overflow:visible;padding:0;margin:0;scroll-snap-type:none}
+  .slide{grid-area:1/1;flex:none;grid-template-columns:1fr .7fr;gap:36px;align-items:center;align-content:center;opacity:0;visibility:hidden;transform:translateY(28px) scale(.98);transition:opacity 420ms,transform 560ms var(--ease),visibility 0s .42s}
+  .slide.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+  .vis{display:block;position:relative;height:240px}
+  .vis .hex{position:absolute}
+  .vis .hex:nth-child(1){left:18%;top:0;rotate:-6deg}
+  .vis .hex:nth-child(2){left:54%;top:34%;rotate:8deg}
+  .vis .hex:nth-child(3){left:6%;top:62%;rotate:-12deg}
+  .hwbar{display:block;height:10px;border:var(--line) solid var(--ink);border-radius:var(--r-pill);background:var(--paper);overflow:hidden;margin-top:22px}
+  .hwbar i{display:block;height:100%;background:var(--pink);border-right:var(--line) solid var(--ink);transform-origin:left;transform:scaleX(0)}
+}
+@media(min-width:900px) and (prefers-reduced-motion:reduce){
+  .hwpin{height:auto}.hwstick{position:static;height:auto;padding-top:0}
+  .slides{display:flex;flex-direction:column;gap:56px}
+  .slide{opacity:1!important;visibility:visible!important;transform:none!important}
+  .hwtabs .tabpill,.cue,.hwbar{display:none!important}
+}
