@@ -154,3 +154,26 @@ section{scroll-margin-top:90px}
 .deco.d3{right:2%;bottom:12%;rotate:20deg;animation-delay:-3s}
 .deco.d4{right:30%;top:-4%;rotate:-14deg;animation-delay:-2s}
 @media(max-width:699px){.deco{opacity:.55}}
+
+/* ---------- proof ---------- */
+.pcards{display:grid;gap:36px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.pcards{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}}
+.pcards .card p{margin:0}
+.pcards .ohead{flex-wrap:wrap}
+.stats{display:grid;gap:20px;margin-top:44px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+@media(min-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,280px))}}
+.card.stat{gap:2px;padding:20px 18px 16px;border-radius:22px;box-shadow:var(--sh-lg)}
+.stat .n{font-size:clamp(42px,6vw,60px);font-weight:800;letter-spacing:-.05em;line-height:1}
+.stat .l{font-size:16px;font-weight:600}
+.built{margin-top:28px;font-size:16px;font-weight:600}
+
+/* tool ticker */
+.tapewrap{overflow:hidden;padding-block:26px 30px;margin-top:42px}
+.tape{background:var(--ink);color:var(--paper);rotate:-1.4deg;margin-inline:-3%;border-block:var(--line) solid var(--ink);overflow:hidden}
+.tape .track{display:flex;width:max-content;animation:slide 38s linear infinite}
+.tape:hover .track,.tape:focus-within .track,.tape.stop .track{animation-play-state:paused}
+.tape :focus-visible{outline-color:var(--paper)}
+.tape .item{display:inline-flex;align-items:center;gap:16px;padding:10px 16px 10px 0;font-weight:800;font-size:clamp(14px,2.25vw,19.5px);letter-spacing:-.02em;white-space:nowrap}
+.tape .item a,.tape .item a:hover{color:var(--pink);text-decoration:none}
+.tapebar{display:flex;justify-content:flex-end;margin-top:6px}
+@keyframes slide{to{transform:translateX(-50%)}}
