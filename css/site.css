@@ -108,7 +108,7 @@ section{scroll-margin-top:90px}
 .board{border:var(--line) dashed var(--ink);border-radius:var(--r-card);background:color-mix(in srgb,var(--paper) 60%,transparent);padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:22px;min-width:0}
 .mess{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
 @media(min-width:560px){.mess{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.note{display:flex;align-items:center;gap:10px;padding:14px 12px;border:var(--line) solid var(--ink);border-radius:16px;background:var(--f);box-shadow:var(--sh-md);font-weight:800;font-size:16px;line-height:1.2;min-height:68px;min-width:0;overflow-wrap:anywhere;rotate:var(--r);translate:var(--x) var(--y);transition:rotate 700ms var(--ease),translate 700ms var(--ease)}
+.note{display:flex;align-items:center;gap:10px;padding:14px 12px;border:var(--line) solid var(--ink);border-radius:16px;background:var(--f);box-shadow:var(--sh-md);font-weight:800;font-size:15px;line-height:1.2;min-height:68px;min-width:0;overflow-wrap:break-word;rotate:var(--r);translate:var(--x) var(--y);transition:rotate 700ms var(--ease),translate 700ms var(--ease)}
 .n1{--r:-3deg;--x:4px;--y:10px}.n2{--r:2deg;--x:-6px;--y:-4px}.n3{--r:-1.5deg;--x:10px;--y:18px}.n4{--r:3deg;--x:-4px;--y:6px}.n5{--r:-2.5deg;--x:8px;--y:-8px}.n6{--r:1.5deg;--x:-8px;--y:12px}
 .board.tidy .note{rotate:0deg;translate:0 0}
 .verdict{display:flex;align-items:center;gap:16px;min-height:96px}
@@ -122,3 +122,15 @@ section{scroll-margin-top:90px}
 @media (prefers-reduced-motion: reduce){
   .board .note,.sys,.knob,.knob::after{transition:none}
 }
+
+/* ---------- offers ---------- */
+.ogrid{display:grid;gap:36px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.ogrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}}
+.ohead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ogrid .card p{margin:0}
+.ogrid .card .btn{align-self:flex-start;margin-top:auto}
+.soon{margin-top:44px;font-size:18px;max-width:34em}
+.also{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:20px}
+.also .lbl{margin:0;font-size:18px;font-weight:800}
+.chiprow{display:contents;list-style:none;margin:0;padding:0}
+.also .lt{font-size:18px;font-weight:800}
