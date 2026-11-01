@@ -77,6 +77,7 @@ section{scroll-margin-top:90px}
 /* ---------- reduced motion (page layer) ---------- */
 @media (prefers-reduced-motion: reduce){
   .bub .caret{opacity:0}
+  [data-pause],.tapebar{display:none}
 }
 
 /* ---------- footer ---------- */
@@ -177,6 +178,14 @@ section{scroll-margin-top:90px}
 .tape .item a,.tape .item a:hover{color:var(--pink);text-decoration:none}
 .tapebar{display:flex;justify-content:flex-end;margin-top:6px}
 @keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){
+  /* nothing moves, so the ticker becomes a wrapped list: every tool and the contact link stay reachable */
+  .tapebar{display:none}
+  .tape .track{width:auto;flex-wrap:wrap;justify-content:center;padding:8px 16px}
+  .tape .item[aria-hidden="true"]{display:none}
+  .tape .item{padding-right:0;gap:12px}
+  .tape .item+.item{margin-left:16px}
+}
 
 /* ---------- how it works ---------- */
 .hw{padding:0}
