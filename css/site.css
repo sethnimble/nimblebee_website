@@ -16,6 +16,8 @@ section{scroll-margin-top:90px}
 .btn{white-space:nowrap}
 /* the design system steps the logo down to 30px under 370px; at 375px (iPhone) the burger then touches the bar's edge, so step down under 390px */
 @media(max-width:389px){.brand img{height:30px}}
+/* 320px phones: the bar is 288px wide inside the gutter, so the logo, Let's talk and the burger need a tighter fit */
+@media(max-width:339px){.navin{padding-left:12px;gap:6px}.brand img{height:26px}.navr{gap:6px}}
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -5px}}
 
 /* ---------- hero ---------- */
@@ -73,6 +75,7 @@ section{scroll-margin-top:90px}
 
 /* paused: the hero pause control stops every animation on the page */
 .nb-paused *{animation-play-state:paused!important}
+.nb-off,.nb-off *{animation-play-state:paused!important}
 
 /* ---------- reduced motion (page layer) ---------- */
 @media (prefers-reduced-motion: reduce){
@@ -178,6 +181,11 @@ section{scroll-margin-top:90px}
 .tape .item a,.tape .item a:hover{color:var(--pink);text-decoration:none}
 .tapebar{display:flex;justify-content:flex-end;margin-top:6px}
 @keyframes slide{to{transform:translateX(-50%)}}
+@media (pointer:coarse) and (prefers-reduced-motion: no-preference){
+  .tape{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+  .tape::-webkit-scrollbar{display:none}
+  .tape .track{animation:none}
+}
 @media (prefers-reduced-motion: reduce){
   /* nothing moves, so the ticker becomes a wrapped list: every tool and the contact link stay reachable */
   .tapebar{display:none}

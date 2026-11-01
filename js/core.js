@@ -23,6 +23,13 @@ NB.live=function(el){
   return el._vis!==false;
 };
 
+/* looping CSS animations (tiles, decorations, ticker) are paused while off screen, so a phone is not animating what nobody sees */
+NB.idle=function(sel){
+  if(!window.IntersectionObserver)return;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('nb-off',!e.isIntersecting)})},{rootMargin:'80px'});
+  NB.$$(sel).forEach(function(el){io.observe(el)});
+};
+
 NB.mount=function(root){
   if(!root||root._nb)return;root._nb=1;
   NB.icons(root);
