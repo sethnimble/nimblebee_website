@@ -150,14 +150,12 @@ section{scroll-margin-top:90px}
 .whotext{display:flex;flex-direction:column;gap:20px;min-width:0}
 .whotext .also{margin-top:0}
 
-  .board .note{animation:none}
 /* ---------- contact ---------- */
-.cta{position:relative;overflow:hidden;border:var(--line) solid var(--ink);border-radius:var(--r-card);background:var(--peach);box-shadow:var(--sh-xl);padding:clamp(32px,7vw,80px) clamp(22px,5vw,64px);display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+.cta{position:relative;overflow:hidden;border:var(--line) solid var(--ink);border-radius:var(--r-card);background:var(--peach);box-shadow:var(--sh-xl);padding:clamp(32px,7vw,80px) clamp(22px,5vw,64px);display:flex;flex-direction:column;gap:22px;align-items:center;text-align:center}
 .cta>*{position:relative}
 .cta h2{max-width:11em}
 .cta p{max-width:30em}
-.cta .ctas{animation:none;align-items:center}
-.cta .mail{font-size:16px;font-weight:600}
+.cta .ctas{animation:none;align-items:center;justify-content:center}
 .deco{position:absolute!important;pointer-events:none;animation:bob 5s ease-in-out infinite}
 .deco.d1{right:5%;top:8%;rotate:12deg}
 .deco.d2{right:24%;bottom:-6%;rotate:-8deg;animation-delay:-1.5s}
@@ -175,7 +173,6 @@ section{scroll-margin-top:90px}
 .card.stat{gap:2px;padding:20px 18px 16px;border-radius:22px;box-shadow:var(--sh-lg)}
 .stat .n{font-size:clamp(42px,6vw,60px);font-weight:800;letter-spacing:-.05em;line-height:1}
 .stat .l{font-size:16px;font-weight:600}
-.built{margin-top:28px;font-size:16px;font-weight:600}
 
 /* tool ticker */
 .tapewrap{overflow:hidden;padding-block:26px 30px;margin-top:42px}
