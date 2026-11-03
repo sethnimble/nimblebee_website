@@ -7,7 +7,7 @@ NB.mods.hero=function(sec){
   btn.addEventListener('click',function(){
     NB.paused=!NB.paused;document.documentElement.classList.toggle('nb-paused',NB.paused);
     btn.setAttribute('aria-pressed',NB.paused);
-    btn.querySelector('span').textContent=NB.paused?'Play animation':'Pause animation';
+    btn.setAttribute('aria-label',NB.paused?'Play animation':'Pause animation');
     btn.querySelector('.ic').innerHTML=NB.icon(NB.paused?'play':'pause');
   });
 };

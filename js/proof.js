@@ -14,7 +14,7 @@ NB.mods.tape=function(t){
   if(b&&!b._bound){b._bound=1;b.addEventListener('click',function(){
     var s=!t.classList.contains('stop');t.classList.toggle('stop',s);
     b.setAttribute('aria-pressed',s);
-    NB.$('span:not(.ic)',b).textContent=s?'Play ticker':'Pause ticker';
+    b.setAttribute('aria-label',s?'Play ticker':'Pause ticker');
     NB.$('.ic',b).innerHTML=NB.icon(s?'play':'pause');
   })}
   /* Touch screens: a CSS transform cannot be swiped, so the ticker scrolls itself instead and a finger takes over (CSS: pointer:coarse). */
