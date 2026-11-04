@@ -25,7 +25,7 @@ section{scroll-margin-top:90px}
 .hgrid{display:grid;gap:32px;align-items:center;grid-template-columns:minmax(0,1fr)}
 @media(min-width:900px){.hgrid{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:start}.hgrid>.gcol{margin-top:calc(13px*1.3 + 14px + 22px)}}
 .htext{display:flex;flex-direction:column;gap:22px;min-width:0}
-.htext .chip{align-self:flex-start;rotate:-4deg;animation:pop 560ms var(--ease) both}
+.htext .chip{align-self:flex-start;rotate:-2deg;animation:pop 560ms var(--ease) both}
 .lede{font-size:clamp(18px,2.4vw,20px);line-height:1.5;font-weight:500;max-width:34em;animation:pop 560ms var(--ease) .5s both}
 .ctas{display:flex;flex-wrap:wrap;gap:14px;animation:pop 560ms var(--ease) .5s both}
 
@@ -84,14 +84,11 @@ section{scroll-margin-top:90px}
   .htext .ctas>.pausebtn{grid-column:3;justify-self:end;align-self:center}
 }
 
-/* pause controls (hero and ticker): a small white circle with the icon only; the label lives in aria-label. The ::after keeps a 44px touch target. */
-.btn.icon.sm.pausebtn{position:relative;width:36px;min-height:36px;padding:0;border-radius:50%;background:#fff}
+/* pause controls (hero and ticker): a small paper circle with the icon only; the label lives in aria-label. The ::after keeps a 44px touch target. */
+.btn.icon.sm.pausebtn{position:relative;width:36px;min-height:36px;padding:0;border-radius:50%;background:var(--paper)}
 .btn.icon.sm.pausebtn .ic{font-size:16px}
 .pausebtn::after{content:"";position:absolute;inset:-4px}
 
-/* eyebrow pills: tilted like the hero pill (-4deg), alternating direction down the page */
-.ptext>.chip,#who .sechead>.chip,#cases .sechead>.chip{rotate:4deg}
-#what .sechead>.chip,.hwtop>.chip,.cta>.chip{rotate:-4deg}
 
 /* paused: the hero pause control stops every animation on the page */
 .nb-paused *{animation-play-state:paused!important}
