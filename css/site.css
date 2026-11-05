@@ -85,7 +85,7 @@ section{scroll-margin-top:90px}
 }
 
 /* pause controls (hero and ticker): a small paper circle with the icon only; the label lives in aria-label. The ::after keeps a 44px touch target. */
-.btn.icon.sm.pausebtn{position:relative;width:36px;min-height:36px;padding:0;border-radius:50%;background:var(--paper)}
+.btn.icon.sm.pausebtn{position:relative;width:36px;height:36px;min-height:36px;padding:0;border-radius:50%;background:var(--paper);align-self:center;flex:none}
 .btn.icon.sm.pausebtn .ic{font-size:16px}
 .pausebtn::after{content:"";position:absolute;inset:-4px}
 
