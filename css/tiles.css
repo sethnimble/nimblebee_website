@@ -1,5 +1,5 @@
 /* Hero "I need..." tiles: one mini system per need. Children size in cqw against .nt.
-   Tile order matches the locked list: a website, my Google listing sorted, a wiki, an AI assistant, an app I own, I'm not sure where to start.
+   Tile order matches the locked list: an AI agent, my own app, a website, training & how-to guides, my admin sorted, to talk it through.
    Base styles hold each tile's finished state, so reduced motion (animation: none) shows it without extra rules. */
 .nt{--f:var(--paper);position:relative;container-type:inline-size;border:var(--line) solid var(--ink);border-radius:4.4cqw;background:var(--f);box-shadow:var(--sh-md);overflow:hidden}
 .nt-stage{position:absolute;left:6cqw;right:6cqw;top:6cqw;bottom:19cqw;transition:opacity 300ms}
@@ -18,7 +18,6 @@
 .tiles .slot[role="button"]:hover .nt:not(.on) .nt-stage{opacity:.8}
 .tiles .nt.on{transform:translate(-2px,-3px) rotate(-2deg);box-shadow:var(--sh-lg);z-index:4}
 .tiles.all .nt .nt-stage{opacity:1}
-.tiles .nt.moon.on{z-index:6}
 
 /* Website: header, cards and button snap in; a cursor clicks the button */
 .web{height:100%;border:var(--line) solid var(--ink);border-radius:3cqw;background:var(--paper);overflow:hidden;display:flex;flex-direction:column}
@@ -36,26 +35,6 @@
 @keyframes wb-pop{0%{opacity:0;transform:translateY(-3cqw) scale(.6) rotate(-6deg)}8%{opacity:1;transform:scale(1.08) rotate(2deg)}12%,86%{opacity:1;transform:none}92%,100%{opacity:0;transform:scale(.8)}}
 @keyframes wb-click{0%,55%{background:var(--ink)}57%,84%{background:var(--coral)}90%,100%{background:var(--ink)}}
 @keyframes wb-cur{0%,28%{transform:translate(26cqw,14cqw);opacity:0}34%{opacity:1}50%{transform:none;scale:1}54%{scale:.78}58%,82%{transform:none;scale:1;opacity:1}90%,100%{transform:translate(10cqw,6cqw);opacity:0}}
-
-/* Google listing: a pin drops, the name fills in, five stars pop, then the call and route buttons */
-.gl{height:100%;border:var(--line) solid var(--ink);border-radius:3cqw;background:var(--paper);padding:2.6cqw 3cqw;display:flex;flex-direction:column;justify-content:space-between}
-.gl-top{display:flex;align-items:center;gap:2.6cqw}
-.gl-pin{flex:none;width:11cqw;aspect-ratio:156/180;animation:gl-pin 6s var(--ease) infinite}
-.gl-pin svg{width:100%;height:100%}
-.gl-nm{flex:1;display:flex;flex-direction:column;gap:1.8cqw}
-.gl-nm i{display:block;height:2.4cqw;border-radius:9px;background:var(--ink);transform-origin:left;animation:gl-bar 6s cubic-bezier(.4,0,.2,1) infinite}
-.gl-nm i:first-child{width:80%}
-.gl-nm i:last-child{width:50%;opacity:.22;animation-delay:.14s}
-.gl-st{display:flex;gap:1.2cqw}
-.gl-st svg{width:6.6cqw;aspect-ratio:156/180;animation:gl-pop 6s var(--ease) infinite backwards}
-.nt .gl-st .hxs path{fill:var(--butter)}
-.gl-st svg:nth-child(2){animation-delay:.14s}.gl-st svg:nth-child(3){animation-delay:.28s}.gl-st svg:nth-child(4){animation-delay:.42s}.gl-st svg:nth-child(5){animation-delay:.56s}
-.gl-bt{display:flex;gap:2cqw}
-.gl-bt i{display:block;flex:1;height:6cqw;border:var(--line) solid var(--ink);border-radius:var(--r-pill);background:var(--pink);animation:gl-pop 6s var(--ease) 1.6s infinite backwards}
-.gl-bt i+i{background:var(--mint);animation-delay:1.8s}
-@keyframes gl-pin{0%,3%{opacity:0;transform:translateY(-9cqw) scale(.7)}9%{opacity:1;transform:translateY(1.2cqw) scale(1.08)}13%,86%{opacity:1;transform:none}92%,100%{opacity:0;transform:scale(.8)}}
-@keyframes gl-bar{0%,8%{transform:scaleX(0)}20%,86%{transform:none}92%,100%{transform:scaleX(0)}}
-@keyframes gl-pop{0%,2%{opacity:0;transform:scale(.2) rotate(-14deg)}8%{opacity:1;transform:scale(1.25) rotate(3deg)}12%,84%{opacity:1;transform:none}90%,100%{opacity:0;transform:scale(.4)}}
 
 /* Wiki: pages in the sidebar light up in turn and the page fills with text, then a link pill pops */
 .wk{height:100%;display:grid;grid-template-columns:28cqw minmax(0,1fr);gap:2.4cqw}
@@ -75,27 +54,6 @@
 @keyframes wk-a2{0%,36%{background:var(--paper)}40%,88%{background:var(--cyan)}94%,100%{background:var(--paper)}}
 @keyframes wk-ln{0%,12%{transform:scaleX(0)}24%,34%{transform:none}38%{transform:scaleX(0)}50%,86%{transform:none}92%,100%{transform:scaleX(0)}}
 @keyframes wk-k{0%,56%{opacity:0;transform:scale(.2)}62%{opacity:1;transform:scale(1.25)}66%,88%{opacity:1;transform:none}94%,100%{opacity:0;transform:scale(.4)}}
-
-/* AI assistant: a question arrives, three dots, then the answer fills in and ticks */
-.ai{height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:2cqw}
-.ai-u{align-self:flex-end;width:50cqw;height:9cqw;border:var(--line) solid var(--ink);border-radius:3cqw;background:var(--paper);display:flex;align-items:center;padding:0 3cqw;transform-origin:right bottom;animation:ai-pop 6s var(--ease) infinite}
-.ai-u .nt-bar{flex:1;opacity:.4}
-.ai-r{display:flex;align-items:flex-end;gap:2cqw}
-.ai-av{flex:none;width:10cqw;aspect-ratio:156/180;transform-origin:center bottom;animation:ai-pop2 6s var(--ease) infinite}
-.ai-av svg{width:100%;height:100%}
-.ai-b{position:relative;flex:1;height:17cqw;border:var(--line) solid var(--ink);border-radius:3cqw;background:var(--paper);padding:3cqw;display:flex;flex-direction:column;gap:2cqw;justify-content:center;transform-origin:left bottom;animation:ai-pop2 6s var(--ease) infinite}
-.ai-b .nt-bar{transform-origin:left;animation:ai-ln 6s cubic-bezier(.4,0,.2,1) infinite}
-.ai-b .nt-bar+.nt-bar{width:62%;animation-delay:.14s}
-.ai-dots{position:absolute;left:3cqw;top:50%;display:flex;gap:1.6cqw;translate:0 -50%;opacity:0;animation:ai-dots 6s linear infinite}
-.ai-dots i{display:block;width:2.4cqw;aspect-ratio:1;border-radius:50%;background:var(--ink);animation:ai-bounce 600ms ease-in-out infinite alternate}
-.ai-dots i:nth-child(2){animation-delay:.15s}.ai-dots i:nth-child(3){animation-delay:.3s}
-.ai-tk{position:absolute;right:-2.4cqw;top:-2.4cqw;width:6.4cqw;aspect-ratio:1;border-radius:50%;border:var(--line) solid var(--ink);background:var(--ok);display:grid;place-items:center;animation:ai-tk 6s var(--ease) infinite}
-@keyframes ai-pop{0%,3%{opacity:0;transform:scale(.3) rotate(-6deg)}9%{opacity:1;transform:scale(1.08)}13%,86%{opacity:1;transform:none}92%,100%{opacity:0;transform:scale(.8)}}
-@keyframes ai-pop2{0%,20%{opacity:0;transform:scale(.3) rotate(6deg)}27%{opacity:1;transform:scale(1.08)}31%,86%{opacity:1;transform:none}92%,100%{opacity:0;transform:scale(.8)}}
-@keyframes ai-dots{0%,30%{opacity:0}32%,44%{opacity:1}46%,100%{opacity:0}}
-@keyframes ai-bounce{to{translate:0 -1.4cqw}}
-@keyframes ai-ln{0%,46%{transform:scaleX(0)}58%,86%{transform:none}92%,100%{transform:scaleX(0)}}
-@keyframes ai-tk{0%,62%{scale:0}68%{scale:1.25}72%,88%{scale:1}94%,100%{scale:0}}
 
 /* Your own app: a contact moves lead, call, won (a board you own) */
 .crm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3cqw;height:100%}
@@ -119,51 +77,87 @@
   100%{transform:translate(60.6cqw,0);opacity:0}}
 @keyframes crm-tk{0%,77%{scale:0}82%{scale:1.25}86%,94%{scale:1}100%{scale:0}}
 
-/* Not sure where to start: a blank tile turns to night sky, a rocket pops out, hovers, crouches and leaves the page.
-   The sky, stars and rocket sit in .ms-stage so the inactive state can dim the picture and leave the labels alone. */
-.nt.moon{border-style:dashed;overflow:visible;z-index:3}
-.ms-stage{position:absolute;inset:0;border-radius:inherit;transition:opacity 300ms}
-.tiles .nt.moon:not(.on) .ms-stage{opacity:.45}
-.tiles .slot[role="button"]:hover .nt.moon:not(.on) .ms-stage{opacity:.8}
-.tiles.all .nt.moon .ms-stage{opacity:1}
-.ms-sky{position:absolute;inset:0;border-radius:inherit;background:var(--ink);opacity:0;animation:ms-sky 7s ease infinite}
-.ms-blank{position:absolute;left:50%;top:44%;width:30cqw;aspect-ratio:1;translate:-50% -50%;border:var(--line) dashed var(--ink);border-radius:5cqw;display:grid;place-items:center;animation:ms-blank 7s var(--ease) infinite}
-.ms-blank::before,.ms-blank::after{content:"";position:absolute;width:10cqw;height:2.2cqw;border-radius:9px;background:var(--ink)}
-.ms-blank::after{rotate:90deg}
-.ms-st{position:absolute;width:3.4cqw;aspect-ratio:168/192;background:var(--butter);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);scale:0;animation:ms-st 7s var(--ease) infinite}
-.ms-r{position:absolute;left:50%;bottom:10cqw;width:16cqw;height:31cqw;margin-left:-8cqw;scale:0;z-index:5;animation:ms-r 7s cubic-bezier(.45,0,.3,1) infinite}
-.ms-r>i{position:absolute;display:block;border:var(--line) solid var(--ink)}
-.ms-r .bd{left:2.5cqw;right:2.5cqw;top:0;height:24cqw;background:var(--paper);border-radius:50% 50% 28% 28%/62% 62% 16% 16%}
-.ms-r .wn{left:50%;top:7cqw;width:6cqw;aspect-ratio:1;translate:-50% 0;border-radius:50%;background:var(--cyan)}
-.ms-r .fn{bottom:7cqw;width:5.4cqw;height:9cqw;background:var(--pink)}
-.ms-r .fn.l{left:0;border-radius:70% 0 2cqw 2cqw;rotate:-6deg}
-.ms-r .fn.r{right:0;border-radius:0 70% 2cqw 2cqw;rotate:6deg}
-.ms-r .fl{left:50%;top:22cqw;width:7cqw;height:9cqw;translate:-50% 0;background:var(--butter);border-radius:50% 50% 50% 50%/28% 28% 72% 72%;transform-origin:50% 0;animation:ms-fl 160ms ease-in-out infinite alternate}
-.ms-r .fl::after{content:"";position:absolute;left:28%;right:28%;top:12%;height:52%;border-radius:inherit;background:var(--coral)}
-.ms-pf{position:absolute;left:calc(50% - 10cqw);bottom:5cqw;width:10cqw;aspect-ratio:1;border-radius:50%;border:var(--line) solid var(--ink);background:var(--paper);scale:0;opacity:0;z-index:4;animation:ms-pf 7s ease-out infinite}
-.ms-pf.b{left:calc(50% + 1cqw);width:8cqw;animation-delay:.08s}
-.ms-lb{z-index:4;animation:ms-lb1 7s ease infinite}
-.ms-lb.b{opacity:0;color:var(--paper);animation-name:ms-lb2}
-@keyframes ms-sky{0%,16%{opacity:0}24%,88%{opacity:1}96%,100%{opacity:0}}
-@keyframes ms-blank{0%,14%{scale:1;opacity:1}18%{scale:1.1;opacity:1}22%,92%{scale:.4;opacity:0}100%{scale:1;opacity:1}}
-@keyframes ms-st{0%,22%{scale:0}28%,86%{scale:1}92%,100%{scale:0}}
-@keyframes ms-r{
-  0%,17%{scale:0;transform:translateY(-4cqw)}
-  24%{scale:1.15}28%{scale:1;transform:translateY(-2cqw) rotate(-3deg)}
-  36%{transform:translateY(1cqw) rotate(2deg)}44%{transform:translateY(-1cqw) rotate(-1deg)}52%{transform:translateY(1cqw) rotate(1deg)}
-  60%{scale:1;transform:translateY(3cqw) scale(1.06,.9)}
-  64%{transform:translateY(-6cqw) scale(.94,1.08);animation-timing-function:cubic-bezier(.6,0,.9,.6)}
-  82%{scale:1;transform:translateY(-160vh) scale(.9,1.15)}
-  83%,100%{scale:0;transform:translateY(-160vh)}}
-@keyframes ms-fl{from{scale:1 .75}to{scale:1.05 1.25}}
-@keyframes ms-pf{0%,61%{scale:0;opacity:0}63%{opacity:1;scale:.6}74%{scale:1.3;opacity:1}84%,100%{scale:1.5;opacity:0}}
-@keyframes ms-lb1{0%,18%{opacity:1}22%,92%{opacity:0}100%{opacity:1}}
-@keyframes ms-lb2{0%,20%{opacity:0;translate:0 2cqw}26%,88%{opacity:1;translate:0 0}94%,100%{opacity:0}}
+/* AI agent: owner asks, the robot types and replies, then a task row ticks itself off */
+.ag{height:100%;display:flex;flex-direction:column;justify-content:center;gap:2.8cqw}
+.ag-r{display:flex;align-items:flex-end;gap:2cqw}
+.ag-r.me{justify-content:flex-end}
+.ag-av{flex:none;width:7cqw;aspect-ratio:1;border-radius:50%;border:var(--line) solid var(--ink);background:var(--peach);animation:ag-me 6s var(--ease) infinite}
+.ag-b{position:relative;flex:none;height:11cqw;border:var(--line) solid var(--ink);border-radius:3.4cqw;display:flex;flex-direction:column;justify-content:center;gap:1.6cqw;padding:0 3cqw}
+.ag-b.me{width:44cqw;background:var(--pink);border-bottom-right-radius:.8cqw;transform-origin:100% 100%;animation:ag-me 6s var(--ease) infinite}
+.ag-b.bot{width:50cqw;background:var(--paper);border-bottom-left-radius:.8cqw;transform-origin:0 100%;animation:ag-bot 6s var(--ease) infinite}
+.ag-b.bot .nt-bar{animation:ag-txt 6s ease infinite}
+.ag-dots{position:absolute;left:3cqw;top:50%;translate:0 -50%;display:flex;gap:1.4cqw;animation:ag-dots 6s ease infinite}
+.ag-dots i{width:2.2cqw;aspect-ratio:1;border-radius:50%;background:var(--ink);animation:ag-dot .5s ease-in-out infinite alternate}
+.ag-dots i:nth-child(2){animation-delay:.17s}.ag-dots i:nth-child(3){animation-delay:.34s}
+.ag-bt{position:relative;flex:none;width:9cqw;height:8cqw;border:var(--line) solid var(--ink);border-radius:2.4cqw;background:var(--cyan);display:flex;justify-content:center;align-items:center;gap:1.6cqw;animation:ag-rb 6s var(--ease) infinite}
+.ag-bt::before{content:"";position:absolute;left:50%;bottom:100%;width:2px;height:2.2cqw;margin-left:-1px;background:var(--ink)}
+.ag-bt::after{content:"";position:absolute;left:50%;bottom:calc(100% + 1.8cqw);width:2.8cqw;aspect-ratio:1;margin-left:-1.4cqw;border-radius:50%;border:var(--line) solid var(--ink);background:var(--coral);animation:ag-ant 6s ease infinite}
+.ag-bt i{width:1.7cqw;aspect-ratio:1;border-radius:50%;background:var(--ink);animation:ag-blink 3s ease infinite}
+.ag-tk{flex:none;display:flex;align-items:center;gap:2cqw;height:11cqw;margin-left:11cqw;border:var(--line) solid var(--ink);border-radius:3cqw;background:var(--paper);padding:0 2.6cqw;animation:ag-task 6s var(--ease) infinite}
+.ag-tk .nt-bar{flex:1;max-width:60%}
+.ag-cb{position:relative;flex:none;width:6.4cqw;aspect-ratio:1;border:var(--line) solid var(--ink);border-radius:1.8cqw;background:var(--paper)}
+.ag-cf{position:absolute;inset:-2px;border:var(--line) solid var(--ink);border-radius:1.8cqw;background:var(--ok);display:grid;place-items:center;scale:0;animation:ag-check 6s var(--ease) infinite}
+@keyframes ag-me{0%,3%{opacity:0;scale:.5}8%{opacity:1;scale:1.08}12%,86%{opacity:1;scale:1}92%,100%{opacity:0;scale:.8}}
+@keyframes ag-bot{0%,16%{opacity:0;scale:.5}21%{opacity:1;scale:1.08}25%,86%{opacity:1;scale:1}92%,100%{opacity:0;scale:.8}}
+@keyframes ag-dots{0%,30%{opacity:1}33%,100%{opacity:0}}
+@keyframes ag-dot{from{translate:0 .8cqw}to{translate:0 -.8cqw}}
+@keyframes ag-txt{0%,31%{opacity:0}35%,86%{opacity:.3}92%,100%{opacity:0}}
+@keyframes ag-rb{0%{opacity:0;scale:.5}4%{opacity:1;scale:1.12}7%,88%{opacity:1;scale:1}94%,100%{opacity:0;scale:.8}}
+@keyframes ag-ant{0%,17%,23%,29%,100%{scale:1}20%,26%{scale:1.45}}
+@keyframes ag-blink{0%,44%,50%,100%{scale:1 1}47%{scale:1 .15}}
+@keyframes ag-task{0%,40%{opacity:0;transform:translateY(3cqw) scale(.8)}45%{opacity:1;transform:translateY(-.6cqw) scale(1.04)}49%,86%{opacity:1;transform:none}92%,100%{opacity:0;transform:scale(.9)}}
+@keyframes ag-check{0%,54%{scale:0}58%{scale:1.3}62%,86%{scale:1}92%,100%{scale:0}}
+
+/* Admin sorted: loose folders pop in and jiggle, then file themselves into a tray, ending on a tick */
+.ad{position:relative;height:100%}
+.ad-f{position:absolute;left:50%;bottom:5cqw;width:42cqw;height:24cqw;margin-left:-21cqw;border:var(--line) solid var(--ink);border-radius:2.4cqw;background:var(--ff);animation:ad-f 6s var(--ease) infinite backwards}
+.ad-f::before{content:"";position:absolute;bottom:calc(100% - 2px);left:var(--tx);width:12cqw;height:calc(4cqw + 2px);border:var(--line) solid var(--ink);border-bottom:0;border-radius:1.6cqw 1.6cqw 0 0;background:var(--ff)}
+.ad-f.f1{--ff:var(--peach);--tx:2cqw;--sx:-20cqw;--sy:-20cqw;--sr:-14deg;--ry:-9cqw}
+.ad-f.f2{--ff:var(--cyan);--tx:14cqw;--sx:22cqw;--sy:-22cqw;--sr:12deg;--ry:-6cqw;animation-delay:.12s}
+.ad-f.f3{--ff:var(--pink);--tx:27cqw;--sx:-24cqw;--sy:-1cqw;--sr:9deg;--ry:-3cqw;animation-delay:.24s}
+.ad-f.f4{--ff:var(--mint);--tx:8cqw;--sx:21cqw;--sy:-3cqw;--sr:-10deg;--ry:0cqw;animation-delay:.36s}
+.ad-tray{position:absolute;left:50%;bottom:0;width:54cqw;height:17cqw;margin-left:-27cqw;border:var(--line) solid var(--ink);border-radius:2cqw 2cqw 3.4cqw 3.4cqw;background:var(--paper);z-index:2;display:grid;place-items:center;animation:ad-tray 6s var(--ease) infinite}
+.ad-tray i{display:block;width:16cqw;height:3.6cqw;border:var(--line) solid var(--ink);border-radius:999px;background:var(--bg)}
+.ad-ok{position:absolute;right:12.5cqw;bottom:12.5cqw;width:9cqw;aspect-ratio:1;border-radius:50%;border:var(--line) solid var(--ink);background:var(--ok);display:grid;place-items:center;z-index:3;scale:0;animation:ad-ok 6s var(--ease) infinite}
+@keyframes ad-f{
+  0%{opacity:0;transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.6)}
+  6%{opacity:1;transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(1.06)}
+  10%{transform:translate(var(--sx),var(--sy)) rotate(calc(var(--sr) * -.4))}
+  14%{transform:translate(var(--sx),var(--sy)) rotate(var(--sr))}
+  18%{transform:translate(var(--sx),var(--sy)) rotate(calc(var(--sr) * -.4))}
+  22%{transform:translate(var(--sx),var(--sy)) rotate(var(--sr))}
+  36%,86%{opacity:1;transform:translate(0,var(--ry)) rotate(0deg)}
+  92%,100%{opacity:0;transform:translate(0,var(--ry)) scale(.9)}}
+@keyframes ad-tray{0%{opacity:0;scale:.6}4%{opacity:1;scale:1.06}7%,40%{opacity:1;scale:1;transform:none}43%{transform:translateY(1cqw) scale(1.03,.96)}47%,88%{opacity:1;scale:1;transform:none}94%,100%{opacity:0;scale:.9}}
+@keyframes ad-ok{0%,50%{scale:0}55%{scale:1.3}59%,86%{scale:1}92%,100%{scale:0}}
+
+/* Talk it through: two mugs take turns, steam rises, then a gentle clink */
+.tt{position:relative;height:100%}
+.tt-tb{position:absolute;left:4cqw;right:4cqw;bottom:2cqw;border-top:var(--line) solid var(--ink)}
+.mug{position:absolute;bottom:calc(2cqw + 1px);width:21cqw;height:21cqw;border:var(--line) solid var(--ink);border-radius:1.2cqw 1.2cqw 5.4cqw 5.4cqw;background:var(--mf);transform-origin:50% 100%}
+.mug::after{content:"";position:absolute;top:3.6cqw;width:6cqw;height:10cqw;border:var(--line) solid var(--ink)}
+.mug.l{left:16cqw;--mf:var(--pink);animation:tt-l 6s var(--ease) infinite}
+.mug.l::after{right:100%;border-right:0;border-radius:5cqw 0 0 5cqw}
+.mug.r{right:16cqw;--mf:var(--cyan);animation:tt-r 6s var(--ease) infinite}
+.mug.r::after{left:100%;border-left:0;border-radius:0 5cqw 5cqw 0}
+.mug .hx{position:absolute;left:50%;top:55%;width:7cqw;aspect-ratio:168/192;translate:-50% -50%;background:var(--paper);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.mug.l .hx{background:var(--coral)}
+.stm{position:absolute;bottom:calc(100% + 1cqw);width:5cqw;height:13cqw;opacity:0;animation:tt-st 3s ease-in-out infinite}
+.stm.a{left:4cqw}.stm.b{left:11cqw;animation-delay:1.5s}
+.stm svg{display:block;width:100%;height:100%;overflow:visible}
+.tt-sp{position:absolute;left:50%;bottom:22cqw;width:12cqw;height:8cqw;margin-left:-6cqw;scale:0;opacity:0;animation:tt-sp 6s var(--ease) infinite}
+.tt-sp svg{display:block;width:100%;height:100%;overflow:visible}
+@keyframes tt-l{0%{opacity:0;transform:translateY(4cqw) scale(.7)}5%{opacity:1;transform:scale(1.05)}8%{transform:none}12%{transform:translateY(-3cqw) rotate(6deg)}16%,36%{transform:none}40%{transform:translateY(-3cqw) rotate(6deg)}44%,52%{transform:none}57%{transform:translateX(4cqw) rotate(10deg)}61%{transform:translateX(3cqw) rotate(7deg)}68%,88%{opacity:1;transform:none}94%,100%{opacity:0;transform:scale(.9)}}
+@keyframes tt-r{0%{opacity:0;transform:translateY(4cqw) scale(.7)}5%{opacity:1;transform:scale(1.05)}8%,22%{transform:none}26%{transform:translateY(-3cqw) rotate(-6deg)}30%,52%{transform:none}57%{transform:translateX(-4cqw) rotate(-10deg)}61%{transform:translateX(-3cqw) rotate(-7deg)}68%,88%{opacity:1;transform:none}94%,100%{opacity:0;transform:scale(.9)}}
+@keyframes tt-st{0%{opacity:0;transform:translateY(3cqw) scaleY(.6)}30%{opacity:.85}70%{opacity:.55}100%{opacity:0;transform:translateY(-4cqw) scaleY(1.1)}}
+@keyframes tt-sp{0%,55%{scale:0;opacity:0}58%{scale:1.2;opacity:1}63%{scale:1;opacity:1}70%,100%{scale:1.2;opacity:0}}
+.stm path,.tt-sp path{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;vector-effect:non-scaling-stroke}
 
 .nb-paused .nt *,.nb-paused .nt{animation-play-state:paused!important}
 
 /* reduced motion: every tile shows its finished state (base.css already switches animation off) */
 @media (prefers-reduced-motion:reduce){
-  .ai-dots{display:none}
-  .ms-sky{opacity:1}.ms-blank{opacity:0}.ms-st{scale:1}.ms-r{scale:1;transform:none}.ms-pf{opacity:0}.ms-lb{opacity:0}.ms-lb.b{opacity:1}
+  .ag-dots{opacity:0}.ag-b.bot .nt-bar{opacity:.3}.ag-cf{scale:1}
+  .ad-f{transform:translate(0,var(--ry))}.ad-ok{scale:1}
+  .stm{opacity:.7}
 }

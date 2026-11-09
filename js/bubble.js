@@ -5,7 +5,7 @@ var NB=window.NB,$=NB.$,$$=NB.$$;
 NB.mods.bubble=function(w){
   var wd=$('.w',w),pre=$('.pre',w),slots=$$('.slot',w),bub=$('.bub',w),box=$('.tiles',w),IT=NB.TILES;
   var ts=IT.map(function(it,k){slots[k].innerHTML=NB.tileHTML(it.k);return slots[k].firstChild});
-  if(NB.reduce){box.classList.add('all');wd.textContent='a website, a wiki, an AI assistant…';return}
+  if(NB.reduce){box.classList.add('all');wd.textContent='an AI agent, my own app, a website…';return}
   var an=function(t){return t.getAnimations?t.getAnimations({subtree:true}):[]};
   var cur=-1,gen=0,idx=0,SP=1.25;
   function rest(k){ts[k].classList.remove('on');an(ts[k]).forEach(function(a){a.pause();a.currentTime=IT[k].rest})}
