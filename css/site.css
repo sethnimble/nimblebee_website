@@ -127,27 +127,50 @@ section{scroll-margin-top:90px}
 .toggle[aria-pressed="true"] .knob{background:var(--mint)}
 .toggle[aria-pressed="true"] .knob::after{transform:translateX(22px);background:var(--ok)}
 .board{border:var(--line) dashed var(--ink);border-radius:var(--r-card);background:color-mix(in srgb,var(--paper) 60%,transparent);padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:22px;min-width:0}
-.mess{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
-@media(min-width:560px){.mess{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.note{display:flex;align-items:center;gap:10px;padding:14px 12px;border:var(--line) solid var(--ink);border-radius:16px;background:var(--f);box-shadow:var(--sh-md);font-weight:800;font-size:15px;line-height:1.2;min-height:68px;min-width:0;overflow-wrap:break-word;rotate:var(--r);translate:var(--x) var(--y);transition:rotate 800ms var(--ease),translate 800ms var(--ease);animation:jig var(--jd,1s) ease-in-out var(--jl,0s) infinite}
+.mess{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 28px}
+@media(min-width:560px){.mess{grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 40px}}
+/* the board's top edge is level with the H1 letters, not the section pill: pill 31px + 20px gap = 51px to the H1 box, plus about 10px to the cap top (measured at 56px type, 1280px wide) */
+@media(min-width:900px){.pgrid .board{margin-top:61px}}
+.note{display:flex;align-items:center;gap:10px;padding:14px 12px;border:var(--line) solid var(--ink);border-radius:16px;background:var(--f);box-shadow:var(--sh-md);font-weight:800;font-size:15px;line-height:1.2;min-height:68px;min-width:0;overflow-wrap:break-word;position:relative;z-index:1;rotate:var(--r);translate:var(--x) var(--y);transition:rotate 800ms var(--ease),translate 800ms var(--ease);animation:jig var(--jd,1s) ease-in-out var(--jl,0s) infinite}
 /* willpower state: every note sits well away from its tidy cell, in places that make the paths cross (percentages are of the note's own size), and keeps jiggling */
-.n1{--r:-11deg;--x:14%;--y:235%;--jd:.9s;--jl:0s}.n2{--r:9deg;--x:-8%;--y:110%;--jd:1.15s;--jl:-.3s}.n3{--r:7deg;--x:85%;--y:125%;--jd:1s;--jl:-.6s}.n4{--r:-8deg;--x:-40%;--y:-115%;--jd:.85s;--jl:-.2s}.n5{--r:10deg;--x:24%;--y:-235%;--jd:1.2s;--jl:-.7s}.n6{--r:-12deg;--x:-90%;--y:-125%;--jd:.95s;--jl:-.45s}
+/* jiggle durations: the 3 Nov values (.9 1.15 1 .85 1.2 .95 s) slowed 25% on 9 Nov (x1.33) and 25% again (x1.33) */
+.n1{--r:-11deg;--x:14%;--y:235%;--jd:1.6s;--jl:0s}.n2{--r:9deg;--x:-8%;--y:110%;--jd:2.04s;--jl:-.3s}.n3{--r:7deg;--x:85%;--y:125%;--jd:1.77s;--jl:-.6s}.n4{--r:-8deg;--x:-40%;--y:-115%;--jd:1.51s;--jl:-.2s}.n5{--r:10deg;--x:24%;--y:-235%;--jd:2.13s;--jl:-.7s}.n6{--r:-12deg;--x:-90%;--y:-125%;--jd:1.69s;--jl:-.45s}
 @media(min-width:560px){
   .n1{--r:-10deg;--x:195%;--y:110%}.n2{--r:8deg;--x:10%;--y:118%}.n3{--r:-7deg;--x:-205%;--y:135%}.n4{--r:9deg;--x:210%;--y:-115%}.n5{--r:-9deg;--x:-12%;--y:-122%}.n6{--r:11deg;--x:-200%;--y:-128%}
 }
-@keyframes jig{0%,100%{transform:translate(0,0) rotate(0)}20%{transform:translate(3px,-4px) rotate(2deg)}45%{transform:translate(-4px,2px) rotate(-2.5deg)}70%{transform:translate(2px,4px) rotate(1.5deg)}}
+/* sideways travel is 50% wider than before (3, -4, 2 px became 4.5, -6, 3 px); up and down and the rotation are unchanged */
+@keyframes jig{0%,100%{transform:translate(0,0) rotate(0)}20%{transform:translate(4.5px,-4px) rotate(2deg)}45%{transform:translate(-6px,2px) rotate(-2.5deg)}70%{transform:translate(3px,4px) rotate(1.5deg)}}
+.lf{display:none}
+.board.tidy .lb{display:none}
+.board.tidy .lf{display:inline}
 .board.tidy .note{rotate:0deg;translate:0 0;animation:none}
-.verdict{display:flex;align-items:center;gap:16px;min-height:96px}
-.verdict .big{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1}
+/* connection lines: built by js/problem.js, drawn in the fixed state only */
+.links{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+/* timings are 50% faster than first built (retract 260, draw 520, start 750 + 70 per line) */
+.links line{stroke:var(--ink);stroke-width:2;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 173ms var(--ease)}
+.board.tidy .links line{stroke-dashoffset:0;transition:stroke-dashoffset 347ms var(--ease) calc(500ms + var(--i,0)*47ms)}
+/* travelling dots: pastel, with a 1px outline (the system's usual line is 2px; the dots are too small for that) */
+.dot{stroke:var(--ink);stroke-width:1}
+.dot.d0{fill:var(--pink)}
+.dot.d1{fill:var(--cyan)}
+/* caption: "Willpower." sits on the tile edge; in the fixed state the tick hex takes that spot and the text moves 92px (hex 76 + 16) */
+/* "Willpower." and "A system." share one line: the big text is centred on the 84px tick hex in both states (hex top = verdict top), and "Connected by NimbleBee" hangs below it */
+.verdict{--fs:clamp(28px,5vw,44px);position:relative;min-height:90px}
+.cap{min-width:0;padding-top:calc((84px - var(--fs))/2)}
+.board.tidy .cap{padding-left:92px}
+.verdict .sub{display:none;margin:3px 0 0;font-size:14px;font-weight:600;line-height:1.2;color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
+.board.tidy .verdict .sub{display:block}
+.verdict .big{font-size:var(--fs);font-weight:800;letter-spacing:-.04em;line-height:1}
 .verdict .b{display:none}
 .board.tidy .verdict .a{display:none}
 .board.tidy .verdict .b{display:inline-block}
-.sys{opacity:0;scale:.3;transition:opacity 300ms,scale 600ms var(--ease)}
+.sys{position:absolute;left:0;top:0;opacity:0;scale:.3;transition:opacity 300ms,scale 600ms var(--ease)}
 .sys .ic{font-size:34px}
 .board.tidy .sys{opacity:1;scale:1;transition-delay:.2s}
 @media (prefers-reduced-motion: reduce){
   .board .note,.sys,.knob,.knob::after{transition:none}
   .board .note{animation:none}
+  .links line,.board.tidy .links line{transition:none}
 }
 
 /* ---------- offers ---------- */
