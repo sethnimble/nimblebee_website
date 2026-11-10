@@ -84,12 +84,38 @@ NB.mods.problem=function(sec){
   if(window.IntersectionObserver)new IntersectionObserver(function(es){vis=es[0].isIntersecting;sync()}).observe(sec);else vis=true;
   document.addEventListener('visibilitychange',sync);
 
-  b.addEventListener('click',function(){
-    var on=!board.classList.contains('tidy');
+  /* one place for both ways in: the toggle (manual) and the scroll trigger (auto) */
+  function setFixed(on){
     board.classList.toggle('tidy',on);b.setAttribute('aria-pressed',on);
     tl.textContent=on?'Break me':'Fix me';
     if(on)tidyAt=performance.now();
     sync();
+  }
+
+  var touched=false,autoDone=false,inView=false,timer=0,seen=null;
+  b.addEventListener('click',function(){
+    touched=true;clearTimeout(timer);
+    setFixed(!board.classList.contains('tidy'));
   });
+
+  /* auto-tidy: once per visit, 0.8s after the board is 80% in view (so the mess is seen first).
+     On a window too short to ever show 80% of the board (a phone on its side), a board that fills the window counts.
+     A manual toggle always wins, and the toggle still works afterwards. Under reduced motion the state
+     switches with no motion (the css transitions are off), so the finished state just appears. */
+  function fire(){
+    if(autoDone||touched||!inView)return;
+    if(document.hidden){document.addEventListener('visibilitychange',function(){timer=setTimeout(fire,800)},{once:true});return}
+    autoDone=true;if(seen)seen.disconnect();
+    setFixed(true);
+  }
+  if(window.IntersectionObserver){
+    seen=new IntersectionObserver(function(es){
+      var e=es[es.length-1];
+      inView=e.isIntersecting&&(e.intersectionRatio>=0.8||e.intersectionRect.height>=innerHeight*0.95);
+      clearTimeout(timer);
+      if(inView)timer=setTimeout(fire,800);
+    },{threshold:[0,0.2,0.4,0.6,0.8,1]});
+    seen.observe(board);
+  }
 };
 })();
