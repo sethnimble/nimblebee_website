@@ -195,10 +195,31 @@ section{scroll-margin-top:90px}
 .chiprow{display:contents;list-style:none;margin:0;padding:0}
 
 /* ---------- who it's for ---------- */
-.whogrid{display:grid;gap:8px 56px;align-items:start}
-@media(min-width:900px){.whogrid{grid-template-columns:1.1fr .9fr}.whogrid .sechead{margin-bottom:0}.whotext{padding-top:calc(13px*1.3 + 14px + 16px)}}
-.whotext{display:flex;flex-direction:column;gap:20px;min-width:0}
-.whotext .also{margin-top:0}
+/* stacked (under 900px): text first, honeycomb centred underneath; heading and lead centred, the chip stays left with 24px below it */
+.whogrid{display:grid;gap:32px;align-items:center;grid-template-columns:minmax(0,1fr)}
+.whotext{display:flex;flex-direction:column;align-items:flex-start;gap:16px;min-width:0}
+.whotext .chip{margin-bottom:8px}
+.whotext h2,.whotext .text-lead{align-self:stretch;text-align:center}
+.whotext .text-lead{max-width:30em;margin-inline:auto}
+.whoart{display:flex;flex-direction:column;align-items:center;gap:20px;min-width:0}
+.whoart .lbl{margin:0;font-size:16px;font-weight:800}
+/* honeycomb: three 150px content hexes, pointy-top, one above two. Rows are offset by half a hex and spaced at centre distance x 0.866, so the hexes interlock with a 12px gap. */
+.comb{--g:12px;list-style:none;margin:0;padding:0;position:relative;flex:none;width:calc(2*150px + var(--g) + 6px);height:calc(165.82px + (150px + var(--g))*.866 + 6px)}
+.comb .hex{position:absolute}
+.comb .c1{left:calc((150px + var(--g))/2);top:0}
+.comb .c2{left:0;top:calc((150px + var(--g))*.866)}
+.comb .c3{left:calc(150px + var(--g));top:calc((150px + var(--g))*.866)}
+.comb .hc{gap:8px}
+.comb .hc .ic{font-size:55px}
+.comb .hc .text-label{white-space:nowrap}
+/* 320px phones: the honeycomb (318px) is wider than the 288px inside the gutter, so step it down a notch (outlines scale with it, by about 10%) */
+@media(max-width:344px){.comb{transform:scale(.9);transform-origin:50% 0;margin-bottom:-31px}}
+@media(min-width:900px){
+  .whogrid{grid-template-columns:minmax(0,1fr) auto;column-gap:64px}
+  .whotext .chip{margin-bottom:0}
+  .whotext h2,.whotext .text-lead{align-self:auto;text-align:left}
+  .whotext .text-lead{margin-inline:0}
+}
 
 /* ---------- contact ---------- */
 .cta{position:relative;overflow:hidden;border:var(--line) solid var(--ink);border-radius:var(--r-card);background:var(--peach);box-shadow:var(--sh-xl);padding:clamp(32px,7vw,80px) clamp(22px,5vw,64px);display:flex;flex-direction:column;gap:22px;align-items:center;text-align:center}
