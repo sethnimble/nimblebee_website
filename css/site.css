@@ -189,10 +189,10 @@ section{scroll-margin-top:90px}
 .ohead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .ogrid .card p{margin:0}
 .ogrid .card .btn{align-self:flex-start;margin-top:auto}
-.soon{margin-top:44px;font-size:18px;max-width:34em}
+.soon{margin-top:44px;font-size:18px;max-width:48em}
 .soon p{margin:0 0 6px}
 .soon ul{margin:0;padding-left:1.1em}
-.soon li{margin:2px 0}
+.soon li{margin:2px 0;text-wrap:pretty}
 .also{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:20px}
 .also .lbl{margin:0;font-size:18px;font-weight:800}
 .also .more{margin:0;font-size:18px}
