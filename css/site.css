@@ -290,13 +290,14 @@ section{scroll-margin-top:90px}
 }
 
 /* ---------- how it works ---------- */
+/* Six stops: Before, Listen, Plan, Set up, Hand over, After. The pinned layout needs a wide, tall window; everything else swipes. */
 .hw{padding:0}
 .hwtop{display:flex;flex-direction:column;gap:28px;margin-bottom:26px}
 .hwtop .chip{align-self:flex-start}
 .hwtabs{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .cue{font-size:14px;font-weight:500;line-height:1.2;padding:0 4px}
 .cue.d{display:none}
-.slides{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px var(--gut) 24px;margin-inline:calc(var(--gut)*-1);scrollbar-width:none}
+.slides{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px var(--gut) 18px;margin-inline:calc(var(--gut)*-1);scrollbar-width:none}
 .slides::-webkit-scrollbar{display:none}
 .slide{flex:0 0 min(88%,520px);scroll-snap-align:center;display:grid;gap:22px;align-content:start;min-width:0}
 .sc.card{gap:12px}
@@ -304,10 +305,16 @@ section{scroll-margin-top:90px}
 .sc p{margin:0}
 .vis{display:none}
 .hwbar{display:none}
-@media(min-width:900px){
+.hwdots{display:flex;gap:10px;justify-content:center;padding-bottom:40px}
+.hwdots i{width:12px;height:12px;border-radius:50%;border:var(--line) solid var(--ink);background:var(--paper);transition:background 200ms}
+.hwdots i.on{background:var(--pink)}
+@media(min-width:900px) and (min-height:560px){
   .cue.m{display:none}.cue.d{display:inline-block}
-  .hwpin{height:300svh;position:relative}
-  .hwstick{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:72px}
+  .hwdots{display:none}
+  /* the stuck box is only as tall as its content; JS sets --hwh (its height) and --hwt (its top) so the content sits in the middle of the window.
+     The pin is the box plus the scroll distance, so there is no empty band before it sticks or after it lets go. */
+  .hwpin{position:relative;height:calc(var(--hwh,420px) + 330svh)}
+  .hwstick{position:sticky;top:var(--hwt,110px)}
   .hwtop{margin-bottom:18px}
   .slides{display:grid;overflow:visible;padding:0;margin:0;scroll-snap-type:none}
   .slide{grid-area:1/1;flex:none;grid-template-columns:1fr .7fr;gap:36px;align-items:center;align-content:center;opacity:0;visibility:hidden;transform:translateY(28px) scale(.98);transition:opacity 420ms,transform 560ms var(--ease),visibility 0s .42s}
@@ -320,9 +327,15 @@ section{scroll-margin-top:90px}
   .hwbar{display:block;height:10px;border:var(--line) solid var(--ink);border-radius:var(--r-pill);background:var(--paper);overflow:hidden;margin-top:22px}
   .hwbar i{display:block;height:100%;background:var(--pink);border-right:var(--line) solid var(--ink);transform-origin:left;transform:scaleX(0)}
 }
-@media(min-width:900px) and (prefers-reduced-motion:reduce){
-  .hwpin{height:auto}.hwstick{position:static;height:auto;padding-top:0}
-  .slides{display:flex;flex-direction:column;gap:56px}
-  .slide{opacity:1!important;visibility:visible!important;transform:none!important}
-  .hwtabs .tabpill,.cue,.hwbar{display:none!important}
+/* reduced motion, any width: all six cards stacked and readable, nothing pinned, swiped or animated */
+@media(prefers-reduced-motion:reduce){
+  .hwpin{height:auto!important}.hwstick{position:static!important}
+  .slides{display:flex;flex-direction:column;gap:40px;overflow:visible;scroll-snap-type:none;padding:0;margin:0}
+  .slide{flex:none;opacity:1!important;visibility:visible!important;transform:none!important;transition:none!important}
+  .slide{scroll-snap-align:none}
+  .hwtabs .tabpill,.cue,.hwbar,.hwdots{display:none!important}
+}
+@media(prefers-reduced-motion:reduce) and (min-width:900px) and (min-height:560px){
+  .slides{gap:56px}
+  .slide{grid-template-columns:1fr .7fr}
 }
