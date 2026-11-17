@@ -28,6 +28,7 @@ section{scroll-margin-top:90px}
 .htext .chip{align-self:flex-start;rotate:-2deg;animation:pop 560ms var(--ease) both}
 .lede{font-size:clamp(18px,2.4vw,20px);line-height:1.5;font-weight:500;max-width:34em;animation:pop 560ms var(--ease) .5s both}
 .ctas{display:flex;flex-wrap:wrap;gap:14px;animation:pop 560ms var(--ease) .5s both}
+.ctas-phone{display:none}
 
 /* kinetic headline: the h1 uses .display-h1 for size, weight and tracking */
 .kin{margin:0}
@@ -79,9 +80,11 @@ section{scroll-margin-top:90px}
   .htext{align-items:center;text-align:center;gap:30px}
   .htext .chip{align-self:center}
   .lede{margin-inline:auto}
-  .htext .ctas{display:grid;grid-template-columns:1fr auto 1fr;justify-items:center;gap:0;width:100%}
-  .htext .ctas>.btn:not(.pausebtn){grid-column:2}
-  .htext .ctas>.pausebtn{grid-column:3;justify-self:end;align-self:center}
+  /* the buttons sit under the six tiles on a phone (T444): the copy under the lede is hidden, so only one set is in the tab order and the reading order */
+  .htext .ctas{display:none}
+  .ctas-phone{display:grid;grid-template-columns:1fr auto 1fr;justify-items:center;gap:0;width:100%;margin-top:14px}
+  .ctas-phone>.btn:not(.pausebtn){grid-column:2}
+  .ctas-phone>.pausebtn{grid-column:3;justify-self:end;align-self:center}
 }
 
 /* pause controls (hero and ticker): a small paper circle with the icon only; the label lives in aria-label. The ::after keeps a 44px touch target. */
