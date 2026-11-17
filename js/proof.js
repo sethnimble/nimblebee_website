@@ -6,6 +6,10 @@ NB.mods.tape=function(t){
   var tr=NB.$('.track',t);if(!tr||tr._dup)return;tr._dup=1;
   tr.insertAdjacentHTML('beforeend',tr.innerHTML);
   var n=tr.children.length/2;
+  /* Speed is one figure in pixels per second (35 before 17 Nov, +25%), so the loop time follows the list length and width. */
+  var SPEED=43.75;
+  var pace=function(){tr.style.setProperty('--tape-dur',(tr.scrollWidth/2/SPEED).toFixed(1)+'s')};
+  pace();addEventListener('resize',pace);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(pace);
   [].slice.call(tr.children,n).forEach(function(c){
     c.setAttribute('aria-hidden','true');
     NB.$$('a',c).forEach(function(a){a.tabIndex=-1});
@@ -33,7 +37,7 @@ NB.mods.tape=function(t){
     (function run(now){
       var dt=Math.min(now-last,100);last=now;
       if(held||Date.now()<wait||t.classList.contains('stop')||!NB.live(t))x=t.scrollLeft;
-      else{half=tr.scrollWidth/2;x+=dt*0.035;if(x>=half)x-=half;t.scrollLeft=x}
+      else{half=tr.scrollWidth/2;x+=dt*SPEED/1000;if(x>=half)x-=half;t.scrollLeft=x}
       requestAnimationFrame(run);
     })(0);
   }
